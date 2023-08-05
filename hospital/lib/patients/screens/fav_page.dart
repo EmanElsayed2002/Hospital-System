@@ -1,5 +1,5 @@
 import "package:flutter/material.dart";
-import "package:hospital/components/doctor_card.dart";
+import 'package:hospital/patients/components/doctor_card.dart';
 
 class FavPage extends StatefulWidget {
   FavPage({Key? key}) : super(key: key);

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hospital/screens/login_screen.dart';
+import 'package:hospital/login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override

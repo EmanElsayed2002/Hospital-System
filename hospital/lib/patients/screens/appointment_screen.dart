@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hospital/screens/booking_page.dart';
+import 'package:hospital/patients/screens/booking_page.dart';
 
 class AppointmentScreen extends StatelessWidget {
   @override

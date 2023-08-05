@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hospital/components/social_button.dart';
-import 'package:hospital/screens/main_layout.dart';
-import 'package:hospital/screens/signup_screen.dart';
+import 'package:hospital/patients/components/main_layout.dart';
+
+import 'package:hospital/signup_screen.dart';
 
 class loginScreen extends StatefulWidget {
   @override
@@ -121,15 +122,16 @@ class _loginScreenState extends State<loginScreen> {
                 style: TextStyle(
                   fontSize: 23,
                   fontWeight: FontWeight.bold,
-                  color: Colors.blueGrey,
+                  color: Color.fromARGB(255, 5, 37, 14),
                 ),
               ),
+              SizedBox(height: 5),
               Text(
-                "You Can Log In With",
+                "Log In With",
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.blueGrey,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0XFF0080FE),
                 ),
               ),
               SizedBox(height: 20),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hospital/screens/login_screen.dart';
-import 'package:hospital/screens/signup_screen.dart';
+import 'package:hospital/login_screen.dart';
+import 'package:hospital/signup_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   @override

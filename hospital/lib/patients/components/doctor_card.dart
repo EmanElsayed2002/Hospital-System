@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hospital/screens/appointment_screen.dart';
+import 'package:hospital/patients/screens/appointment_screen.dart';
 
 class DoctorCard extends StatelessWidget {
   const DoctorCard({
@@ -24,7 +24,7 @@ class DoctorCard extends StatelessWidget {
             width: 350,
             // Set the desired width for the item
             margin: EdgeInsets.all(10),
-            padding: EdgeInsets.symmetric(vertical: 15),
+            padding: EdgeInsets.symmetric(vertical: 180),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),

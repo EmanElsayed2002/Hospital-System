@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hospital/widgets/chat_sample.dart';
+import 'package:hospital/patients/screens/chat_sample.dart';
 
 class ChatScreen extends StatelessWidget {
   @override

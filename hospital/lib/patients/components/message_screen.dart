@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hospital/screens/chat_screen.dart';
+import 'package:hospital/patients/screens/chat_screen.dart';
 
 class MessagesScreen extends StatelessWidget {
   bool activeStatus = true;

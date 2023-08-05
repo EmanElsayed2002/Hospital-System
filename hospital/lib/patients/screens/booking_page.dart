@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hospital/components/booking_datetime_converted.dart';
 import 'package:hospital/components/button.dart';
+import 'package:hospital/patients/screens/success_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class BookingPage extends StatefulWidget {
@@ -115,7 +115,14 @@ class _BookingPageState extends State<BookingPage> {
                 width: double.infinity,
                 height: 60,
                 title: 'Make Appointment',
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AppointmentBooked(),
+                    ),
+                  );
+                },
                 disable: _timeSelected && _dateSelected ? false : true,
               ),
             ),

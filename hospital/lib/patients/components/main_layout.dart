@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hospital/screens/appointment_page.dart';
-import 'package:hospital/screens/fav_page.dart';
-import 'package:hospital/screens/home_page.dart';
-import 'package:hospital/screens/message_screen.dart';
-import 'package:hospital/screens/profile_screen.dart';
+import 'package:hospital/admin_profile.dart';
+import 'package:hospital/patients/screens/appointment_page.dart';
+import 'package:hospital/patients/screens/fav_page.dart';
+import 'package:hospital/patients/screens/home_page.dart';
+import 'package:hospital/patients/components/message_screen.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({Key? key}) : super(key: key);

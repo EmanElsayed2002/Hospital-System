@@ -13,7 +13,7 @@ class Button extends StatelessWidget {
   final double width;
   final double height;
   final String title;
-  final bool disable; //this is used to disable button
+  final bool disable;
   final Function() onPressed;
 
   @override
@@ -32,6 +32,7 @@ class Button extends StatelessWidget {
           style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
       ),

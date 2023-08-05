@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hospital/screens/appointment_screen.dart';
+import 'package:hospital/patients/screens/appointment_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -169,21 +169,39 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const SizedBox(height: 15),
-                const Padding(
-                  padding:  EdgeInsets.only(left: 15),
-                  child: Text(
-                    "Popular Doctors",
-                    style: TextStyle(
-                      fontSize: 23,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black54,
-                    ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Popular Doctors",
+                        style: TextStyle(
+                          fontSize: 23,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 10, 103, 13),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 80,
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          "See all",
+                          style: TextStyle(
+                            color: Color(0XFF0080FE),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10),
+                  padding: const EdgeInsets.only(top: 0),
                   child: SizedBox(
-                    height: 300, // Set the desired height for the ListView
+                    height: 300,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: 4,
@@ -199,7 +217,6 @@ class _HomePageState extends State<HomePage> {
                           },
                           child: Container(
                             width: 350,
-                            // Set the desired width for the item
                             margin: EdgeInsets.all(10),
                             padding: EdgeInsets.symmetric(vertical: 15),
                             decoration: BoxDecoration(
