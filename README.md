@@ -10,6 +10,6 @@
 
 --------------------------------------------------------------------------------------------------------------------------------
 
-<p align="center"> Team Member: <br>(Mustafa Mahmoud - Eman Elsayed - Menna Elyamany - Eman Mohammed - Hasnaa Soliman)</p>
+<p align="center"> Team Member: <br>(Mustafa Mahmoud - Mustafa Mohamed - Eman Elsayed - Menna Elyamany - Eman Mohammed - Hasnaa Soliman)</p>
 
 --------------------------------------------------------------------------------------------------------------------------------
