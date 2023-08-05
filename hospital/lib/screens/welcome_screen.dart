@@ -9,18 +9,18 @@ class WelcomeScreen extends StatelessWidget {
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 65,
             ),
             Padding(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Image.asset("assets/doctors.png"),
             ),
-            SizedBox(height: 100),
-            Center(
+            const SizedBox(height: 100),
+            const Center(
               child: Text(
                 "Hospital System",
                 style: TextStyle(
@@ -32,8 +32,8 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 10),
-            Text(
+            const SizedBox(height: 10),
+            const Text(
               "Appoint Your Doctor",
               style: TextStyle(
                 color: Color(0XFF0080FE),
@@ -41,7 +41,7 @@ class WelcomeScreen extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            SizedBox(height: 60),
+            const SizedBox(height: 60),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -59,7 +59,7 @@ class WelcomeScreen extends StatelessWidget {
                     child: Container(
                       padding:
                           EdgeInsets.symmetric(vertical: 15, horizontal: 40),
-                      child: Text(
+                      child: const Text(
                         "Log In",
                         style: TextStyle(
                           color: Colors.white,

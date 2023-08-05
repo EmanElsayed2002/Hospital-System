@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:hospital/components/social_button.dart';
 import 'package:hospital/screens/main_layout.dart';
 import 'package:hospital/screens/signup_screen.dart';
 
@@ -10,6 +11,7 @@ class loginScreen extends StatefulWidget {
 
 class _loginScreenState extends State<loginScreen> {
   bool passToggle = true;
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -31,27 +33,24 @@ class _loginScreenState extends State<loginScreen> {
                 child: TextField(
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    label: Text("Enter Username"),
+                    labelText: "Enter Username",
                     prefixIcon: Icon(Icons.person),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
                 child: TextField(
                   obscureText: passToggle ? true : false,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    label: Text("Enter Password"),
+                    labelText: "Enter Password",
                     prefixIcon: Icon(Icons.lock),
                     suffixIcon: InkWell(
                       onTap: () {
-                        if (passToggle == true) {
-                          passToggle = false;
-                        } else {
-                          passToggle = true;
-                        }
-                        setState(() {});
+                        setState(() {
+                          passToggle = !passToggle;
+                        });
                       },
                       child: passToggle
                           ? Icon(CupertinoIcons.eye_slash_fill)
@@ -60,16 +59,35 @@ class _loginScreenState extends State<loginScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        "Forgot Password?",
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.lightBlue,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(15),
                 child: InkWell(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MainLayout(),
-                        ));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MainLayout(),
+                      ),
+                    );
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 15),
@@ -98,25 +116,51 @@ class _loginScreenState extends State<loginScreen> {
                   ),
                 ),
               ),
+              Text(
+                "OR",
+                style: TextStyle(
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blueGrey,
+                ),
+              ),
+              Text(
+                "You Can Log In With",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.blueGrey,
+                ),
+              ),
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SocialButton(social: 'google'),
+                  SizedBox(width: 10),
+                  SocialButton(social: 'facebook'),
+                ],
+              ),
               SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Don't have any account?",
+                    "Don't have an account?",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: Colors.black54,
+                      color: Colors.blueGrey,
                     ),
                   ),
                   TextButton(
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SignUpScreen(),
-                          ));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignUpScreen(),
+                        ),
+                      );
                     },
                     child: Text(
                       "Create Account",

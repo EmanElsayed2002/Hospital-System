@@ -53,16 +53,16 @@ class _HomePageState extends State<HomePage> {
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
+                  children: const <Widget>[
                     Text(
                       'Eman Elsayed',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 24,
                         color: Color(0XFF0080FE),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       child: CircleAvatar(
                         radius: 30,
                         backgroundImage: AssetImage('assets/doctor1.jpg'),
@@ -70,9 +70,9 @@ class _HomePageState extends State<HomePage> {
                     )
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
                     'Good Morning Eman',
                     style: TextStyle(
                       fontSize: 16,
@@ -80,9 +80,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
                     'How do you feel today?',
                     style: TextStyle(
                       fontSize: 16,
@@ -90,9 +90,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
                     'Category',
                     style: TextStyle(
                       fontSize: 16,
@@ -138,9 +138,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text(
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text(
                     'Appointment Today',
                     style: TextStyle(
                       fontSize: 16,
@@ -168,9 +168,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
+                const SizedBox(height: 15),
+                const Padding(
+                  padding:  EdgeInsets.only(left: 15),
                   child: Text(
                     "Popular Doctors",
                     style: TextStyle(
@@ -182,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
-                  child: Container(
+                  child: SizedBox(
                     height: 300, // Set the desired height for the ListView
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
@@ -205,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
                                   color: Colors.black12,
                                   blurRadius: 4,
@@ -216,7 +216,28 @@ class _HomePageState extends State<HomePage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                CircleAvatar(
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
+                                      child: InkWell(
+                                        onTap: () {},
+                                        child: const Icon(
+                                          Icons.favorite_border_outlined,
+                                          color: Colors.blue,
+                                          size: 30,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const CircleAvatar(
                                   radius: 70,
                                   backgroundImage:
                                       AssetImage("assets/doctor3.jpg"),
@@ -229,7 +250,7 @@ class _HomePageState extends State<HomePage> {
                                     color: Color(0XFF0080FE),
                                   ),
                                 ),
-                                Text(
+                                const Text(
                                   "Heart Doctor",
                                   style: TextStyle(
                                     color: Colors.black45,
@@ -238,7 +259,7 @@ class _HomePageState extends State<HomePage> {
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
+                                  children: const [
                                     Icon(
                                       Icons.star,
                                       color: Colors.amber,

@@ -17,7 +17,7 @@ class ChatSample extends StatelessWidget {
                 color: Color(0xFFE1E1E2),
               ),
               child: Text(
-                "Hello, what i can do for you. you can book appointment directly.",
+                "Hello, what i can do for you",
                 style: TextStyle(fontSize: 16),
               ),
             ),
@@ -33,7 +33,7 @@ class ChatSample extends StatelessWidget {
                 padding:
                     EdgeInsets.only(left: 20, top: 10, bottom: 25, right: 20),
                 decoration: BoxDecoration(
-                  color: Color(0xFF7165D6),
+                  color: Colors.blue,
                 ),
                 child: Text(
                   "Hello Doctor, Are you there?",

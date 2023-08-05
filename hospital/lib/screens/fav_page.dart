@@ -30,7 +30,6 @@ class _FavPageState extends State<FavPage> {
             Expanded(
               child: DoctorCard(
                 doctor: {},
-                //show fav icon
                 isFav: true,
               ),
 

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hospital/screens/appointment_screen.dart';
+import 'package:hospital/screens/appointment_page.dart';
 import 'package:hospital/screens/fav_page.dart';
 import 'package:hospital/screens/home_page.dart';
 import 'package:hospital/screens/message_screen.dart';
@@ -31,12 +31,12 @@ class _MainLayoutState extends State<MainLayout> {
           const HomePage(),
           MessagesScreen(),
           FavPage(),
-          AppointmentScreen(),
+          const AppointmentPage(),
           ProfilePage(),
         ],
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           boxShadow: [
             BoxShadow(
               color: Colors.black12,
@@ -50,7 +50,7 @@ class _MainLayoutState extends State<MainLayout> {
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Color(0XFF0080FE),
           unselectedItemColor: Colors.black26,
-          selectedLabelStyle: TextStyle(
+          selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 15,
           ),

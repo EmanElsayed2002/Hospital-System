@@ -31,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 10,
                 ),
                 Text(
-                  'Eman Elsayed',
+                  'Dr. Eman Elsayed',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -41,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 10,
                 ),
                 Text(
-                  '21 | Female',
+                  '21 | male',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,

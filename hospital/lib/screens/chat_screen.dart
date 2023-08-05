@@ -5,56 +5,55 @@ class ChatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0),
-        child: AppBar(
-          backgroundColor: Color(0xFF7165D6),
-          leadingWidth: 30,
-          title: Row(
-            children: [
-              CircleAvatar(
-                radius: 25,
-                backgroundImage: AssetImage(
-                  "assets/doctor1.jpg",
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: Text(
-                  "Dr. Doctor Name",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            Padding(
-              padding: EdgeInsets.only(right: 20),
-              child: Icon(
-                Icons.call,
-                color: Colors.white,
-                size: 26,
+      appBar: AppBar(
+        toolbarHeight: 80,
+        backgroundColor: Colors.blue,
+        leadingWidth: 30,
+        title: Row(
+          children: [
+            CircleAvatar(
+              radius: 25,
+              backgroundImage: AssetImage(
+                "assets/doctor1.jpg",
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: 15),
-              child: Icon(
-                Icons.video_call,
-                color: Colors.white,
-                size: 30,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 10),
-              child: Icon(
-                Icons.more_vert,
-                color: Colors.white,
+              padding: EdgeInsets.only(left: 10),
+              child: Text(
+                "Dr. Eman",
+                style: TextStyle(
+                  overflow: TextOverflow.ellipsis,
+                  color: Colors.white,
+                ),
               ),
             ),
           ],
         ),
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 20),
+            child: Icon(
+              Icons.call,
+              color: Colors.white,
+              size: 26,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 15),
+            child: Icon(
+              Icons.video_call,
+              color: Colors.white,
+              size: 30,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 10),
+            child: Icon(
+              Icons.more_vert,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: ListView(
         padding: EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 80),
@@ -110,11 +109,11 @@ class ChatScreen extends StatelessWidget {
             ),
             Spacer(),
             Padding(
-              padding: EdgeInsets.only(right: 10),
+              padding: EdgeInsets.only(right: 9),
               child: Icon(
                 Icons.send,
                 size: 30,
-                color: Color(0xFF7165D6),
+                color: Colors.blue,
               ),
             ),
           ],

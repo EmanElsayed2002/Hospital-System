@@ -1,14 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hospital/screens/booking_page.dart';
 
 class AppointmentScreen extends StatelessWidget {
-  List imgs = [
-    "doctor1.jpg",
-    "doctor2.jpg",
-    "doctor3.jpg",
-    "doctor4.jpg",
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,13 +25,16 @@ class AppointmentScreen extends StatelessWidget {
                         child: Icon(
                           Icons.arrow_back_ios_new,
                           color: Colors.white,
-                          size: 25,
+                          size: 30,
                         ),
                       ),
-                      Icon(
-                        Icons.more_vert,
-                        color: Colors.white,
-                        size: 28,
+                      InkWell(
+                        onTap: () {},
+                        child: Icon(
+                          Icons.favorite_border_outlined,
+                          color: Colors.white,
+                          size: 23,
+                        ),
                       ),
                     ],
                   ),
@@ -129,7 +126,7 @@ class AppointmentScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    "the best forever",
+                    "You will be fine ان شاء الله",
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   SizedBox(height: 10),
@@ -230,7 +227,7 @@ class AppointmentScreen extends StatelessWidget {
                                   child: Text(
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,
-                                    "صوتوا يجماعه يمكن حد يلحقنا",
+                                    "Best Doctor i recommend to you",
                                     style: TextStyle(
                                       color: Colors.black,
                                     ),
@@ -314,7 +311,14 @@ class AppointmentScreen extends StatelessWidget {
             ),
             SizedBox(height: 15),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookingPage(),
+                  ),
+                );
+              },
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.symmetric(vertical: 18),
