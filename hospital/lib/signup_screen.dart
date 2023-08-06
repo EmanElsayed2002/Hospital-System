@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital/login_screen.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -9,6 +11,11 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool passToggle = true;
+  // make variable for fullname, email, password, phone and take the value from the textfield
+  final fullname = TextEditingController();
+  final email = TextEditingController();
+  final password = TextEditingController();
+  final phone = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -18,17 +25,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              const SizedBox(height: 10),
+              SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
                 child: Image.asset(
                   "assets/doctors.png",
                 ),
               ),
-              const SizedBox(height: 15),
-              const Padding(
+              SizedBox(height: 15),
+              Padding(
                 padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                 child: TextField(
+                  controller: fullname,
                   decoration: InputDecoration(
                     labelText: "Full Name",
                     border: OutlineInputBorder(),
@@ -36,9 +44,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                 child: TextField(
+                  controller: email,
                   decoration: InputDecoration(
                     labelText: "Email Address",
                     border: OutlineInputBorder(),
@@ -49,6 +58,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                 child: TextField(
+                  controller: phone,
                   decoration: InputDecoration(
                     labelText: "Phone Number",
                     border: OutlineInputBorder(),
@@ -59,6 +69,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: TextField(
+                  controller: password,
                   obscureText: passToggle ? true : false,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -82,7 +93,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               SizedBox(height: 20),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  _postRequest(
+                      fullname.text, email.text, password.text, phone.text);
+                },
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 15),
                   width: 350,
@@ -144,5 +158,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+}
+
+// we want to make a post request to the server
+Future<dynamic> _postRequest(
+    String fullname, String email, String password, String phone) async {
+  var url = Uri.parse('http://localhost:3000/admin/createnewdoctor');
+  try {
+    final response = await http.post(url, body: {
+      'fullname': fullname,
+      'email': email,
+      'password': password,
+      'phone': phone
+    });
+    print(response.body);
+  } catch (e) {
+    print(e);
   }
 }

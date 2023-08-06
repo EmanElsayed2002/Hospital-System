@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: MyApp.navigatorKey,
       title: 'Hospital System',
       debugShowCheckedModeBanner: false,
-      home: MainLayout(),
+      home: WelcomeScreen(),
     );
   }
 }

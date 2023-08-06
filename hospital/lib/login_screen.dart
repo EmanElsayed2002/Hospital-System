@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hospital/components/social_button.dart';
 import 'package:hospital/patients/components/main_layout.dart';
-
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:hospital/login_screen.dart';
+import 'package:http/http.dart' as http;
 import 'package:hospital/signup_screen.dart';
 
 class loginScreen extends StatefulWidget {
@@ -12,7 +15,8 @@ class loginScreen extends StatefulWidget {
 
 class _loginScreenState extends State<loginScreen> {
   bool passToggle = true;
-
+  final fullname = TextEditingController();
+  final password = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -28,10 +32,11 @@ class _loginScreenState extends State<loginScreen> {
                   "assets/doctors.png",
                 ),
               ),
-              const SizedBox(height: 10),
-              const Padding(
+              SizedBox(height: 10),
+              Padding(
                 padding: const EdgeInsets.all(12),
                 child: TextField(
+                  controller: fullname,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Enter Username",
@@ -42,6 +47,7 @@ class _loginScreenState extends State<loginScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
                 child: TextField(
+                  controller: password,
                   obscureText: passToggle ? true : false,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -83,12 +89,7 @@ class _loginScreenState extends State<loginScreen> {
                 padding: const EdgeInsets.all(15),
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MainLayout(),
-                      ),
-                    );
+                    _loginUSer(fullname.text, password.text);
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 15),
@@ -180,5 +181,20 @@ class _loginScreenState extends State<loginScreen> {
         ),
       ),
     );
+  }
+}
+
+// Future<dynamic> _postRequest(
+//    String fullname, String email, String password, String phone) async {
+Future<dynamic> _loginUSer(String name, String password) async {
+  final Uri api = Uri.parse('http://localhost:3000/doctor/login');
+  try {
+    final response = await http.post(api, body: {
+      'fullname': name,
+      'password': password,
+    });
+    print(response.body);
+  } catch (e) {
+    print(e);
   }
 }
