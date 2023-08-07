@@ -5,7 +5,7 @@ const SignUp_Validator = Joi.object({
   fullname: Joi.string().min(6).required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
-  confirmPassword: Joi.string().min(6).required().valid(Joi.ref("password")),
+  phone: Joi.string().min(10).required(),
 });
 
 test = async function (data) {

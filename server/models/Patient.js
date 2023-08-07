@@ -20,6 +20,12 @@ const PatientSchema = new mongoose.Schema({
         minlength: 6,
         trim: true
     },
+    phone: {
+        type: String,
+        required: [true, "Phone is Required"],
+        minlength: 10,
+        trim: true
+    },
     doctor: {
         type: String,
     },

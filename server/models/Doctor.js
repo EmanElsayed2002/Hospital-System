@@ -20,8 +20,6 @@ const DoctorSchema = new mongoose.Schema({
         minlength: 6,
         trim: true
     },
-    // we will receive a list that any element is a pair the hour and still available or not
-    // example: [["10:00", free ], ["11:00", booked], ["12:00" , free]]
     availableHours: {
         type: Array,
         default: []

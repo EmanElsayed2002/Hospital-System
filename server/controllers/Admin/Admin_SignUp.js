@@ -26,7 +26,7 @@ const SignUp = async (req, res) => {
     // send the response
     return sendResponse(
       res,
-      201,
+      200,
       "Account has been created Successfully",
       result
     );

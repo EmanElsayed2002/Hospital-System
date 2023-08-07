@@ -10,6 +10,9 @@ const Login_Validator = Joi.object({
 test = async function (data) {
   const { error } = Login_Validator.validate(data);
 
+  if (error) {
+    return [error.details[0].message, 400];
+  }
   // check if the email is exist
   let founded = await Admin.findOne({ email: data.email });
   if (!founded) {
@@ -17,16 +20,13 @@ test = async function (data) {
   }
 
   // check if the password is correct
+  console.log(data.password);
   const passwordMatch = await bcrypt.compare(data.password, founded.password);
   if (!passwordMatch) {
     return ["Password is wrong", 401];
   }
-
-  if (error) {
-    return [error.details[0].message, 400];
-  } else {
     return ["valid", 200];
-  }
+  
 };
 
 module.exports = test;

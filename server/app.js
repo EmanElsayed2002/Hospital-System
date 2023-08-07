@@ -79,13 +79,13 @@ const axios = require("axios");
 //   });
 // });
 
-
 // // 1- Create a new admin
 // const data = {
-//     fullname: 'eman228734682735',
-//     email: 'emaaaaaaaaaaaaaaan@gmail.com',
-//     password: '123456789',
-//     confirmPassword: '123456789',
+//     fullname: 'sasa2727',
+//     email: 'sasa2727@gmail.com',
+//     password: '1223456789',
+//     phone: '01225435099',
+
 // };
 
 // axios.post('http://localhost:3000/admin/signup', data)

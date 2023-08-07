@@ -17,6 +17,7 @@ const ReadPatients = async (req, res) => {
         patients.push(doctor.appointments[i][2]);
       }
     }
+    
     return sendResponse(res, 200, "Patients", patients);    
   } catch (err) {
     console.log(err);

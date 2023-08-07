@@ -10,10 +10,9 @@ const Login = async (req, res) => {
     // validate the data
     const error = await checkFile(req.body);
     if (error[0] !== "valid") {
-      // we will receive a list of the message and the status code
       return sendResponse(res, error[1], error[0]);
     }
-
+    // 401 status code means unauthorized
     // generate token
     var admin = await Admin.findOne({ email: req.body.email });
     const token = jwt.sign({ _id: admin._id }, key);
