@@ -9,9 +9,9 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
-  TextEditingController _currentPasswordController = TextEditingController();
-  TextEditingController _newPasswordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _currentPasswordController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
@@ -25,33 +25,33 @@ class _ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Change Password'),
+        title: const Text('Change Password'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             TextField(
               controller: _currentPasswordController,
               obscureText: true,
-              decoration: InputDecoration(labelText: 'Current Password'),
+              decoration: const InputDecoration(labelText: 'Current Password'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _newPasswordController,
               obscureText: true,
-              decoration: InputDecoration(labelText: 'New Password'),
+              decoration: const InputDecoration(labelText: 'New Password'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _confirmPasswordController,
               obscureText: true,
-              decoration: InputDecoration(labelText: 'Confirm New Password'),
+              decoration: const InputDecoration(labelText: 'Confirm New Password'),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: Color.fromRGBO(33, 150, 243, 1),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Button(

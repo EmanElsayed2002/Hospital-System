@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital/login_screen.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
@@ -25,19 +26,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Padding(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Image.asset(
                   "assets/doctors.png",
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                 child: TextField(
                   controller: fullname,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Full Name",
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.person),
@@ -45,10 +46,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                 child: TextField(
                   controller: email,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Email Address",
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.email),
@@ -56,10 +57,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                 child: TextField(
                   controller: phone,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Phone Number",
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.phone),
@@ -72,9 +73,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: password,
                   obscureText: passToggle ? true : false,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    label: Text("Enter Password"),
-                    prefixIcon: Icon(Icons.lock),
+                    border: const OutlineInputBorder(),
+                    label: const Text("Enter Password"),
+                    prefixIcon: const Icon(Icons.lock),
                     suffixIcon: InkWell(
                       onTap: () {
                         if (passToggle == true) {
@@ -85,25 +86,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         setState(() {});
                       },
                       child: passToggle
-                          ? Icon(CupertinoIcons.eye_slash_fill)
-                          : Icon(CupertinoIcons.eye_fill),
+                          ? const Icon(CupertinoIcons.eye_slash_fill)
+                          : const Icon(CupertinoIcons.eye_fill),
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               InkWell(
                 onTap: () {
                   _postRequest(
                       fullname.text, email.text, password.text, phone.text);
                 },
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   width: 350,
                   decoration: BoxDecoration(
-                    color: Color(0XFF0080FE),
+                    color: const Color(0XFF0080FE),
                     borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.black12,
                         blurRadius: 4,
@@ -111,7 +112,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ],
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       "Create Account",
                       style: TextStyle(
@@ -123,11 +124,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Already have account?",
                     style: TextStyle(
                       fontSize: 16,
@@ -139,10 +140,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => loginScreen(),
+                            builder: (context) => const loginScreen(),
                           ));
                     },
-                    child: Text(
+                    child: const Text(
                       "Log In",
                       style: TextStyle(
                         fontSize: 18,
@@ -164,7 +165,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 // we want to make a post request to the server
 Future<dynamic> _postRequest(
     String fullname, String email, String password, String phone) async {
-  var url = Uri.parse('http://localhost:3000/admin/createnewdoctor');
+  var url = Uri.parse('http://192.168.1.8:3000/patient/signup');
   try {
     final response = await http.post(url, body: {
       'fullname': fullname,

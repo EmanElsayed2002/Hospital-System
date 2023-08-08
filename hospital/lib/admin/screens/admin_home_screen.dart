@@ -1,7 +1,4 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter/material.dart';
-import 'package:hospital/patients/screens/appointment_screen.dart';
 
 class AdminScreen extends StatefulWidget {
   const AdminScreen({super.key});
@@ -23,7 +20,7 @@ class _AdminScreenState extends State<AdminScreen> {
         leadingWidth: 30,
         title: Row(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(left: 10),
               child: Text(
                 "Dr. Eman",
@@ -33,12 +30,12 @@ class _AdminScreenState extends State<AdminScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 200,
             ),
             InkWell(
               onTap: () {},
-              child: CircleAvatar(
+              child: const CircleAvatar(
                 radius: 25,
                 backgroundImage: AssetImage(
                   "assets/doctor1.jpg",
@@ -52,28 +49,28 @@ class _AdminScreenState extends State<AdminScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               radius: 90,
               backgroundImage: AssetImage("assets/profile1.jpg"),
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             Container(
               height: 50,
               width: 200,
-              child: Center(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: const Center(
                 child: Text(
                   'Hello Admin',
                   style: TextStyle(fontSize: 24, color: Colors.white),
                 ),
               ),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(5),
-              ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             Padding(
@@ -81,15 +78,15 @@ class _AdminScreenState extends State<AdminScreen> {
               child: Container(
                 height: 50,
                 width: double.infinity,
-                child: Center(
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: const Center(
                   child: Text(
                     'you can make CRUD now',
                     style: TextStyle(fontSize: 24, color: Colors.white),
                   ),
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(5),
                 ),
               ),
             ),

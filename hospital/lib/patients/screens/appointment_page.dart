@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 
 class AppointmentPage extends StatefulWidget {
   const AppointmentPage({Key? key}) : super(key: key);
@@ -131,12 +130,12 @@ class _AppointmentPageState extends State<AppointmentPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Row(
+                    const Row(
                       children: [
-                        const CircleAvatar(
+                        CircleAvatar(
                           backgroundImage: AssetImage("assets/doctor1.jpg"),
                         ),
-                        const SizedBox(
+                        SizedBox(
                           width: 10,
                         ),
                         Column(
@@ -144,17 +143,17 @@ class _AppointmentPageState extends State<AppointmentPage> {
                           children: [
                             Text(
                               'Eman Elsayed',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
-                            const SizedBox(
+                            SizedBox(
                               height: 5,
                             ),
                             Text(
                               'Heart Doctor',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -167,7 +166,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                     const SizedBox(
                       height: 15,
                     ),
-                    ScheduleCard(
+                    const ScheduleCard(
                       date: '13',
                       day: 'Mon',
                       time: '10:00 AM',
@@ -235,39 +234,39 @@ class ScheduleCard extends StatelessWidget {
       ),
       width: double.infinity,
       padding: const EdgeInsets.all(20),
-      child: Row(
+      child: const Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          const Icon(
+          Icon(
             Icons.calendar_today,
             color: Colors.green,
             size: 15,
           ),
-          const SizedBox(
+          SizedBox(
             width: 5,
           ),
           Text(
             '13, 3',
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.green,
             ),
           ),
-          const SizedBox(
+          SizedBox(
             width: 20,
           ),
-          const Icon(
+          Icon(
             Icons.access_alarm,
             color: Colors.green,
             size: 17,
           ),
-          const SizedBox(
+          SizedBox(
             width: 5,
           ),
           Flexible(
               child: Text(
             '1',
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.green,
             ),
           ))

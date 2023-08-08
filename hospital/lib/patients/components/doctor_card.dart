@@ -23,12 +23,12 @@ class DoctorCard extends StatelessWidget {
           child: Container(
             width: 350,
             // Set the desired width for the item
-            margin: EdgeInsets.all(10),
-            padding: EdgeInsets.symmetric(vertical: 180),
+            margin: const EdgeInsets.all(10),
+            padding: const EdgeInsets.symmetric(vertical: 180),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
                   color: Colors.black12,
                   blurRadius: 4,
@@ -36,14 +36,14 @@ class DoctorCard extends StatelessWidget {
                 ),
               ],
             ),
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 CircleAvatar(
                   radius: 70,
                   backgroundImage: AssetImage("assets/doctor1.jpg"),
                 ),
-                const Text(
+                Text(
                   "Dr. Menna Elyamany",
                   style: TextStyle(
                     fontSize: 18,
@@ -81,7 +81,7 @@ class DoctorCard extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AppointmentScreen(),
+                builder: (context) => const AppointmentScreen(),
               ));
         },
       ),

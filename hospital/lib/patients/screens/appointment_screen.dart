@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:hospital/patients/screens/booking_page.dart';
 
 class AppointmentScreen extends StatelessWidget {
+  const AppointmentScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0XFF0080FE),
+      backgroundColor: const Color(0XFF0080FE),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Stack(
@@ -22,7 +24,7 @@ class AppointmentScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.arrow_back_ios_new,
                           color: Colors.white,
                           size: 30,
@@ -30,7 +32,7 @@ class AppointmentScreen extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {},
-                        child: Icon(
+                        child: const Icon(
                           Icons.favorite_border_outlined,
                           color: Colors.white,
                           size: 23,
@@ -43,12 +45,12 @@ class AppointmentScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        CircleAvatar(
+                        const CircleAvatar(
                           radius: 35,
                           backgroundImage: AssetImage("assets/doctor1.jpg"),
                         ),
-                        SizedBox(height: 15),
-                        Text(
+                        const SizedBox(height: 15),
+                        const Text(
                           "Dr. Hasnaa Soliman",
                           style: TextStyle(
                             fontSize: 23,
@@ -56,38 +58,38 @@ class AppointmentScreen extends StatelessWidget {
                             color: Colors.white,
                           ),
                         ),
-                        SizedBox(height: 5),
-                        Text(
+                        const SizedBox(height: 5),
+                        const Text(
                           "Therapist",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 15),
+                        const SizedBox(height: 15),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
+                              padding: const EdgeInsets.all(10),
+                              decoration: const BoxDecoration(
                                 color: Color.fromARGB(255, 91, 231, 142),
                                 shape: BoxShape.circle,
                               ),
-                              child: Icon(
+                              child: const Icon(
                                 Icons.call,
                                 color: Colors.white,
                                 size: 25,
                               ),
                             ),
-                            SizedBox(width: 20),
+                            const SizedBox(width: 20),
                             Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
+                              padding: const EdgeInsets.all(10),
+                              decoration: const BoxDecoration(
                                 color: Color.fromARGB(255, 91, 231, 142),
                                 shape: BoxShape.circle,
                               ),
-                              child: Icon(
+                              child: const Icon(
                                 CupertinoIcons.chat_bubble_text_fill,
                                 color: Colors.white,
                                 size: 25,
@@ -101,15 +103,15 @@ class AppointmentScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               height: MediaQuery.of(context).size.height / 1.5,
               width: double.infinity,
-              padding: EdgeInsets.only(
+              padding: const EdgeInsets.only(
                 top: 20,
                 left: 15,
               ),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(10),
@@ -120,41 +122,41 @@ class AppointmentScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Text(
+                  const Text(
                     "About Doctor",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                   ),
-                  SizedBox(height: 5),
-                  Text(
+                  const SizedBox(height: 5),
+                  const Text(
                     "You will be fine ان شاء الله",
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(
                     children: [
-                      Text(
+                      const Text(
                         "Reviews",
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w500),
                       ),
-                      SizedBox(width: 10),
-                      Icon(Icons.star, color: Colors.amber),
-                      Text(
+                      const SizedBox(width: 10),
+                      const Icon(Icons.star, color: Colors.amber),
+                      const Text(
                         "4.9",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                         ),
                       ),
-                      SizedBox(width: 5),
-                      Text(
+                      const SizedBox(width: 5),
+                      const Text(
                         "(50)",
                         style: TextStyle(color: Colors.black54),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       TextButton(
                         onPressed: () {},
-                        child: Text(
+                        child: const Text(
                           "See all",
                           style: TextStyle(
                             color: Color(0xFF7165D6),
@@ -173,12 +175,12 @@ class AppointmentScreen extends StatelessWidget {
                       itemCount: 4,
                       itemBuilder: (context, index) {
                         return Container(
-                          margin: EdgeInsets.all(10),
-                          padding: EdgeInsets.symmetric(vertical: 5),
+                          margin: const EdgeInsets.all(10),
+                          padding: const EdgeInsets.symmetric(vertical: 5),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
+                            boxShadow: const [
                               BoxShadow(
                                 color: Colors.black12,
                                 blurRadius: 4,
@@ -188,7 +190,7 @@ class AppointmentScreen extends StatelessWidget {
                           ),
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width / 1.4,
-                            child: Column(
+                            child: const Column(
                               children: [
                                 ListTile(
                                   leading: CircleAvatar(
@@ -222,7 +224,7 @@ class AppointmentScreen extends StatelessWidget {
                                 ),
                                 SizedBox(height: 5),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(
+                                  padding: EdgeInsets.symmetric(
                                       horizontal: 10),
                                   child: Text(
                                     maxLines: 2,
@@ -240,8 +242,8 @@ class AppointmentScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
+                  const SizedBox(height: 10),
+                  const Text(
                     "Location",
                     style: TextStyle(
                       fontSize: 18,
@@ -250,24 +252,24 @@ class AppointmentScreen extends StatelessWidget {
                   ),
                   ListTile(
                     leading: Container(
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
                         color: Color(0xFFF0EEFA),
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.location_on,
                         color: Color(0xFF7165D6),
                         size: 30,
                       ),
                     ),
-                    title: Text(
+                    title: const Text(
                       "ميت غمر | كفر الدوار | دنطيط :)",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    subtitle: Text("address line of the medical center"),
+                    subtitle: const Text("address line of the medical center"),
                   ),
                 ],
               ),
@@ -276,9 +278,9 @@ class AppointmentScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Container(
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         height: 150,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           boxShadow: [
             BoxShadow(
@@ -290,7 +292,7 @@ class AppointmentScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -309,24 +311,24 @@ class AppointmentScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             InkWell(
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => BookingPage(),
+                    builder: (context) => const BookingPage(),
                   ),
                 );
               },
               child: Container(
                 width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.symmetric(vertical: 18),
+                padding: const EdgeInsets.symmetric(vertical: 18),
                 decoration: BoxDecoration(
-                  color: Color(0XFF0080FE),
+                  color: const Color(0XFF0080FE),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Center(
+                child: const Center(
                   child: Text(
                     "Book Appointment",
                     style: TextStyle(

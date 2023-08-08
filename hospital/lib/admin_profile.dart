@@ -3,7 +3,7 @@ import "package:hospital/admin/screens/change_password.dart";
 import "package:hospital/admin/screens/edit_profile.dart";
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -18,8 +18,8 @@ class _ProfilePageState extends State<ProfilePage> {
           flex: 4,
           child: Container(
             width: double.infinity,
-            color: Color(0XFF0080FE),
-            child: Column(
+            color: const Color(0XFF0080FE),
+            child: const Column(
               children: [
                 SizedBox(
                   height: 110,
@@ -60,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Center(
               child: Card(
                 margin: const EdgeInsets.fromLTRB(0, 45, 0, 0),
-                child: Container(
+                child: SizedBox(
                   width: 300,
                   height: 250,
                   child: Padding(
@@ -93,7 +93,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => EditProfile(),
+                                    builder: (context) => const EditProfile(),
                                   ),
                                 );
                               },
@@ -110,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.history,
                               color: Color(0XFF0080FE),
                               size: 35,
@@ -123,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ChangePassword(),
+                                    builder: (context) => const ChangePassword(),
                                   ),
                                 );
                               },
@@ -140,7 +140,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.logout_outlined,
                               color: Color(0XFF0080FE),
                               size: 35,

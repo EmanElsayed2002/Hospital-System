@@ -20,6 +20,21 @@ const DoctorSchema = new mongoose.Schema({
         minlength: 6,
         trim: true
     },
+    Specialization: {
+        type: String,
+        required: [true, "Specialization is Mandatory"],
+        trim: true
+    },
+    gender: {
+        type: String,
+        required : [true , "gender is required"],
+    },
+    phone: {
+        type: String,
+        required: [true, "Phone is Mandatory"],
+        trim: true,
+        match: /^01[0125][0-9]{8}$/
+    },
     availableHours: {
         type: Array,
         default: []

@@ -9,13 +9,13 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _specializationController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _specializationController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
   String? _selectedGender;
-  List<String> _genders = ['Male', 'Female', 'Other'];
+  final List<String> _genders = ['Male', 'Female', 'Other'];
 
   @override
   void initState() {
@@ -30,21 +30,21 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: const Text('Edit Profile'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             CircleAvatar(
               radius: 50,
               backgroundColor: Colors.grey[300],
-              backgroundImage: AssetImage('assets/doctor1.jpg'),
+              backgroundImage: const AssetImage('assets/doctor1.jpg'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: Color.fromRGBO(33, 150, 243, 1),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Button(
@@ -54,22 +54,22 @@ class _EditProfileState extends State<EditProfile> {
                   disable: true,
                   height: 50),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             TextField(
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Name'),
+              decoration: const InputDecoration(labelText: 'Name'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               controller: _specializationController,
-              decoration: InputDecoration(labelText: 'Specialization'),
+              decoration: const InputDecoration(labelText: 'Specialization'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             DropdownButtonFormField<String>(
               value: _selectedGender,
               onChanged: (newValue) {
@@ -83,13 +83,13 @@ class _EditProfileState extends State<EditProfile> {
                   child: Text(gender),
                 );
               }).toList(),
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Gender',
               ),
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   color: Color.fromRGBO(33, 150, 243, 1),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Button(

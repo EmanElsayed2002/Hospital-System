@@ -3,13 +3,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hospital/patients/screens/appointment_screen.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final String token , email , password;
+  const HomePage({Key? key, required this.token, required this.email, required this.password}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+
+  
   List<Map<String, dynamic>> medCat = [
     {
       "icon": FontAwesomeIcons.userDoctor,
@@ -39,6 +42,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.token);
+    print(widget.email);
+    print(widget.password);
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -51,9 +58,9 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const <Widget>[
+                  children: <Widget>[
                     Text(
                       'Eman Elsayed',
                       style: TextStyle(
@@ -173,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Row(
                     children: [
-                      Text(
+                      const Text(
                         "Popular Doctors",
                         style: TextStyle(
                           fontSize: 23,
@@ -181,12 +188,12 @@ class _HomePageState extends State<HomePage> {
                           color: Color.fromARGB(255, 10, 103, 13),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 80,
                       ),
                       TextButton(
                         onPressed: () {},
-                        child: Text(
+                        child: const Text(
                           "See all",
                           style: TextStyle(
                             color: Color(0XFF0080FE),
@@ -211,14 +218,14 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AppointmentScreen(),
+                                builder: (context) => const AppointmentScreen(),
                               ),
                             );
                           },
                           child: Container(
                             width: 350,
-                            margin: EdgeInsets.all(10),
-                            padding: EdgeInsets.symmetric(vertical: 15),
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.symmetric(vertical: 15),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -273,10 +280,10 @@ class _HomePageState extends State<HomePage> {
                                     color: Colors.black45,
                                   ),
                                 ),
-                                Row(
+                                const Row(
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.star,
                                       color: Colors.amber,

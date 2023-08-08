@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hospital/admin_profile.dart';
 import 'package:hospital/doctors/create_available_time.dart';
@@ -29,11 +27,11 @@ class _DoctorLayoutState extends State<DoctorLayout> {
             currentPage = value;
           });
         }),
-        children: <Widget>[
-          const DoctorScreen(),
+        children: const <Widget>[
+          DoctorScreen(),
           MessageDoctor(),
-          const CreateAvailableTime(),
-          const AppointmentPage(),
+          CreateAvailableTime(),
+          AppointmentPage(),
           ProfilePage(),
         ],
       ),
@@ -50,7 +48,7 @@ class _DoctorLayoutState extends State<DoctorLayout> {
         child: BottomNavigationBar(
           backgroundColor: Colors.white,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: Color(0XFF0080FE),
+          selectedItemColor: const Color(0XFF0080FE),
           unselectedItemColor: Colors.black26,
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.bold,

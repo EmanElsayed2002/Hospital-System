@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hospital/patients/screens/chat_sample.dart';
 
 class ChatScreen extends StatelessWidget {
+  const ChatScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,7 +11,7 @@ class ChatScreen extends StatelessWidget {
         toolbarHeight: 80,
         backgroundColor: Colors.blue,
         leadingWidth: 30,
-        title: Row(
+        title: const Row(
           children: [
             CircleAvatar(
               radius: 25,
@@ -29,7 +31,7 @@ class ChatScreen extends StatelessWidget {
             ),
           ],
         ),
-        actions: [
+        actions: const [
           Padding(
             padding: EdgeInsets.only(right: 20),
             child: Icon(
@@ -56,8 +58,8 @@ class ChatScreen extends StatelessWidget {
         ],
       ),
       body: ListView(
-        padding: EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 80),
-        children: [
+        padding: const EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 80),
+        children: const [
           ChatSample(),
           ChatSample(),
           ChatSample(),
@@ -74,19 +76,19 @@ class ChatScreen extends StatelessWidget {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 10,
-            offset: Offset(0, 3),
+            offset: const Offset(0, 3),
           ),
         ]),
         child: Row(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(left: 8),
               child: Icon(
                 Icons.add,
                 size: 30,
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(left: 5),
               child: Icon(
                 Icons.emoji_emotions_outlined,
@@ -95,20 +97,20 @@ class ChatScreen extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 10),
+              padding: const EdgeInsets.only(left: 10),
               child: Container(
                 alignment: Alignment.centerRight,
                 width: 270,
                 child: TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: "Type omething",
                     border: InputBorder.none,
                   ),
                 ),
               ),
             ),
-            Spacer(),
-            Padding(
+            const Spacer(),
+            const Padding(
               padding: EdgeInsets.only(right: 9),
               child: Icon(
                 Icons.send,

@@ -26,7 +26,7 @@ class _AdminLayuotState extends State<AdminLayuot> {
             currentPage = value;
           });
         }),
-        children: <Widget>[
+        children: const <Widget>[
           AdminScreen(),
           CreateDoctor(),
           ReadDoctors(),
@@ -46,7 +46,7 @@ class _AdminLayuotState extends State<AdminLayuot> {
         child: BottomNavigationBar(
           backgroundColor: Colors.white,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: Color(0XFF0080FE),
+          selectedItemColor: const Color(0XFF0080FE),
           unselectedItemColor: Colors.black26,
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.bold,

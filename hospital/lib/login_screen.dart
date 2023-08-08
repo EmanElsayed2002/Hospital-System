@@ -1,22 +1,25 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hospital/components/social_button.dart';
-import 'package:hospital/patients/components/main_layout.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:hospital/login_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:hospital/signup_screen.dart';
+import 'package:hospital/patients/screens/home_page.dart';
 
 class loginScreen extends StatefulWidget {
+  const loginScreen({super.key});
+
   @override
   State<loginScreen> createState() => _loginScreenState();
 }
 
 class _loginScreenState extends State<loginScreen> {
   bool passToggle = true;
-  final fullname = TextEditingController();
+  final email = TextEditingController();
   final password = TextEditingController();
+  // make global variable for the response
+  var response;
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -25,21 +28,21 @@ class _loginScreenState extends State<loginScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Image.asset(
                   "assets/doctors.png",
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: TextField(
-                  controller: fullname,
-                  decoration: InputDecoration(
+                  controller: email,
+                  decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: "Enter Username",
+                    labelText: "Enter email",
                     prefixIcon: Icon(Icons.person),
                   ),
                 ),
@@ -50,9 +53,9 @@ class _loginScreenState extends State<loginScreen> {
                   controller: password,
                   obscureText: passToggle ? true : false,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
                     labelText: "Enter Password",
-                    prefixIcon: Icon(Icons.lock),
+                    prefixIcon: const Icon(Icons.lock),
                     suffixIcon: InkWell(
                       onTap: () {
                         setState(() {
@@ -60,8 +63,8 @@ class _loginScreenState extends State<loginScreen> {
                         });
                       },
                       child: passToggle
-                          ? Icon(CupertinoIcons.eye_slash_fill)
-                          : Icon(CupertinoIcons.eye_fill),
+                          ? const Icon(CupertinoIcons.eye_slash_fill)
+                          : const Icon(CupertinoIcons.eye_fill),
                     ),
                   ),
                 ),
@@ -73,7 +76,7 @@ class _loginScreenState extends State<loginScreen> {
                   children: [
                     TextButton(
                       onPressed: () {},
-                      child: Text(
+                      child: const Text(
                         "Forgot Password?",
                         style: TextStyle(
                           fontSize: 13,
@@ -89,15 +92,17 @@ class _loginScreenState extends State<loginScreen> {
                 padding: const EdgeInsets.all(15),
                 child: InkWell(
                   onTap: () {
-                    _loginUSer(fullname.text, password.text);
+                    // receive the response from the _loginUser function
+                    _loginUSer(email.text, password.text, context);
+                    // make a map for the user data
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                    padding: const EdgeInsets.symmetric(vertical: 15),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Color(0XFF0080FE),
+                      color: const Color(0XFF0080FE),
                       borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.black12,
                           blurRadius: 4,
@@ -105,7 +110,7 @@ class _loginScreenState extends State<loginScreen> {
                         ),
                       ],
                     ),
-                    child: Center(
+                    child: const Center(
                       child: Text(
                         "Log In",
                         style: TextStyle(
@@ -118,7 +123,7 @@ class _loginScreenState extends State<loginScreen> {
                   ),
                 ),
               ),
-              Text(
+              const Text(
                 "OR",
                 style: TextStyle(
                   fontSize: 23,
@@ -126,8 +131,8 @@ class _loginScreenState extends State<loginScreen> {
                   color: Color.fromARGB(255, 5, 37, 14),
                 ),
               ),
-              SizedBox(height: 5),
-              Text(
+              const SizedBox(height: 5),
+              const Text(
                 "Log In With",
                 style: TextStyle(
                   fontSize: 18,
@@ -135,8 +140,8 @@ class _loginScreenState extends State<loginScreen> {
                   color: Color(0XFF0080FE),
                 ),
               ),
-              SizedBox(height: 20),
-              Row(
+              const SizedBox(height: 20),
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SocialButton(social: 'google'),
@@ -144,11 +149,11 @@ class _loginScreenState extends State<loginScreen> {
                   SocialButton(social: 'facebook'),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     "Don't have an account?",
                     style: TextStyle(
                       fontSize: 16,
@@ -161,11 +166,11 @@ class _loginScreenState extends State<loginScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SignUpScreen(),
+                          builder: (context) => const SignUpScreen(),
                         ),
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       "Create Account",
                       style: TextStyle(
                         fontSize: 18,
@@ -184,16 +189,25 @@ class _loginScreenState extends State<loginScreen> {
   }
 }
 
-// Future<dynamic> _postRequest(
-//    String fullname, String email, String password, String phone) async {
-Future<dynamic> _loginUSer(String name, String password) async {
-  final Uri api = Uri.parse('http://localhost:3000/doctor/login');
+Future<dynamic> _loginUSer(
+    String email, String password, BuildContext context) async {
+  final Uri api = Uri.parse('http://192.168.1.9:3000/admin/login');
   try {
     final response = await http.post(api, body: {
-      'fullname': name,
+      'email': email,
       'password': password,
     });
-    print(response.body);
+
+    final jsonData = json.decode(response.body);
+    final Token = jsonData['result']['token'] ?? '';
+    final Email = jsonData['result']['admin']['email'] ?? '';
+    final Password = jsonData['result']['admin']['password'] ?? '';
+    print(Email);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                HomePage(token: Token, email: Email, password: Password)));
   } catch (e) {
     print(e);
   }

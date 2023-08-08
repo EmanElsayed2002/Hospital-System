@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hospital/admin/screens/update_data_doctor.dart';
 import 'package:hospital/doctors/massage_doctor.dart';
 import 'package:hospital/patients/screens/appointment_screen.dart';
 
@@ -20,7 +19,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
         leadingWidth: 30,
         title: Row(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(left: 10),
               child: Text(
                 "Dr. Eman",
@@ -30,12 +29,12 @@ class _DoctorScreenState extends State<DoctorScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 200,
             ),
             InkWell(
               onTap: () {},
-              child: CircleAvatar(
+              child: const CircleAvatar(
                 radius: 25,
                 backgroundImage: AssetImage(
                   "assets/doctor1.jpg",
@@ -51,7 +50,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Card(
                 elevation: 2,
                 child: Padding(
@@ -59,34 +58,34 @@ class _DoctorScreenState extends State<DoctorScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
+                      const Text(
                         'Upcoming Appointments',
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
-                      SizedBox(height: 16),
+                      const SizedBox(height: 16),
                       // Add a list of upcoming appointments here
                       // You can use ListView.builder or other appropriate widgets
                       ListView.builder(
                         itemCount: 4,
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => AppointmentScreen(),
+                                    builder: (context) => const AppointmentScreen(),
                                   ));
                             },
                             child: Container(
-                              margin: EdgeInsets.all(10),
-                              padding: EdgeInsets.symmetric(vertical: 15),
+                              margin: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.symmetric(vertical: 15),
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
-                                boxShadow: [
+                                boxShadow: const [
                                   BoxShadow(
                                     color: Colors.black12,
                                     blurRadius: 4,
@@ -98,7 +97,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  CircleAvatar(
+                                  const CircleAvatar(
                                     radius: 35,
                                     backgroundImage:
                                         AssetImage("assets/profile1.jpg"),
@@ -111,13 +110,13 @@ class _DoctorScreenState extends State<DoctorScreen> {
                                       color: Colors.black54,
                                     ),
                                   ),
-                                  Text(
+                                  const Text(
                                     "Therapist",
                                     style: TextStyle(
                                       color: Colors.black45,
                                     ),
                                   ),
-                                  Row(
+                                  const Row(
                                     mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -150,7 +149,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        MessageDoctor(),
+                                                        const MessageDoctor(),
                                                   ));
                                             },
                                             child: const Text(
@@ -191,7 +190,7 @@ class _DoctorScreenState extends State<DoctorScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Add more sections or widgets for other relevant information
             ],
           ),

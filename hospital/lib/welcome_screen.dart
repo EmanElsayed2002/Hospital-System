@@ -3,6 +3,8 @@ import 'package:hospital/login_screen.dart';
 import 'package:hospital/signup_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
+  const WelcomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -46,19 +48,19 @@ class WelcomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Material(
-                  color: Color(0XFF0080FE),
+                  color: const Color(0XFF0080FE),
                   borderRadius: BorderRadius.circular(30),
                   child: InkWell(
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => loginScreen(),
+                            builder: (context) => const loginScreen(),
                           ));
                     },
                     child: Container(
                       padding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                          const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
                       child: const Text(
                         "Log In",
                         style: TextStyle(
@@ -71,20 +73,20 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
                 Material(
-                  color: Color(0XFF0080FE),
+                  color: const Color(0XFF0080FE),
                   borderRadius: BorderRadius.circular(30),
                   child: InkWell(
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SignUpScreen(),
+                            builder: (context) => const SignUpScreen(),
                           ));
                     },
                     child: Container(
                       padding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 40),
-                      child: Text(
+                          const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                      child: const Text(
                         "Sign Up",
                         style: TextStyle(
                           color: Colors.white,

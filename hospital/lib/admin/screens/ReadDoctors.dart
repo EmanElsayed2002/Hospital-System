@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hospital/admin/screens/update_data_doctor.dart';
 import 'package:hospital/patients/screens/appointment_screen.dart';
@@ -48,7 +46,7 @@ class _ReadDoctorsState extends State<ReadDoctors> {
         leadingWidth: 30,
         title: Row(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(left: 10),
               child: Text(
                 "Dr. Eman",
@@ -58,12 +56,12 @@ class _ReadDoctorsState extends State<ReadDoctors> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 200,
             ),
             InkWell(
               onTap: () {},
-              child: CircleAvatar(
+              child: const CircleAvatar(
                 radius: 25,
                 backgroundImage: AssetImage(
                   "assets/doctor1.jpg",
@@ -143,23 +141,23 @@ class _ReadDoctorsState extends State<ReadDoctors> {
               child: ListView.builder(
                 itemCount: 4,
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => AppointmentScreen(),
+                            builder: (context) => const AppointmentScreen(),
                           ));
                     },
                     child: Container(
-                      margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.symmetric(vertical: 15),
+                      margin: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.symmetric(vertical: 15),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Colors.black12,
                             blurRadius: 4,
@@ -170,7 +168,7 @@ class _ReadDoctorsState extends State<ReadDoctors> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          CircleAvatar(
+                          const CircleAvatar(
                             radius: 35,
                             backgroundImage: AssetImage("assets/profile1.jpg"),
                           ),
@@ -182,13 +180,13 @@ class _ReadDoctorsState extends State<ReadDoctors> {
                               color: Colors.black54,
                             ),
                           ),
-                          Text(
+                          const Text(
                             "Therapist",
                             style: TextStyle(
                               color: Colors.black45,
                             ),
                           ),
-                          Row(
+                          const Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -232,7 +230,7 @@ class _ReadDoctorsState extends State<ReadDoctors> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            UpdateDataDoctor(),
+                                            const UpdateDataDoctor(),
                                       ),
                                     );
                                   },

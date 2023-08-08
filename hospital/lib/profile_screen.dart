@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 
 class ProfilePage extends StatefulWidget {
-  ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -16,8 +16,8 @@ class _ProfilePageState extends State<ProfilePage> {
           flex: 4,
           child: Container(
             width: double.infinity,
-            color: Color(0XFF0080FE),
-            child: Column(
+            color: const Color(0XFF0080FE),
+            child: const Column(
               children: [
                 SizedBox(
                   height: 110,
@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Center(
               child: Card(
                 margin: const EdgeInsets.fromLTRB(0, 45, 0, 0),
-                child: Container(
+                child: SizedBox(
                   width: 300,
                   height: 250,
                   child: Padding(
@@ -124,7 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.logout_outlined,
                               color: Color(0XFF0080FE),
                               size: 35,

@@ -1,4 +1,4 @@
-const Doctor = require("../../models/Admin");
+const Doctor = require("../../models/Doctor");
 const sendResponse = require("../../utils/sendResonse");
 
 const CreateNewDoctor = async (req, res) => {

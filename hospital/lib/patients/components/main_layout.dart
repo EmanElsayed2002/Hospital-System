@@ -8,6 +8,7 @@ import 'package:hospital/patients/screens/home_page.dart';
 import 'package:hospital/patients/components/message_screen.dart';
 
 class MainLayout extends StatefulWidget {
+  
   const MainLayout({Key? key}) : super(key: key);
 
   @override
@@ -28,11 +29,11 @@ class _MainLayoutState extends State<MainLayout> {
           });
         }),
         children: <Widget>[
-          const HomePage(),
+          const HomePage(token: '', email: '', password: ''),
           MessagesScreen(),
-          FavPage(),
+          const FavPage(),
           const AppointmentPage(),
-          ProfilePage(),
+          const ProfilePage(),
         ],
       ),
       bottomNavigationBar: Container(
@@ -48,7 +49,7 @@ class _MainLayoutState extends State<MainLayout> {
         child: BottomNavigationBar(
           backgroundColor: Colors.white,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: Color(0XFF0080FE),
+          selectedItemColor: const Color(0XFF0080FE),
           unselectedItemColor: Colors.black26,
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.bold,

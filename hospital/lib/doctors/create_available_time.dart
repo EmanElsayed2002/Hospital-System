@@ -11,7 +11,7 @@ class CreateAvailableTime extends StatefulWidget {
 class _CreateAvailableTimeState extends State<CreateAvailableTime> {
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
-  TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   void _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -45,11 +45,11 @@ class _CreateAvailableTimeState extends State<CreateAvailableTime> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Available Time'),
+        title: const Text('Create Available Time'),
       ),
       body: Center(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -58,19 +58,19 @@ class _CreateAvailableTimeState extends State<CreateAvailableTime> {
                 child: Text(
                     'Select Date: ${_selectedDate.toString().split(' ')[0]}'),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () => _selectTime(context),
                 child: Text('Select Time: ${_selectedTime.format(context)}'),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextField(
                 controller: _descriptionController,
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: const InputDecoration(labelText: 'Description'),
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
               Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     color: Color.fromRGBO(33, 150, 243, 1),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 child: Button(
