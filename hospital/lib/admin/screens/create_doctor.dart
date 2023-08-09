@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -24,15 +25,25 @@ class _CreateDoctorState extends State<CreateDoctor> {
   String? _selectedGender;
   final List<String> _genders = ['Male', 'Female', 'Other'];
   File? image;
+  String? base64Image;
   Future pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
-      final imageTemporary = File(image!.path);
-      setState(() => this.image = imageTemporary);
+      final imageTemporary = File(image.path);
+      setState(() {
+        this.image = imageTemporary;
+        ConvertImage(imageTemporary);
+      });
     } on PlatformException catch (e) {
       print('Failed to pick image: $e');
     }
+  }
+
+  Future ConvertImage(File image) async {
+    Uint8List imageBytes = await image.readAsBytes();
+    base64Image = base64Encode(imageBytes);
+    print(base64Image);
   }
 
   @override
@@ -133,6 +144,7 @@ class _CreateDoctorState extends State<CreateDoctor> {
                         _passwordController.text,
                         widget.token,
                         _phoneController.text,
+                        base64Image.toString(),
                         context);
                   },
                   disable: false,
@@ -153,9 +165,9 @@ Future<dynamic> _createDoctor(
     String password,
     String token,
     String phone,
+    String base64Image,
     BuildContext context) async {
-  print('create doctor function');
-  final Uri api = Uri.parse('http://192.168.1.8:3000/admin/createnewdoctor');
+  final Uri api = Uri.parse('http://192.168.1.11:3000/admin/createnewdoctor');
   try {
     final response = await http.post(api, body: {
       'email': email,
@@ -163,11 +175,12 @@ Future<dynamic> _createDoctor(
       'fullname': name,
       'gender': gender,
       'Specialization': specialization,
-      'token': token,
       'phone': phone,
+      'token': token,
+      'photo': base64Image
     });
-    print(response.body);
-    _showDoctorCreatedDialog(context);
+    print(response);
+    // _showDoctorCreatedDialog(context);
   } catch (e) {
     print(e);
   }
@@ -193,13 +206,13 @@ void _showDoctorCreatedDialog(BuildContext context) {
   );
 }
 
-    // final jsonData = json.decode(response.body);
-    // final Token = jsonData['result']['token'] ?? '';
-    // final Email = jsonData['result']['admin']['email'] ?? '';
-    // final Password = jsonData['result']['admin']['password'] ?? '';
-    // print(Email);
-    // Navigator.push(
-    //     context,
-    //     MaterialPageRoute(
-    //         builder: (context) =>
-    //             HomePage(token: Token, email: Email, password: Password)));
+// final jsonData = json.decode(response.body);
+// final Token = jsonData['result']['token'] ?? '';
+// final Email = jsonData['result']['admin']['email'] ?? '';
+// final Password = jsonData['result']['admin']['password'] ?? '';
+// print(Email);
+// Navigator.push(
+//     context,
+//     MaterialPageRoute(
+//         builder: (context) =>
+//             HomePage(token: Token, email: Email, password: Password)));

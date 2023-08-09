@@ -5,6 +5,10 @@ import 'package:hospital/admin/screens/ReadDoctors.dart';
 import 'package:hospital/admin/screens/admin_home_screen.dart';
 import 'package:hospital/admin_profile.dart';
 import 'package:hospital/admin/screens/create_doctor.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+import 'doctorModel.dart';
 
 class AdminLayuot extends StatefulWidget {
   const AdminLayuot({super.key});
@@ -14,10 +18,17 @@ class AdminLayuot extends StatefulWidget {
 }
 
 class _AdminLayuotState extends State<AdminLayuot> {
-  int currentPage = 0;
+  int currentPage = 0, cnt = 0 ;
+  // create non const list to get data from api
+  List<Doctor> doctors = [];
   final PageController _page = PageController();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
+    if(cnt == 0)
+    {
+      get_all_doctors(doctors);
+      cnt++;
+    }
     return Scaffold(
       body: PageView(
         controller: _page,
@@ -26,10 +37,10 @@ class _AdminLayuotState extends State<AdminLayuot> {
             currentPage = value;
           });
         }),
-        children: const <Widget>[
+        children: <Widget>[
           AdminScreen(),
           CreateDoctor(),
-          ReadDoctors(),
+          ReadDoctors(doctors: doctors),
           ProfilePage(),
         ],
       ),
@@ -86,5 +97,28 @@ class _AdminLayuotState extends State<AdminLayuot> {
         ),
       ),
     );
+  }
+}
+
+Future<void> get_all_doctors(List doctors) async {
+  final Uri api = Uri.parse('http://192.168.1.11:3000/admin/readdoctorsdata');
+  try {
+    final response = await http.get(api);
+    final jsonData = json.decode(response.body);
+    final doctorList = jsonData['result'];
+    for (var element in doctorList) {
+      final doctor = Doctor(
+        id: element['_id'] ?? 'sasa',
+        fullname: element['fullname'] ?? 'sasa',
+        email: element['email'] ?? 'sasa',
+        password: element['password'] ?? 'sasa',
+        Specialization: element['Specialization'] ?? 'sasa',
+        gender: element['gender'] ?? 'sasa',
+        phone: element['phone'] ?? 'sasa',
+      );
+      doctors.add(doctor);
+    }
+  } catch (e) {
+    print(e);
   }
 }

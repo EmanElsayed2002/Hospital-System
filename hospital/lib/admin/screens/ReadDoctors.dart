@@ -3,8 +3,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hospital/admin/screens/update_data_doctor.dart';
 import 'package:hospital/patients/screens/appointment_screen.dart';
 
+import 'doctorModel.dart';
+
 class ReadDoctors extends StatefulWidget {
-  const ReadDoctors({super.key});
+  final List<Doctor>? doctors;
+  const ReadDoctors({super.key, this.doctors});
 
   @override
   State<ReadDoctors> createState() => _ReadDoctorsState();
@@ -39,6 +42,7 @@ class _ReadDoctorsState extends State<ReadDoctors> {
   ];
   @override
   Widget build(BuildContext context) {
+    print(widget.doctors!.length);
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 70,
@@ -137,118 +141,71 @@ class _ReadDoctorsState extends State<ReadDoctors> {
             ),
             const SizedBox(height: 15),
             Padding(
-              padding: const EdgeInsets.only(top: 0),
-              child: ListView.builder(
-                itemCount: 4,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AppointmentScreen(),
-                          ));
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.all(10),
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 4,
-                            spreadRadius: 2,
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          const CircleAvatar(
-                            radius: 35,
-                            backgroundImage: AssetImage("assets/profile1.jpg"),
-                          ),
-                          const Text(
-                            "Dr. Eman Elsayed",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black54,
+                padding: const EdgeInsets.only(top: 0),
+                child: ListView.builder(
+                  itemCount: widget.doctors!.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Card(
+                        elevation: 2,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              radius: 30,
+                              backgroundImage: AssetImage(
+                                "assets/doctor1.jpg",
+                              ),
                             ),
-                          ),
-                          const Text(
-                            "Therapist",
-                            style: TextStyle(
-                              color: Colors.black45,
+                            title: Text(
+                              widget.doctors![index].fullname,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.star,
-                                color: Colors.amber,
+                            subtitle: Text(
+                              widget.doctors![index].Specialization,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey,
                               ),
-                              Text(
-                                "4.9",
-                                style: TextStyle(
-                                  color: Colors.black45,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    backgroundColor: Colors.red,
+                            ),
+                            trailing: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UpdateDataDoctor(
+                                        // doctor: widget.doctors![index],
+                                        ),
                                   ),
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'Delete',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.blue,
                               ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    backgroundColor: Colors.green,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const UpdateDataDoctor(),
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AppointmentScreen(
+                                      // doctor: widget.doctors![index],
                                       ),
-                                    );
-                                  },
-                                  child: const Text(
-                                    'Update',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
                                 ),
-                              ),
-                            ],
+                              );
+                            },
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  );
-                },
-              ),
-            )
+                    );
+                  },
+                ))
           ],
         ),
       ),
