@@ -101,7 +101,7 @@ class _AdminLayuotState extends State<AdminLayuot> {
 }
 
 Future<void> get_all_doctors(List doctors) async {
-  final Uri api = Uri.parse('http://192.168.1.11:3000/admin/readdoctorsdata');
+  final Uri api = Uri.parse('http://192.168.1.8:3000/admin/readdoctorsdata');
   try {
     final response = await http.get(api);
     final jsonData = json.decode(response.body);
@@ -115,6 +115,9 @@ Future<void> get_all_doctors(List doctors) async {
         Specialization: element['Specialization'] ?? 'sasa',
         gender: element['gender'] ?? 'sasa',
         phone: element['phone'] ?? 'sasa',
+        address: element['address'] ?? 'sasa',
+        aboutDoctor: element['aboutDoctor'] ?? 'sasa',
+        price: element['price'] ?? 'sasa',
       );
       doctors.add(doctor);
     }

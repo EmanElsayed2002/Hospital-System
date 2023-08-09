@@ -35,6 +35,20 @@ const DoctorSchema = new mongoose.Schema({
         trim: true,
         match: /^01[0125][0-9]{8}$/
     },
+    photo: {
+        type: String,
+        required: [true, "Photo is Mandatory"],
+    },
+    address: {
+        type: String,
+        required: [true, "Address is Mandatory"],
+        trim: true
+    },
+    aboutDoctor : {
+        type: String,
+        required: [true, "About Doctor is Mandatory"],
+        trim: true
+    },
     availableHours: {
         type: Array,
         default: []

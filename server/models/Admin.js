@@ -28,7 +28,6 @@ const AdminSchema = new mongoose.Schema({
     },
     photo: {
         type: String,
-        default: "uploads\\default.png"
     },
 }, { timestamps: true });
 

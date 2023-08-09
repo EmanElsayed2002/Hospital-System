@@ -180,7 +180,7 @@ class _ReadDoctorsState extends State<ReadDoctors> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => UpdateDataDoctor(
-                                        // doctor: widget.doctors![index],
+                                        doctor: widget.doctors![index],
                                         ),
                                   ),
                                 );

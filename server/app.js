@@ -26,9 +26,12 @@ const Patient = require("./routes/patient");
 const Doctor = require("./routes/doctor");
 const Admin = require("./routes/Admin");
 
+
+
 app.use("/patient", Patient);
 app.use("/doctor", Doctor);
 app.use("/admin", Admin);
+
 
 // i want the server to listen to the port 3000
 server.listen(port, () => {

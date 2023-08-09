@@ -23,7 +23,7 @@ router.post("/edit", AdminEditProfile.Edit);
 router.post("/changepassword", AdminChangePassword.ChangePass);
 router.post("/createnewdoctor", AdminCreateNewDoctor.CreateNewDoctor);
 router.post("/deletedoctor", AdminDeleteDoctors.DeleteDoctor);
-router.post("/readdoctorsdata", AdminReadDoctorsDate.ReadDoctorsData);
+router.get("/readdoctorsdata", AdminReadDoctorsDate.ReadDoctorsData);
 router.post("/updatedoctor", AdminUpdateDoctor.UpdateDoctor);
 
 module.exports = router;
