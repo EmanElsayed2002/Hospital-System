@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:hospital/components/button.dart';
 import 'package:http/http.dart' as http;
 
-import 'doctorModel.dart';
+import '../../models/doctorModel.dart';
 
 class UpdateDataDoctor extends StatefulWidget {
   final Doctor? doctor;

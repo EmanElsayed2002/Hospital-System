@@ -84,11 +84,12 @@ const axios = require("axios");
 
 // // 1- Create a new admin
 // const data = {
-//     fullname: 'sasa2727',
-//     email: 'sasa2727@gmail.com',
-//     password: '1223456789',
+//     fullname: 'Mostafa Mahmoud',
+//     email: 'mostafa19500mahmoud@gmail.com',
+//     password: '0123456789',
 //     phone: '01225435099',
-
+//     age: '28',
+//     gender: 'male',
 // };
 
 // axios.post('http://localhost:3000/admin/signup', data)

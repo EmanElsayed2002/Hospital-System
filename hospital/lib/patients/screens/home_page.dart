@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hospital/models/Patient.dart';
 import 'package:hospital/patients/screens/appointment_screen.dart';
 
 class HomePage extends StatefulWidget {
-  final String token , email , password;
-  const HomePage({Key? key, required this.token, required this.email, required this.password}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-
-  
   List<Map<String, dynamic>> medCat = [
     {
       "icon": FontAwesomeIcons.userDoctor,
@@ -42,10 +40,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.token);
-    print(widget.email);
-    print(widget.password);
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(

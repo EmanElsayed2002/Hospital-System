@@ -29,6 +29,14 @@ const AdminSchema = new mongoose.Schema({
     photo: {
         type: String,
     },
+    age: {
+        type: String,
+        required: [true, "Age is Required"],
+    },
+    gender: {
+        type: String,
+        required: [true, "gender is Required"],
+    },
 }, { timestamps: true });
 
 const Admin = mongoose.model('Admin', AdminSchema);

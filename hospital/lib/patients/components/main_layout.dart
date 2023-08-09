@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hospital/admin_profile.dart';
+import 'package:hospital/admin/screens/admin_profile.dart';
 import 'package:hospital/patients/screens/appointment_page.dart';
 import 'package:hospital/patients/screens/fav_page.dart';
 import 'package:hospital/patients/screens/home_page.dart';
@@ -29,11 +29,11 @@ class _MainLayoutState extends State<MainLayout> {
           });
         }),
         children: <Widget>[
-          const HomePage(token: '', email: '', password: ''),
+          const HomePage(),
           MessagesScreen(),
           const FavPage(),
           const AppointmentPage(),
-          const ProfilePage(),
+          // const ProfilePage(),
         ],
       ),
       bottomNavigationBar: Container(

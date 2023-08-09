@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hospital/admin/screens/update_data_doctor.dart';
 import 'package:hospital/patients/screens/appointment_screen.dart';
 
-import 'doctorModel.dart';
+import '../../models/doctorModel.dart';
 
 class ReadDoctors extends StatefulWidget {
   final List<Doctor>? doctors;

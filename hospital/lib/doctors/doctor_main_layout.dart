@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hospital/admin_profile.dart';
+import 'package:hospital/admin/screens/admin_profile.dart';
 import 'package:hospital/doctors/create_available_time.dart';
 import 'package:hospital/doctors/doctorscreen.dart';
 import 'package:hospital/doctors/massage_doctor.dart';
@@ -32,7 +32,7 @@ class _DoctorLayoutState extends State<DoctorLayout> {
           MessageDoctor(),
           CreateAvailableTime(),
           AppointmentPage(),
-          ProfilePage(),
+          // ProfilePage(),
         ],
       ),
       bottomNavigationBar: Container(

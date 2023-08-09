@@ -7,6 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:hospital/signup_screen.dart';
 import 'package:hospital/patients/screens/home_page.dart';
 
+import 'admin/screens/admin_main_layout.dart';
+import 'models/Admin.dart';
+
 class loginScreen extends StatefulWidget {
   const loginScreen({super.key});
 
@@ -191,7 +194,7 @@ class _loginScreenState extends State<loginScreen> {
 
 Future<dynamic> _loginUSer(
     String email, String password, BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.9:3000/admin/login');
+  final Uri api = Uri.parse('http://192.168.1.8:3000/admin/login');
   try {
     final response = await http.post(api, body: {
       'email': email,
@@ -199,15 +202,22 @@ Future<dynamic> _loginUSer(
     });
 
     final jsonData = json.decode(response.body);
-    final Token = jsonData['result']['token'] ?? '';
-    final Email = jsonData['result']['admin']['email'] ?? '';
-    final Password = jsonData['result']['admin']['password'] ?? '';
-    print(Email);
+    final result = jsonData['result'];
+    print(result);
+    final admin = Admin(
+      fullname: result['admin']['fullname'] ?? 'not found',
+      email: result['admin']['email'] ?? 'not found',
+      password: result['admin']['password'] ?? 'not found',
+      phone: result['admin']['phone'] ?? 'not found',
+      id: result['admin']['_id'] ?? 'not found',
+      gender: result['admin']['gender'] ?? 'not found',
+      age: result['admin']['age'] ?? 'not found',
+    );
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) =>
-                HomePage(token: Token, email: Email, password: Password)));
+                AdminLayuot( admin: admin,)));
   } catch (e) {
     print(e);
   }

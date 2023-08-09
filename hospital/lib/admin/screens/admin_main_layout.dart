@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hospital/admin/screens/ReadDoctors.dart';
 import 'package:hospital/admin/screens/admin_home_screen.dart';
-import 'package:hospital/admin_profile.dart';
+import 'package:hospital/admin/screens/admin_profile.dart';
 import 'package:hospital/admin/screens/create_doctor.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import 'doctorModel.dart';
+import '../../models/Admin.dart';
+import '../../models/doctorModel.dart';
 
 class AdminLayuot extends StatefulWidget {
-  const AdminLayuot({super.key});
+  final Admin admin;
+  const AdminLayuot({super.key , required this.admin});
 
   @override
   State<AdminLayuot> createState() => _AdminLayuotState();
@@ -41,7 +43,7 @@ class _AdminLayuotState extends State<AdminLayuot> {
           AdminScreen(),
           CreateDoctor(),
           ReadDoctors(doctors: doctors),
-          ProfilePage(),
+          ProfilePage(admin: widget.admin),
         ],
       ),
       bottomNavigationBar: Container(

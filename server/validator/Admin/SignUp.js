@@ -6,6 +6,8 @@ const SignUp_Validator = Joi.object({
   email: Joi.string().email().required(),
   phone : Joi.string().pattern(/^(010|011|012|015)[0-9]{8}$/).required(),
   password: Joi.string().min(6).required(),
+  age : Joi.string().required(),
+  gender : Joi.string().required(),
 });
 
 test = async function (data) {
