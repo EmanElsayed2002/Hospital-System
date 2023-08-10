@@ -67,6 +67,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         _newPasswordController.text,
                         _confirmPasswordController.text,
                         widget.admin,
+                        widget.admin.token,
                         context
                     );
                   },
@@ -80,7 +81,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   }
 }
 
-Future<void> _changePassword( String currentPassword, String newPassword, String confirmPassword, Admin admin ,BuildContext context ) async {
+Future<void> _changePassword( String currentPassword, String newPassword, String confirmPassword, Admin admin, String token ,BuildContext context ) async {
   final Uri api = Uri.parse('http://192.168.1.8:3000/admin/changePassword');
   try{
       final response = await http.post(api , body: {
@@ -88,6 +89,7 @@ Future<void> _changePassword( String currentPassword, String newPassword, String
         'newPassword': newPassword,
         'confirmPassword': confirmPassword,
         'id': admin.id,
+        'token': token,
       });
     _showChangepaswordDialog(context);
   }

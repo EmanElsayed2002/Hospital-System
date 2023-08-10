@@ -1,13 +1,16 @@
-const sendResponse = require("../utils/sendResponse");
-const User = require("../models/Admin").default;
+const sendResponse = require("../utils/sendResonse");
+const Admin = require("../models/Admin");
+
 module.exports = async (req, res, next) => {
   try {
-    const user = await User.findById({ _id: req.user._id });
+    const adminId = req.body._id;
+    const user = await Admin.findById(adminId);
     if (!user) {
       return sendResponse(res, 404, "The user is not found");
     }
     next();
   } catch (err) {
+    console.log(err);
     return sendResponse(res, 500, "Something went wrong");
   }
 };

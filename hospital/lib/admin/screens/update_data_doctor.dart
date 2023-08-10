@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:hospital/models/Admin.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital/components/button.dart';
@@ -11,7 +12,8 @@ import '../../models/doctorModel.dart';
 
 class UpdateDataDoctor extends StatefulWidget {
   final Doctor? doctor;
-  const UpdateDataDoctor({super.key, this.doctor});
+  final Admin admin;
+  const UpdateDataDoctor({super.key, this.doctor , required this.admin});
 
   @override
   State<UpdateDataDoctor> createState() => _UpdateDataDoctorState();
@@ -174,6 +176,7 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
                         base64Image.toString(),
                         _aboutController.text,
                         _addressController.text,
+                        widget.admin.token!,
                         context);
                   },
                   disable: false,
@@ -188,7 +191,7 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
                   width: 400,
                   title: 'delete doctor',
                   onPressed: () {
-                    _deleteDoctor(_emailController.text, context);
+                    _deleteDoctor(_emailController.text,widget.admin.token!, context);
                   },
                   disable: false,
                   height: 50),
@@ -210,6 +213,7 @@ Future<dynamic> _updateDoctor(
     String base64Image,
     String aboutDoctor,
     String address,
+    String token,
     BuildContext context) async {
   final Uri api = Uri.parse('http://192.168.1.11:3000/admin//updatedoctor');
   try {
@@ -223,6 +227,8 @@ Future<dynamic> _updateDoctor(
       'photo': base64Image,
       'aboutDoctor': aboutDoctor,
       'address': address,
+      'token': token,
+      'id' : 'sasa',
     });
     _showDoctorCreatedDialog(context);
   } catch (e) {
@@ -250,11 +256,13 @@ void _showDoctorCreatedDialog(BuildContext context) {
   );
 }
 
-Future<dynamic> _deleteDoctor(String email, BuildContext context) async {
+Future<dynamic> _deleteDoctor(String email,String token ,BuildContext context) async {
   final Uri api = Uri.parse('http://192.168.1.11:3000/admin/deletedoctor');
   try {
     final response = await http.post(api, body: {
       'email': email,
+      'token': token,
+      'id' : 'sasa',
     });
     _showDoctorDeletedDialog(context);
   } catch (e) {

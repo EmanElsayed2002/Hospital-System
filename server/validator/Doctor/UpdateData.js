@@ -5,7 +5,13 @@ const Update_Validator = Joi.object({
   fullname: Joi.string().min(6).required(),
   email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
-  confirmPassword: Joi.string().min(6).required().valid(Joi.ref("password")),
+  Specialization : Joi.string().required(),
+  gender : Joi.string().required(),
+  phone : Joi.string().required(),
+  photo : Joi.string().required(),
+  address : Joi.string().required(),
+  aboutDoctor : Joi.string().required(),
+  
 });
 
 test = async function (data) {

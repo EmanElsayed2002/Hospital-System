@@ -26,12 +26,9 @@ const Patient = require("./routes/patient");
 const Doctor = require("./routes/doctor");
 const Admin = require("./routes/Admin");
 
-
-
 app.use("/patient", Patient);
 app.use("/doctor", Doctor);
 app.use("/admin", Admin);
-
 
 // i want the server to listen to the port 3000
 server.listen(port, () => {
@@ -99,3 +96,44 @@ const axios = require("axios");
 //     .catch(error => {
 //     console.log(error.response);
 //     });
+
+// login as an admin
+// const data = {
+//   email: "mostafa19500mahmoud@gmail.com",
+//   password: "0123456789",
+// };
+
+// axios
+//   .post("http://localhost:3000/admin/login", data)
+//   .then((response) => {
+//     console.log(response.data);
+//   })
+//   .catch((error) => {
+//     console.log(error.response);
+//   });
+
+/* 
+listening on *:3000
+Connected with mongoDB
+0123456789
+POST /admin/login 200 135.006 ms - 537
+{
+  statusCode: 200,
+  message: 'Login as admin',
+  result: {
+    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGQzZTM0YTQ4ZTE2M2QxOThmMjQ4ZmUiLCJpYXQiOjE2OTE2NjYzMTB9.KQBmWLcP767Z0KYPmvcF9FAnM-b1h6hVxQ9VX90D5u0',
+    admin: {
+      _id: '64d3e34a48e163d198f248fe',
+      fullname: 'Mostafa Mahmoud',
+      email: 'mostafa19500mahmoud@gmail.com',
+      password: '$2a$10$F0DqfwenofKdHpuDpeG6PelVefqzkArYL1Ow9MJi9DsjVZPZiVM3G',
+      phone: '01225435099',
+      age: '28',
+      gender: 'male',
+      createdAt: '2023-08-09T19:04:42.888Z',
+      updatedAt: '2023-08-09T19:04:42.888Z',
+      __v: 0
+    }
+  }
+}
+*/

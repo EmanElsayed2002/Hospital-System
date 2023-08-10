@@ -3,10 +3,11 @@ class Admin {
   final String  email;
   final String  password;  
   final String  phone;
-  late String  photo;
+  final String  photo;
   final String  id;
   final String  age;
   final String  gender;
+  final String  token;
 
   Admin({
     required this.fullname ,
@@ -16,6 +17,8 @@ class Admin {
     required this.id,
     required this.age,
     required this.gender,
+    required this.token,
+    required this.photo,
   });
   
 }

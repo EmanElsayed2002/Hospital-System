@@ -1,3 +1,6 @@
+import "dart:convert";
+import "dart:typed_data";
+
 import "package:flutter/material.dart";
 import "package:hospital/admin/screens/change_password.dart";
 import 'package:hospital/admin/screens/edit_profile_doctor.dart';
@@ -17,6 +20,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    final Uint8List bytes = base64Decode(widget.admin.photo!);
+    MemoryImage image = MemoryImage(bytes);
     return Column(
       children: [
         Expanded(
@@ -31,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 CircleAvatar(
                   radius: 65.0,
-                  backgroundImage: AssetImage('assets/doctor1.jpg'),
+                  backgroundImage: image,
                   backgroundColor: Colors.white,
                 ),
                 SizedBox(

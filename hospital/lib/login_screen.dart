@@ -212,6 +212,8 @@ Future<dynamic> _loginUSer(
       id: result['admin']['_id'] ?? 'not found',
       gender: result['admin']['gender'] ?? 'not found',
       age: result['admin']['age'] ?? 'not found',
+      token: result['token'] ?? 'not found',
+      photo: result['admin']['photo'] ?? 'not found',
     );
     Navigator.push(
         context,

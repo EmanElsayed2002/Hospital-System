@@ -40,9 +40,9 @@ class _AdminLayuotState extends State<AdminLayuot> {
           });
         }),
         children: <Widget>[
-          AdminScreen(),
-          CreateDoctor(),
-          ReadDoctors(doctors: doctors),
+          AdminScreen(admin: widget.admin),
+          CreateDoctor(admin: widget.admin),
+          ReadDoctors(doctors: doctors , admin: widget.admin),
           ProfilePage(admin: widget.admin),
         ],
       ),
@@ -103,7 +103,7 @@ class _AdminLayuotState extends State<AdminLayuot> {
 }
 
 Future<void> get_all_doctors(List doctors) async {
-  final Uri api = Uri.parse('http://192.168.1.8:3000/admin/readdoctorsdata');
+  final Uri api = Uri.parse('http://192.168.1.:3000/admin/readdoctorsdata');
   try {
     final response = await http.get(api);
     final jsonData = json.decode(response.body);

@@ -1,13 +1,18 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hospital/admin/screens/update_data_doctor.dart';
+import 'package:hospital/models/Admin.dart';
 import 'package:hospital/patients/screens/appointment_screen.dart';
 
 import '../../models/doctorModel.dart';
 
 class ReadDoctors extends StatefulWidget {
   final List<Doctor>? doctors;
-  const ReadDoctors({super.key, this.doctors});
+  final Admin admin;
+  const ReadDoctors({super.key, this.doctors , required this.admin});
 
   @override
   State<ReadDoctors> createState() => _ReadDoctorsState();
@@ -42,7 +47,8 @@ class _ReadDoctorsState extends State<ReadDoctors> {
   ];
   @override
   Widget build(BuildContext context) {
-    print(widget.doctors!.length);
+    final Uint8List bytes = base64Decode(widget.admin.photo!);
+    MemoryImage image = MemoryImage(bytes);
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 70,
@@ -53,7 +59,7 @@ class _ReadDoctorsState extends State<ReadDoctors> {
             const Padding(
               padding: EdgeInsets.only(left: 10),
               child: Text(
-                "Dr. Eman",
+                "Hospital System",
                 style: TextStyle(
                   overflow: TextOverflow.ellipsis,
                   color: Colors.white,
@@ -61,15 +67,13 @@ class _ReadDoctorsState extends State<ReadDoctors> {
               ),
             ),
             const SizedBox(
-              width: 200,
+              width: 120,
             ),
             InkWell(
               onTap: () {},
-              child: const CircleAvatar(
+              child: CircleAvatar(
                 radius: 25,
-                backgroundImage: AssetImage(
-                  "assets/doctor1.jpg",
-                ),
+                backgroundImage: image,
               ),
             ),
           ],
@@ -181,6 +185,7 @@ class _ReadDoctorsState extends State<ReadDoctors> {
                                   MaterialPageRoute(
                                     builder: (context) => UpdateDataDoctor(
                                         doctor: widget.doctors![index],
+                                        admin : widget.admin,
                                         ),
                                   ),
                                 );
@@ -191,14 +196,7 @@ class _ReadDoctorsState extends State<ReadDoctors> {
                               ),
                             ),
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AppointmentScreen(
-                                      // doctor: widget.doctors![index],
-                                      ),
-                                ),
-                              );
+                              
                             },
                           ),
                         ),

@@ -62,6 +62,7 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Update admin Data'),
@@ -132,6 +133,7 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
                         _ageController.text,
                         _genderController.text,
                         base64Image!,
+                        widget.admin!.token!,
                         context);
                   },
                   disable: false,
@@ -146,7 +148,7 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
                   width: 400,
                   title: 'delete admin',
                   onPressed: () {
-                    _deleteAdmin(_emailController.text, context);
+                    _deleteAdmin(_emailController.text,widget.admin!.token!, context);
                   },
                   disable: false,
                   height: 50),
@@ -166,6 +168,7 @@ Future<dynamic> _updateAdmin(
     String age,
     String gender,
     String base64Image,
+    String token,
     BuildContext context) async {
   final Uri api = Uri.parse('http://192.168.1.11:3000/admin//updateadmin');
   try {
@@ -177,6 +180,8 @@ Future<dynamic> _updateAdmin(
       'age': age,
       'phone': phone,
       'photo': base64Image, 
+      'token': token,
+      'id' : 'sasa',
     });
     _showAdminCreatedDialog(context);
   } catch (e) {
@@ -204,11 +209,13 @@ void _showAdminCreatedDialog(BuildContext context) {
   );
 }
 
-Future<dynamic> _deleteAdmin(String email, BuildContext context) async {
+Future<dynamic> _deleteAdmin(String email,String token , BuildContext context) async {
   final Uri api = Uri.parse('http://192.168.1.11:3000/admin/deleteAdmin');
   try {
     final response = await http.post(api, body: {
       'email': email,
+      'token': token,
+      'id' : 'sasa',
     });
     _showAdminDeletedDialog(context);
   } catch (e) {

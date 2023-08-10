@@ -1,14 +1,14 @@
 const jwt = require("jsonwebtoken");
-const sendResponse = require("../utils/sendResponse");
+const sendResponse = require("../utils/sendResonse");
 
 const key = "mostafa_eman_eman_menna_hasnaa";
 module.exports = (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(" ")[1];
-    const decoded = jwt.verify(token, key);
-    req.user = decoded;
+    const token = req.body.token;
+    const decoded = jwt.verify(token, key); 
+    req.body._id = decoded._id;
+    next();
   } catch (err) {
-    return sendResponse(res, 401, "Authentication is failed");
+    return sendResponse(res, 401, "Authentication failed");
   }
-  next();
 };

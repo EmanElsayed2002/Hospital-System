@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:hospital/models/Admin.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital/components/button.dart';
 import 'package:http/http.dart' as http;
 
 class CreateDoctor extends StatefulWidget {
-  final String token = "sasasa";
-  const CreateDoctor({super.key});
+  final Admin admin;
+  const CreateDoctor({super.key, required this.admin});
 
   @override
   State<CreateDoctor> createState() => _CreateDoctorState();
@@ -17,10 +18,11 @@ class CreateDoctor extends StatefulWidget {
 class _CreateDoctorState extends State<CreateDoctor> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _specializationController =
-      TextEditingController();
+  final TextEditingController _specializationController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _aboutDoctorController = TextEditingController();
   String? _selectedGender;
   final List<String> _genders = ['Male', 'Female', 'Other'];
   File? image;
@@ -105,6 +107,16 @@ class _CreateDoctorState extends State<CreateDoctor> {
             ),
             const SizedBox(height: 16),
             TextField(
+              controller: _addressController,
+              decoration: const InputDecoration(labelText: 'address'),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _aboutDoctorController,
+              decoration: const InputDecoration(labelText: 'about doctor'),
+            ),
+            const SizedBox(height: 16),
+            TextField(
               controller: _specializationController,
               decoration: const InputDecoration(labelText: 'Specialization'),
             ),
@@ -141,9 +153,11 @@ class _CreateDoctorState extends State<CreateDoctor> {
                         _selectedGender.toString(),
                         _emailController.text,
                         _passwordController.text,
-                        widget.token,
+                        widget.admin.token,
                         _phoneController.text,
                         base64Image.toString(),
+                        _aboutDoctorController.text,
+                        _addressController.text,
                         context);
                   },
                   disable: false,
@@ -165,8 +179,10 @@ Future<dynamic> _createDoctor(
     String token,
     String phone,
     String base64Image,
+    String aboutDoctor,
+    String address,
     BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.11:3000/admin/createnewdoctor');
+  final Uri api = Uri.parse('http://192.168.1.8:3000/admin/createnewdoctor');
   try {
     final response = await http.post(api, body: {
       'email': email,
@@ -176,10 +192,12 @@ Future<dynamic> _createDoctor(
       'Specialization': specialization,
       'phone': phone,
       'token': token,
-      'photo': base64Image
+      'photo': base64Image,
+      '_id' : 'sasa',
+      'aboutDoctor': aboutDoctor,
+      'address': address,
     });
-    print(response);
-    // _showDoctorCreatedDialog(context);
+    _showDoctorCreatedDialog(context);
   } catch (e) {
     print(e);
   }

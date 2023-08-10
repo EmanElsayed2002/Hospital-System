@@ -1,8 +1,13 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
-class AdminScreen extends StatefulWidget {
-  const AdminScreen({super.key});
+import '../../models/Admin.dart';
 
+class AdminScreen extends StatefulWidget {
+  final Admin admin;
+  const AdminScreen({super.key , required this.admin});
   @override
   State<AdminScreen> createState() => _AdminScreenState();
 }
@@ -12,6 +17,8 @@ class _AdminScreenState extends State<AdminScreen> {
   Widget build(BuildContext context) {
     final containerWidth = MediaQuery.of(context).size.width * 0.9;
     final containerHeight = MediaQuery.of(context).size.height * 0.3;
+    final Uint8List bytes = base64Decode(widget.admin.photo!);
+    MemoryImage image = MemoryImage(bytes);
 
     return Scaffold(
       appBar: AppBar(
@@ -23,7 +30,7 @@ class _AdminScreenState extends State<AdminScreen> {
             const Padding(
               padding: EdgeInsets.only(left: 10),
               child: Text(
-                "Dr. Eman",
+                "Hospital System",
                 style: TextStyle(
                   overflow: TextOverflow.ellipsis,
                   color: Colors.white,
@@ -31,15 +38,13 @@ class _AdminScreenState extends State<AdminScreen> {
               ),
             ),
             const SizedBox(
-              width: 200,
+              width: 120,
             ),
             InkWell(
               onTap: () {},
-              child: const CircleAvatar(
+              child: CircleAvatar(
                 radius: 25,
-                backgroundImage: AssetImage(
-                  "assets/doctor1.jpg",
-                ),
+                backgroundImage: image,
               ),
             ),
           ],
@@ -49,9 +54,9 @@ class _AdminScreenState extends State<AdminScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const CircleAvatar(
+            CircleAvatar(
               radius: 90,
-              backgroundImage: AssetImage("assets/profile1.jpg"),
+              backgroundImage: image,
             ),
             const SizedBox(
               height: 40,
@@ -63,9 +68,9 @@ class _AdminScreenState extends State<AdminScreen> {
                 color: Colors.blue,
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: const Center(
+              child: Center(
                 child: Text(
-                  'Hello Admin',
+                  'Welcome',
                   style: TextStyle(fontSize: 24, color: Colors.white),
                 ),
               ),
