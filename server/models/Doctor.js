@@ -1,3 +1,4 @@
+const { object, array } = require('joi');
 const mongoose = require('mongoose');
 
 const DoctorSchema = new mongoose.Schema({
@@ -49,9 +50,10 @@ const DoctorSchema = new mongoose.Schema({
         required: [true, "About Doctor is Mandatory"],
         trim: true
     },
-    availableHours: {
+    appointments: {
+        // array of objects
         type: Array,
-        default: []
+        
     },
 
 }, { timestamps: true });

@@ -11,7 +11,7 @@ import "../../login_screen.dart";
 
 class ProfilePage extends StatefulWidget {
   final Admin admin;
-  const ProfilePage({Key? key , required this.admin}) : super(key: key);
+    ProfilePage({Key? key , required this.admin}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -28,11 +28,11 @@ class _ProfilePageState extends State<ProfilePage> {
           flex: 4,
           child: Container(
             width: double.infinity,
-            color: const Color(0XFF0080FE),
+            color:   Color(0XFF0080FE),
             child: Column(
               children: [
                 SizedBox(
-                  height: 110,
+                  height: MediaQuery.of(context).size.height * 0.1,
                 ),
                 CircleAvatar(
                   radius: 65.0,
@@ -40,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   backgroundColor: Colors.white,
                 ),
                 SizedBox(
-                  height: 10,
+                  height: MediaQuery.of(context).size.height * 0.02,
                 ),
                 Text(
                   'Dr. ${widget.admin.fullname}',
@@ -50,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: MediaQuery.of(context).size.height * 0.01,
                 ),
                 Text(
                   // '21 | male',
@@ -70,15 +70,18 @@ class _ProfilePageState extends State<ProfilePage> {
             color: Colors.grey[200],
             child: Center(
               child: Card(
-                margin: const EdgeInsets.fromLTRB(0, 45, 0, 0),
+                margin: EdgeInsets.fromLTRB(0, 45, 0, 0),
                 child: SizedBox(
-                  width: 300,
-                  height: 250,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  height: MediaQuery.of(context).size.height * 0.4,
                   child: Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: EdgeInsets.all( 
+                      MediaQuery.of(context).size.width * 0.05,
+                    ),
+
                     child: Column(
                       children: [
-                        const Text(
+                          Text(
                           'Profile',
                           style: TextStyle(
                             fontSize: 17,
@@ -96,8 +99,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               color: Colors.blueAccent[400],
                               size: 35,
                             ),
-                            const SizedBox(
-                              width: 20,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.05,
                             ),
                             TextButton(
                               onPressed: () {
@@ -108,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 );
                               },
-                              child: const Text(
+                              child:   Text(
                                 "Edit Profile",
                                 style: TextStyle(
                                   color: Color(0XFF0080FE),
@@ -121,13 +124,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const Icon(
+                              Icon(
                               Icons.history,
                               color: Color(0XFF0080FE),
                               size: 35,
                             ),
-                            const SizedBox(
-                              width: 20,
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.05,
                             ),
                             TextButton(
                               onPressed: () {
@@ -138,7 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 );
                               },
-                              child: const Text(
+                              child:   Text(
                                 "Change Password",
                                 style: TextStyle(
                                   color: Color(0XFF0080FE),
@@ -151,13 +154,13 @@ class _ProfilePageState extends State<ProfilePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const Icon(
+                              Icon(
                               Icons.logout_outlined,
                               color: Color(0XFF0080FE),
                               size: 35,
                             ),
-                            const SizedBox(
-                              width: 20,
+                             SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.05,
                             ),
                             TextButton(
                               onPressed: () {
@@ -169,7 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 );
                               },
-                              child: const Text(
+                              child:   Text(
                                 "Logout",
                                 style: TextStyle(
                                   color: Color(0XFF0080FE),

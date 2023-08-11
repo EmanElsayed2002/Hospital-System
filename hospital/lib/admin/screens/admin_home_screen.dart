@@ -7,7 +7,7 @@ import '../../models/Admin.dart';
 
 class AdminScreen extends StatefulWidget {
   final Admin admin;
-  const AdminScreen({super.key , required this.admin});
+    AdminScreen({super.key , required this.admin});
   @override
   State<AdminScreen> createState() => _AdminScreenState();
 }
@@ -27,8 +27,8 @@ class _AdminScreenState extends State<AdminScreen> {
         leadingWidth: 30,
         title: Row(
           children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 10),
+              Padding(
+              padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.01),
               child: Text(
                 "Hospital System",
                 style: TextStyle(
@@ -37,8 +37,8 @@ class _AdminScreenState extends State<AdminScreen> {
                 ),
               ),
             ),
-            const SizedBox(
-              width: 120,
+              SizedBox(
+              width: MediaQuery.of(context).size.width * 0.3,
             ),
             InkWell(
               onTap: () {},
@@ -58,8 +58,8 @@ class _AdminScreenState extends State<AdminScreen> {
               radius: 90,
               backgroundImage: image,
             ),
-            const SizedBox(
-              height: 40,
+              SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
             ),
             Container(
               height: 50,
@@ -75,11 +75,11 @@ class _AdminScreenState extends State<AdminScreen> {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 40,
+              SizedBox(
+              height: MediaQuery.of(context).size.height * 0.02,
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding:   EdgeInsets.all(MediaQuery.of(context).size.height * 0.02), 
               child: Container(
                 height: 50,
                 width: double.infinity,
@@ -87,7 +87,7 @@ class _AdminScreenState extends State<AdminScreen> {
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: const Center(
+                child:   Center(
                   child: Text(
                     'you can make CRUD now',
                     style: TextStyle(fontSize: 24, color: Colors.white),

@@ -8,7 +8,7 @@ import 'login_screen.dart';
 void main() {
   runApp(const MyApp());
 }
-
+// MediaQuery.of(context).size.height
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 

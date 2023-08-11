@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
   try {
     const token = req.body.token;
     const decoded = jwt.verify(token, key); 
-    req.body._id = decoded._id;
+    req.body.auth = decoded._id;
     next();
   } catch (err) {
     return sendResponse(res, 401, "Authentication failed");

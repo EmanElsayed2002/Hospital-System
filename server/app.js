@@ -137,3 +137,20 @@ POST /admin/login 200 135.006 ms - 537
   }
 }
 */
+
+
+
+// const data = {
+//   email: "eman19500eman@gmail.com",
+//   password: "0123456789",
+//   appointments: ['03/08/2002 T00:04' , 'free']
+// };
+
+// axios
+//   .post("http://localhost:3000/doctor/createoppointment", data)
+//   .then((response) => {
+//     console.log(response.data);
+//   })
+//   .catch((error) => {
+//     console.log(error.response);
+//   });

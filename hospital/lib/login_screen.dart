@@ -11,7 +11,7 @@ import 'admin/screens/admin_main_layout.dart';
 import 'models/Admin.dart';
 
 class loginScreen extends StatefulWidget {
-  const loginScreen({super.key});
+    loginScreen({super.key});
 
   @override
   State<loginScreen> createState() => _loginScreenState();
@@ -31,19 +31,19 @@ class _loginScreenState extends State<loginScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              const SizedBox(height: 10),
+              SizedBox(height:MediaQuery.of(context).size.height * 0.01),
               Padding(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.06),
                 child: Image.asset(
                   "assets/doctors.png",
                 ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height:MediaQuery.of(context).size.height * 0.01),
               Padding(
-                padding: const EdgeInsets.all(12),
+                padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.03),
                 child: TextField(
                   controller: email,
-                  decoration: const InputDecoration(
+                  decoration:   InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: "Enter email",
                     prefixIcon: Icon(Icons.person),
@@ -51,14 +51,18 @@ class _loginScreenState extends State<loginScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.03,
+                    right: MediaQuery.of(context).size.width * 0.03,
+                    bottom: MediaQuery.of(context).size.height * 0.02),
+
                 child: TextField(
                   controller: password,
                   obscureText: passToggle ? true : false,
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(),
+                    border:   OutlineInputBorder(),
                     labelText: "Enter Password",
-                    prefixIcon: const Icon(Icons.lock),
+                    prefixIcon:   Icon(Icons.lock),
                     suffixIcon: InkWell(
                       onTap: () {
                         setState(() {
@@ -66,20 +70,20 @@ class _loginScreenState extends State<loginScreen> {
                         });
                       },
                       child: passToggle
-                          ? const Icon(CupertinoIcons.eye_slash_fill)
-                          : const Icon(CupertinoIcons.eye_fill),
+                          ?   Icon(CupertinoIcons.eye_slash_fill)
+                          :   Icon(CupertinoIcons.eye_fill),
                     ),
                   ),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 8.0),
+                padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.02),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
                       onPressed: () {},
-                      child: const Text(
+                      child: Text(
                         "Forgot Password?",
                         style: TextStyle(
                           fontSize: 13,
@@ -92,7 +96,7 @@ class _loginScreenState extends State<loginScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(15),
+                padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.02),
                 child: InkWell(
                   onTap: () {
                     // receive the response from the _loginUser function
@@ -100,12 +104,12 @@ class _loginScreenState extends State<loginScreen> {
                     // make a map for the user data
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    padding:  EdgeInsets.symmetric(vertical: 15),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: const Color(0XFF0080FE),
+                      color:   Color(0XFF0080FE),
                       borderRadius: BorderRadius.circular(10),
-                      boxShadow: const [
+                      boxShadow:   [
                         BoxShadow(
                           color: Colors.black12,
                           blurRadius: 4,
@@ -113,7 +117,7 @@ class _loginScreenState extends State<loginScreen> {
                         ),
                       ],
                     ),
-                    child: const Center(
+                    child:   Center(
                       child: Text(
                         "Log In",
                         style: TextStyle(
@@ -126,7 +130,7 @@ class _loginScreenState extends State<loginScreen> {
                   ),
                 ),
               ),
-              const Text(
+                Text(
                 "OR",
                 style: TextStyle(
                   fontSize: 23,
@@ -134,8 +138,8 @@ class _loginScreenState extends State<loginScreen> {
                   color: Color.fromARGB(255, 5, 37, 14),
                 ),
               ),
-              const SizedBox(height: 5),
-              const Text(
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Text(
                 "Log In With",
                 style: TextStyle(
                   fontSize: 18,
@@ -143,20 +147,20 @@ class _loginScreenState extends State<loginScreen> {
                   color: Color(0XFF0080FE),
                 ),
               ),
-              const SizedBox(height: 20),
-              const Row(
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+                Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SocialButton(social: 'google'),
-                  SizedBox(width: 10),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                   SocialButton(social: 'facebook'),
                 ],
               ),
-              const SizedBox(height: 20),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                    Text(
                     "Don't have an account?",
                     style: TextStyle(
                       fontSize: 16,
@@ -169,11 +173,11 @@ class _loginScreenState extends State<loginScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const SignUpScreen(),
+                          builder: (context) =>   SignUpScreen(),
                         ),
                       );
                     },
-                    child: const Text(
+                    child:   Text(
                       "Create Account",
                       style: TextStyle(
                         fontSize: 18,
@@ -194,7 +198,7 @@ class _loginScreenState extends State<loginScreen> {
 
 Future<dynamic> _loginUSer(
     String email, String password, BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.8:3000/admin/login');
+  final Uri api = Uri.parse('http://192.168.1.4:3000/admin/login');
   try {
     final response = await http.post(api, body: {
       'email': email,

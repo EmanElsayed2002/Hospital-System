@@ -55,7 +55,7 @@ class WelcomeScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const loginScreen(),
+                            builder: (context) => loginScreen(),
                           ));
                     },
                     child: Container(

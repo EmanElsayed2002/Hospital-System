@@ -182,7 +182,7 @@ Future<dynamic> _createDoctor(
     String aboutDoctor,
     String address,
     BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.8:3000/admin/createnewdoctor');
+  final Uri api = Uri.parse('http://192.168.1.4:3000/admin/createnewdoctor');
   try {
     final response = await http.post(api, body: {
       'email': email,
@@ -193,7 +193,7 @@ Future<dynamic> _createDoctor(
       'phone': phone,
       'token': token,
       'photo': base64Image,
-      '_id' : 'sasa',
+      'auth' : '',
       'aboutDoctor': aboutDoctor,
       'address': address,
     });
