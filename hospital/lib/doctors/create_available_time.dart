@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hospital/components/button.dart';
+import 'package:hospital/models/doctorModel.dart';
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:hospital/components/social_button.dart';
+import 'package:http/http.dart' as http;
+import 'package:hospital/signup_screen.dart';
 
 class CreateAvailableTime extends StatefulWidget {
-  const CreateAvailableTime({super.key});
+  final Doctor doctor;
+  const CreateAvailableTime({super.key, required this.doctor});
 
   @override
   State<CreateAvailableTime> createState() => _CreateAvailableTimeState();
@@ -49,7 +57,9 @@ class _CreateAvailableTimeState extends State<CreateAvailableTime> {
       ),
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: MediaQuery.of(context).size.width > 600
+              ? const EdgeInsets.symmetric(horizontal: 300)
+              : const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -58,17 +68,20 @@ class _CreateAvailableTimeState extends State<CreateAvailableTime> {
                 child: Text(
                     'Select Date: ${_selectedDate.toString().split(' ')[0]}'),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               ElevatedButton(
                 onPressed: () => _selectTime(context),
                 child: Text('Select Time: ${_selectedTime.format(context)}'),
               ),
-              const SizedBox(height: 16),
-              TextField(
-                controller: _descriptionController,
-                decoration: const InputDecoration(labelText: 'Description'),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              Padding(
+                padding:
+                    EdgeInsets.all(MediaQuery.of(context).size.height * 0.06),
+                child: Image.asset(
+                  "assets/doctors.png",
+                ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Container(
                 decoration: const BoxDecoration(
                     color: Color.fromRGBO(33, 150, 243, 1),
@@ -76,8 +89,11 @@ class _CreateAvailableTimeState extends State<CreateAvailableTime> {
                 child: Button(
                     width: 400,
                     title: 'Create Available Time',
-                    onPressed: () {},
-                    disable: true,
+                    onPressed: () {
+                      _makeAppointment(
+                          _selectedDate, _selectedTime, widget.doctor);
+                    },
+                    disable: false ,
                     height: 50),
               ),
             ],
@@ -85,5 +101,26 @@ class _CreateAvailableTimeState extends State<CreateAvailableTime> {
         ),
       ),
     );
+  }
+}
+
+Future<dynamic> _makeAppointment(
+    DateTime date, TimeOfDay time, Doctor doctor) async {
+  final Uri api = Uri.parse('http://192.168.1.8:3000/doctor/createoppointment');
+  
+  final String appointment = date.toString().split(' ')[0] + ' ' + time.toString().split(' ')[0];
+
+  final List<String> appointments = [appointment, 'free', ''];
+
+  try {
+    
+    final response = await http.post(api, body: {
+      'email': doctor.email,
+      'appointments': json.encode(appointments),
+    });
+
+
+  } catch (e) {
+    print(e);
   }
 }

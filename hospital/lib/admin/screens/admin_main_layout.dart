@@ -120,6 +120,8 @@ Future<void> get_all_doctors(List doctors) async {
         address: element['address'] ?? 'sasa',
         aboutDoctor: element['aboutDoctor'] ?? 'sasa',
         price: element['price'] ?? 'sasa',
+        photo: element['photo'] ?? 'sasa',
+        age: element['age'] ?? 'sasa',
       );
       doctors.add(doctor);
     }

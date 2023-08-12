@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hospital/models/Patient.dart';
 import 'package:hospital/patients/screens/appointment_screen.dart';
 
 class HomePage extends StatefulWidget {

@@ -1,16 +1,13 @@
 import "dart:convert";
 import "dart:typed_data";
-
 import "package:flutter/material.dart";
-import "package:hospital/admin/screens/change_password.dart";
-import "package:hospital/admin/screens/update_data_admin.dart";
-import "package:hospital/models/Admin.dart";
-
+import "package:hospital/models/doctorModel.dart";
 import "../../login_screen.dart";
 
+
 class ProfilePage extends StatefulWidget {
-  final Admin admin;
-    const ProfilePage({Key? key , required this.admin}) : super(key: key);
+  final Doctor doctor;
+    const ProfilePage({Key? key , required this.doctor}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -19,7 +16,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    final Uint8List bytes = base64Decode(widget.admin.photo);
+    final Uint8List bytes = base64Decode(widget.doctor.photo);
     MemoryImage image = MemoryImage(bytes);
     return Column(
       children: [
@@ -42,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: MediaQuery.of(context).size.height * 0.02,
                 ),
                 Text(
-                  'Dr. ${widget.admin.fullname}',
+                  'Dr. ${widget.doctor.fullname}',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -53,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Text(
                   // '21 | male',
-                  '${widget.admin.age} | ${widget.admin.gender}',
+                  '${widget.doctor.age} | ${widget.doctor.gender}',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -93,72 +90,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Icon(
-                              Icons.person,
-                              color: Colors.blueAccent[400],
-                              size: 35,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.05,
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => UpdateDataAdmin(admin: widget.admin,),
-                                  ),
-                                );
-                              },
-                              child:   const Text(
-                                "Edit Profile",
-                                style: TextStyle(
-                                  color: Color(0XFF0080FE),
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                              const Icon(
-                              Icons.history,
-                              color: Color(0XFF0080FE),
-                              size: 35,
-                            ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.05,
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ChangePassword(admin : widget.admin),
-                                  ),
-                                );
-                              },
-                              child:   const Text(
-                                "Change Password",
-                                style: TextStyle(
-                                  color: Color(0XFF0080FE),
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
                               const Icon(
                               Icons.logout_outlined,
                               color: Color(0XFF0080FE),
                               size: 35,
                             ),
-                             SizedBox(
+                              SizedBox(
                               width: MediaQuery.of(context).size.width * 0.05,
                             ),
                             TextButton(

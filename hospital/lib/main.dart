@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hospital/admin/screens/admin_main_layout.dart';
-import 'package:hospital/patients/components/main_layout.dart';
 import 'package:hospital/welcome_screen.dart';
 
 import 'login_screen.dart';
@@ -13,7 +11,7 @@ class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   static final navigatorKey = GlobalKey<NavigatorState>();
-
+    
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -25,7 +23,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: MyApp.navigatorKey,
       title: 'Hospital System',
       debugShowCheckedModeBanner: false,
-      home: loginScreen(),
+      home: const WelcomeScreen(),
     );
   }
 }

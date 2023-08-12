@@ -26,12 +26,20 @@ const PatientSchema = new mongoose.Schema({
         minlength: 10,
         trim: true
     },
-    doctor: {
+    photo: {
         type: String,
     },
-    timeForAppointment: {
+    gender: {
+        type: String,
+    },  
+    age: {  
         type: String,
     },
+    appointments: {
+        type: Array,
+        trim: true
+    },
+
 }, { timestamps: true });
 
 const Patient = mongoose.model('Patient', PatientSchema);

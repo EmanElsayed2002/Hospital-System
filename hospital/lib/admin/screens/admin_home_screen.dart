@@ -7,7 +7,7 @@ import '../../models/Admin.dart';
 
 class AdminScreen extends StatefulWidget {
   final Admin admin;
-    AdminScreen({super.key , required this.admin});
+    const AdminScreen({super.key , required this.admin});
   @override
   State<AdminScreen> createState() => _AdminScreenState();
 }
@@ -17,7 +17,7 @@ class _AdminScreenState extends State<AdminScreen> {
   Widget build(BuildContext context) {
     final containerWidth = MediaQuery.of(context).size.width * 0.9;
     final containerHeight = MediaQuery.of(context).size.height * 0.3;
-    final Uint8List bytes = base64Decode(widget.admin.photo!);
+    final Uint8List bytes = base64Decode(widget.admin.photo);
     MemoryImage image = MemoryImage(bytes);
 
     return Scaffold(
@@ -29,7 +29,7 @@ class _AdminScreenState extends State<AdminScreen> {
           children: [
               Padding(
               padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.01),
-              child: Text(
+              child: const Text(
                 "Hospital System",
                 style: TextStyle(
                   overflow: TextOverflow.ellipsis,
@@ -68,7 +68,7 @@ class _AdminScreenState extends State<AdminScreen> {
                 color: Colors.blue,
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: Center(
+              child: const Center(
                 child: Text(
                   'Welcome',
                   style: TextStyle(fontSize: 24, color: Colors.white),
@@ -87,7 +87,7 @@ class _AdminScreenState extends State<AdminScreen> {
                   color: Colors.blue,
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child:   Center(
+                child:   const Center(
                   child: Text(
                     'you can make CRUD now',
                     style: TextStyle(fontSize: 24, color: Colors.white),

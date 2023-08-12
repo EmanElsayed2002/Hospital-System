@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hospital/patients/screens/chat_screen.dart';
 
+import '../models/doctorModel.dart';
+
 class MessageDoctor extends StatefulWidget {
-  const MessageDoctor({super.key});
+  final Doctor doctor;
+  const MessageDoctor({super.key, required this.doctor});
 
   @override
   State<MessageDoctor> createState() => _MessageDoctorState();

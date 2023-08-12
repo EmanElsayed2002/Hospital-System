@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Doctor = require("../../models/Admin");
+const Doctor = require("../../models/Doctor");
 const key = "mostafa_eman_eman_menna_hasnaa";
 const sendResponse = require("../../utils/sendResonse");
 const checkFile = require("../../validator/Doctor/Login");
@@ -14,7 +14,7 @@ const Login = async (req, res) => {
 
     // generate token
     var doctor = await Doctor.findOne({ email: req.body.email });
-    const token = jwt.sign({ _id: admin._id }, key);
+    const token = jwt.sign({ _id: doctor._id }, key);
     const result = { token: token, doctor: doctor };
 
     // send the response

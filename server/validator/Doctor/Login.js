@@ -22,11 +22,9 @@ test = async function (data) {
     return ["Password is wrong", 401];
   }
 
-  if (error) {
-    return [error.details[0].message, 400];
-  } else {
-    return ["valid", 200];
-  }
+
+  return ["valid", 200];
+
 };
 
 module.exports = test;

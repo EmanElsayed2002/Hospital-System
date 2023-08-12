@@ -57,14 +57,14 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
 
   @override
   void initState() {
-    _nameController.text = widget.doctor!.fullname!;
-    _emailController.text = widget.doctor!.email!;
-    _specializationController.text = widget.doctor!.Specialization!;
+    _nameController.text = widget.doctor!.fullname;
+    _emailController.text = widget.doctor!.email;
+    _specializationController.text = widget.doctor!.Specialization;
     _selectedGender = widget.doctor?.gender;
-    _phoneController.text = widget.doctor!.phone!;
-    _addressController.text = widget.doctor!.address!;
-    _aboutController.text = widget.doctor!.aboutDoctor!;
-    _priceController.text = widget.doctor!.price!;
+    _phoneController.text = widget.doctor!.phone;
+    _addressController.text = widget.doctor!.address;
+    _aboutController.text = widget.doctor!.aboutDoctor;
+    _priceController.text = widget.doctor!.price;
 
     super.initState();
   }
@@ -176,7 +176,7 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
                         base64Image.toString(),
                         _aboutController.text,
                         _addressController.text,
-                        widget.admin.token!,
+                        widget.admin.token,
                         context);
                   },
                   disable: false,
@@ -191,7 +191,7 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
                   width: 400,
                   title: 'delete doctor',
                   onPressed: () {
-                    _deleteDoctor(_emailController.text,widget.admin.token!, context);
+                    _deleteDoctor(_emailController.text,widget.admin.token, context);
                   },
                   disable: false,
                   height: 50),

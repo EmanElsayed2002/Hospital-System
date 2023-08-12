@@ -1,24 +1,28 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Doctor = require("../../models/Admin");
+const Patient = require("../../models/Patient");
+const Doctor = require("../../models/Doctor");
 const key = "mostafa_eman_eman_menna_hasnaa";
 const sendResponse = require("../../utils/sendResonse");
 
+
 const ReadPatients = async (req, res) => {
   try {
-    const doctor = Doctor.findOne({ email: req.body.email });
-    if (!doctor) {
-      return sendResponse(res, 401, "Doctor is not exist");
-    }
-    doctor.appointments = req.body.appointments;
-    let patients = [];
-    for (var i = 0; i < doctor.appointments.length; i++) {
-      if (doctor.appointments[i][1] == "booked") {
-        patients.push(doctor.appointments[i][2]);
+    
+    const doctor = await Doctor.findOne({ email: req.body.email });
+    const patient = await Patient.find();
+
+    let data = [];
+    for(i = 0; i < patient.length; i++){
+      data_list = JSON.parse(patient[i].appointments);
+      patient[i].appointments = data_list;
+      console.log(data_list[1]);
+
+      if(data_list[1] == doctor._id){
+        data.push([patient[i],data_list[0]]);
       }
     }
-    
-    return sendResponse(res, 200, "Patients", patients);    
+    return sendResponse(res, 200, "Patients", data);    
   } catch (err) {
     console.log(err);
     return sendResponse(res, 500, "Internal Server Error");

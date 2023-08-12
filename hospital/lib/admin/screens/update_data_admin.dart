@@ -51,12 +51,12 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
 
   @override
   void initState() {
-    _nameController.text = widget.admin!.fullname!;
-    _emailController.text = widget.admin!.email!;
-    _phoneController.text = widget.admin!.phone!;
-    _passwordController.text = widget.admin!.password!;
-    _ageController.text = widget.admin!.age!;
-    _genderController.text = widget.admin!.gender!;
+    _nameController.text = widget.admin!.fullname;
+    _emailController.text = widget.admin!.email;
+    _phoneController.text = widget.admin!.phone;
+    _passwordController.text = widget.admin!.password;
+    _ageController.text = widget.admin!.age;
+    _genderController.text = widget.admin!.gender;
     super.initState();
   }
 
@@ -133,7 +133,7 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
                         _ageController.text,
                         _genderController.text,
                         base64Image!,
-                        widget.admin!.token!,
+                        widget.admin!.token,
                         context);
                   },
                   disable: false,
@@ -148,7 +148,7 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
                   width: 400,
                   title: 'delete admin',
                   onPressed: () {
-                    _deleteAdmin(_emailController.text,widget.admin!.token!, context);
+                    _deleteAdmin(_emailController.text,widget.admin!.token, context);
                   },
                   disable: false,
                   height: 50),

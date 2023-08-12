@@ -40,6 +40,12 @@ const DoctorSchema = new mongoose.Schema({
         type: String,
         required: [true, "Photo is Mandatory"],
     },
+    age: {
+        type: String,
+        required: [true, "Age is Mandatory"],
+        trim: true,
+        default: 22
+    },
     address: {
         type: String,
         required: [true, "Address is Mandatory"],
@@ -51,8 +57,9 @@ const DoctorSchema = new mongoose.Schema({
         trim: true
     },
     appointments: {
-        // array of objects
+        // we want to store List<List<String>> in this field
         type: Array,
+        trim: true
         
     },
 

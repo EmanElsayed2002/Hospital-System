@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hospital/admin/screens/update_data_doctor.dart';
 import 'package:hospital/models/Admin.dart';
-import 'package:hospital/patients/screens/appointment_screen.dart';
 
 import '../../models/doctorModel.dart';
 
@@ -47,7 +46,7 @@ class _ReadDoctorsState extends State<ReadDoctors> {
   ];
   @override
   Widget build(BuildContext context) {
-    final Uint8List bytes = base64Decode(widget.admin.photo!);
+    final Uint8List bytes = base64Decode(widget.admin.photo);
     MemoryImage image = MemoryImage(bytes);
     return Scaffold(
       appBar: AppBar(
@@ -158,7 +157,7 @@ class _ReadDoctorsState extends State<ReadDoctors> {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ListTile(
-                            leading: CircleAvatar(
+                            leading: const CircleAvatar(
                               radius: 30,
                               backgroundImage: AssetImage(
                                 "assets/doctor1.jpg",

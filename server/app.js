@@ -5,7 +5,7 @@ const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const morgan = require("morgan");
 app.use(morgan("dev"));
@@ -112,7 +112,7 @@ const axios = require("axios");
 //     console.log(error.response);
 //   });
 
-/* 
+/*
 listening on *:3000
 Connected with mongoDB
 0123456789
@@ -141,7 +141,7 @@ POST /admin/login 200 135.006 ms - 537
 
 
 // const data = {
-//   email: "eman19500eman@gmail.com",
+//   email: "sasa19500mahmoud@gmail.com",
 //   password: "0123456789",
 //   appointments: ['03/08/2002 T00:04' , 'free']
 // };
@@ -154,3 +154,20 @@ POST /admin/login 200 135.006 ms - 537
 //   .catch((error) => {
 //     console.log(error.response);
 //   });
+
+// get all patients
+
+ const data = {
+    email: "sasa19500mahmoud@gmail.com",
+ };
+
+  axios
+  .post("http://localhost:3000/doctor/readpatients", data)
+  .then((response) => {
+    console.log(response.data);
+  }
+  )
+  .catch((error) => {
+    console.log(error.response);
+  }
+  );
