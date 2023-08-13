@@ -1,4 +1,4 @@
-import 'package:hospital/models/Patient.dart';
+import 'package:hospital/models/patient.dart';
 
 class Appointment{
   final Patient patient ;

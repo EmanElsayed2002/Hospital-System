@@ -1,9 +1,16 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hospital/models/patient.dart';
+import 'package:hospital/models/doctorModel.dart';
 import 'package:hospital/patients/screens/appointment_screen.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final Patient patient;
+  final List<Doctor> PopularDoctors;
+  const HomePage({Key? key, required this.patient,required this.PopularDoctors}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -39,6 +46,9 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Uint8List bytes = base64Decode(widget.patient.photo);
+    MemoryImage image = MemoryImage(bytes);
+    
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -51,11 +61,11 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      'Eman Elsayed',
+                      '${widget.patient.fullname}',
                       style: TextStyle(
                         fontSize: 24,
                         color: Color(0XFF0080FE),
@@ -65,15 +75,15 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       child: CircleAvatar(
                         radius: 30,
-                        backgroundImage: AssetImage('assets/doctor1.jpg'),
+                        backgroundImage: image,
                       ),
                     )
                   ],
                 ),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Text(
-                    'Good Morning Eman',
+                    'Good Morning ${widget.patient.fullname}',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -155,18 +165,86 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.grey.shade300,
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Center(
-                    child: Padding(
-                      padding: EdgeInsets.all(20),
-                      child: Text(
-                        'No Appointment Today',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
+                  child: widget.patient.appointments.isEmpty
+                      ? Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(20),
+                            child: Text(
+                              'No Appointments Today',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: Text(
+                                'Appointments Today:',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                            ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: widget.patient.appointments.length,
+                              itemBuilder: (context, index) {
+                                List<dynamic> appointments =
+                                    widget.patient.appointments;
+                                List<dynamic> decodedAppointments = [];
+                                String jsonString = jsonEncode(appointments);
+                                decodedAppointments = jsonDecode(jsonString);
+                                String appointment = decodedAppointments[index];
+                                List<String> appointmentParts =
+                                    appointment.split(',');
+                                String dateTimeString =
+                                    appointmentParts[0].replaceAll('"', '');
+
+                                String date = dateTimeString;
+                                String time = dateTimeString;
+                                String id = dateTimeString;
+
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Date: $date',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Time: ${time}', // Format TimeOfDay
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Text(
+                                        'ID: $id',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
-                  ),
                 ),
                 const SizedBox(height: 15),
                 Padding(
@@ -184,17 +262,7 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(
                         width: 80,
                       ),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "See all",
-                          style: TextStyle(
-                            color: Color(0XFF0080FE),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
+                      
                     ],
                   ),
                 ),
@@ -204,14 +272,23 @@ class _HomePageState extends State<HomePage> {
                     height: 300,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 4,
+                      itemCount: widget.PopularDoctors.length,
                       itemBuilder: (context, index) {
+                        Doctor doctor = widget.PopularDoctors[index];
+                        MemoryImage image;
+                        try {
+                          Uint8List bytes = base64Decode(doctor.photo);
+                          image = MemoryImage(bytes);
+                        } catch (e) {
+                          image = MemoryImage(Uint8List(0)); // Default image in case of error
+                        }
+
                         return InkWell(
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const AppointmentScreen(),
+                                builder: (context) => AppointmentScreen(doctor: widget.PopularDoctors[index]),
                               ),
                             );
                           },
@@ -234,15 +311,13 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     const SizedBox(
                                       width: 5,
                                     ),
                                     Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 8.0),
+                                      padding: const EdgeInsets.only(right: 8.0),
                                       child: InkWell(
                                         onTap: () {},
                                         child: const Icon(
@@ -254,41 +329,25 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ],
                                 ),
-                                const CircleAvatar(
+                                CircleAvatar(
                                   radius: 70,
-                                  backgroundImage:
-                                      AssetImage("assets/doctor3.jpg"),
+                                  backgroundImage: image,
                                 ),
-                                const Text(
-                                  "Dr. Mustafa Mahmoud",
+                                Text(
+                                  "Dr. ${doctor.fullname}",
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                     color: Color(0XFF0080FE),
                                   ),
                                 ),
-                                const Text(
-                                  "Heart Doctor",
+                                Text(
+                                  "${doctor.Specialization}",
                                   style: TextStyle(
                                     color: Colors.black45,
                                   ),
                                 ),
-                                const Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.star,
-                                      color: Colors.amber,
-                                    ),
-                                    Text(
-                                      "4.9",
-                                      style: TextStyle(
-                                        color: Colors.black45,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                // ... other widgets ...
                               ],
                             ),
                           ),
@@ -296,7 +355,7 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

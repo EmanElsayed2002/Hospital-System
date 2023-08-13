@@ -78,11 +78,11 @@ class DoctorCard extends StatelessWidget {
           ),
         ),
         onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const AppointmentScreen(),
-              ));
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //       // builder: (context) => const AppointmentScreen(),
+          //     ));
         },
       ),
     );

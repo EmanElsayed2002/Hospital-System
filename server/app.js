@@ -155,19 +155,19 @@ POST /admin/login 200 135.006 ms - 537
 //     console.log(error.response);
 //   });
 
-// get all patients
+// // get all patients
 
- const data = {
-    email: "sasa19500mahmoud@gmail.com",
- };
+//  const data = {
+//     email: "sasa19500mahmoud@gmail.com",
+//  };
 
-  axios
-  .post("http://localhost:3000/doctor/readpatients", data)
-  .then((response) => {
-    console.log(response.data);
-  }
-  )
-  .catch((error) => {
-    console.log(error.response);
-  }
-  );
+//   axios
+//   .post("http://localhost:3000/doctor/readpatients", data)
+//   .then((response) => {
+//     console.log(response.data);
+//   }
+//   )
+//   .catch((error) => {
+//     console.log(error.response);
+//   }
+//   );

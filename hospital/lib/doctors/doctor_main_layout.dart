@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hospital/doctors/create_available_time.dart';
 import 'package:hospital/doctors/doctorscreen.dart';
 import 'package:hospital/doctors/massage_doctor.dart';
-import 'package:hospital/models/Patient.dart';
+import 'package:hospital/models/patient.dart';
 import 'package:hospital/models/doctorModel.dart';
 import 'package:hospital/doctors/appointment_page.dart';
 import 'dart:convert';

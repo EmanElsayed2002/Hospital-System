@@ -1,12 +1,24 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hospital/models/doctorModel.dart';
 import 'package:hospital/patients/screens/booking_page.dart';
 
-class AppointmentScreen extends StatelessWidget {
-  const AppointmentScreen({super.key});
+class AppointmentScreen extends StatefulWidget {
+  final Doctor doctor;
+  const AppointmentScreen({super.key,required this.doctor});
 
   @override
+  State<AppointmentScreen> createState() => _AppointmentScreenState();
+}
+
+class _AppointmentScreenState extends State<AppointmentScreen> {
+  @override
   Widget build(BuildContext context) {
+    final Uint8List bytes = base64Decode(widget.doctor.photo);
+    MemoryImage image = MemoryImage(bytes);
     return Scaffold(
       backgroundColor: const Color(0XFF0080FE),
       body: SingleChildScrollView(
@@ -45,13 +57,13 @@ class AppointmentScreen extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const CircleAvatar(
+                        CircleAvatar(
                           radius: 35,
-                          backgroundImage: AssetImage("assets/doctor1.jpg"),
+                          backgroundImage: image,
                         ),
                         const SizedBox(height: 15),
-                        const Text(
-                          "Dr. Hasnaa Soliman",
+                        Text(
+                          "Dr. ${widget.doctor.fullname}",
                           style: TextStyle(
                             fontSize: 23,
                             fontWeight: FontWeight.w500,
@@ -59,8 +71,8 @@ class AppointmentScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 5),
-                        const Text(
-                          "Therapist",
+                        Text(
+                          "${widget.doctor.Specialization}",
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -127,8 +139,8 @@ class AppointmentScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(height: 5),
-                  const Text(
-                    "You will be fine ان شاء الله",
+                  Text(
+                    "${widget.doctor.aboutDoctor}",
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   const SizedBox(height: 10),
@@ -263,8 +275,8 @@ class AppointmentScreen extends StatelessWidget {
                         size: 30,
                       ),
                     ),
-                    title: const Text(
-                      "ميت غمر | كفر الدوار | دنطيط :)",
+                    title: Text(
+                      "${widget.doctor.address}",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -292,7 +304,7 @@ class AppointmentScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -302,7 +314,7 @@ class AppointmentScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "\$150",
+                  "\$ ${widget.doctor.price}",
                   style: TextStyle(
                     color: Colors.black54,
                     fontSize: 20,

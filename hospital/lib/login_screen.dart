@@ -3,12 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hospital/components/social_button.dart';
+import 'package:hospital/patients/components/main_layout.dart';
 import 'package:http/http.dart' as http;
 import 'package:hospital/signup_screen.dart';
 
 import 'admin/screens/admin_main_layout.dart';
 import 'doctors/doctor_main_layout.dart';
 import 'models/Admin.dart';
+import 'models/patient.dart';
 import 'models/doctorModel.dart';
 
 class loginScreen extends StatefulWidget {
@@ -202,7 +204,7 @@ class _loginScreenState extends State<loginScreen> {
 
 Future<dynamic> _loginUSer(
     String email, String password, BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.8:3000/doctor/login');
+  final Uri api = Uri.parse('http://192.168.1.8:3000/patient/login');
   try {
     final response = await http.post(api, body: {
       'email': email,
@@ -258,7 +260,8 @@ void _loginAsDoctor(BuildContext context, dynamic result) {
     price: result['doctor']['price'] ?? 'not found',
     age: result['doctor']['age'] ?? 'not found',
   );
-  List<dynamic> decodedAppointments =result['doctor']['appointments'];
+  List<dynamic> decodedAppointments = result['doctor']['appointments'];
+
   doctor.appointments = decodedAppointments;
   Navigator.push(
       context,
@@ -268,4 +271,42 @@ void _loginAsDoctor(BuildContext context, dynamic result) {
               )));
 }
 
-void _loginAsPatient(BuildContext context, dynamic result) {}
+void _loginAsPatient(BuildContext context, dynamic result) {
+  final patient = Patient(
+    email: result['patient']['email'] ?? 'not found',
+    password: result['patient']['password'] ?? 'not found',
+    fullname: result['patient']['fullname'] ?? 'not found',
+    age: result['patient']['age'] ?? 'not found',
+    photo: result['patient']['photo'] ?? 'not found',
+    gender: result['patient']['gender'] ?? 'not found',
+    phone: result['patient']['phone'] ?? 'not found',
+    id: result['patient']['id'] ?? 'not found',
+    appointments: result['patient']['appointments'] ?? 'not found',
+  );
+  patient.token = result['patient']['token'] ?? 'not found';
+  List<Doctor> myDoctors = [];
+  for (var doc in result['doctors']) {
+    final doctor = Doctor(
+      fullname: doc['fullname'] ?? 'not found',
+      Specialization: doc['Specialization'] ?? 'not found',
+      phone: doc['phone'] ?? 'not found',
+      password: doc['password'] ?? 'not found',
+      email: doc['email'] ?? 'not found',
+      gender: doc['gender'] ?? 'not found',
+      photo: doc['photo'] ?? 'not found',
+      id: doc['id'] ?? 'not found',
+      address: doc['address'] ?? 'not found',
+      aboutDoctor: doc['aboutDoctor'] ?? 'not found',
+      price: doc['price'] ?? 'not found',
+      age: doc['age'] ?? 'not found',
+    );
+    myDoctors.add(doctor);
+  }
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => MainLayout(
+                patient: patient,
+                myDoctors: myDoctors,
+              )));
+}

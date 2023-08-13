@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hospital/patients/components/main_layout.dart';
 import 'package:hospital/welcome_screen.dart';
 
 import 'login_screen.dart';
@@ -23,7 +24,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: MyApp.navigatorKey,
       title: 'Hospital System',
       debugShowCheckedModeBanner: false,
-      home: const WelcomeScreen(),
+      home: const loginScreen(),
     );
   }
 }

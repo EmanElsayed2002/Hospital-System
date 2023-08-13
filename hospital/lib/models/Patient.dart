@@ -5,11 +5,12 @@ class Patient {
   final String password;
   final String fullname;
   final String age;
+  final String phone;
   final String photo;
   final String gender;
-  final String phone;
   final String id;
   final dynamic appointments;
+  late String token;
 
   Patient({
     required this.email,
