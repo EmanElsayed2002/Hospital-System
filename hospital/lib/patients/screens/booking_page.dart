@@ -111,6 +111,7 @@ class _BookingPageState extends State<BookingPage> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 60),
               child: Button(
+                color: Colors.green,
                 width: double.infinity,
                 height: 60,
                 title: 'Make Appointment',

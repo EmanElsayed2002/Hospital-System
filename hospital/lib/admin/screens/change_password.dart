@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:hospital/admin/screens/PasswordChangeVerification.dart';
+import 'package:hospital/admin/screens/admin_verification_screen.dart';
 import 'package:hospital/models/Admin.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,6 +27,31 @@ class _ChangePasswordState extends State<ChangePassword> {
     _newPasswordController.dispose();
     _confirmPasswordController.dispose();
     super.dispose();
+  }
+
+  Future<void> _sendVerificationEmail(String email) async {
+    final Uri api =
+        Uri.parse('http://192.168.1.8:3000/send-verification-email');
+
+    try {
+      final response = await http.post(api, body: {
+        'email': email,
+      });
+      if (response.statusCode == 200) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PasswordVerification(
+              admin: widget.admin,
+            ),
+          ),
+        );
+      }
+      final jsonData = json.decode(response.body);
+      print(jsonData['message']);
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -121,7 +150,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     String token,
     BuildContext context,
   ) async {
-    final api = Uri.parse('http://192.168.1.7:3000/admin/changepassword');
+    final api = Uri.parse('http://192.168.1.8:3000/admin/changepassword');
     try {
       final response = await http.post(api, body: {
         'currentPassword': currentPassword,
@@ -130,19 +159,23 @@ class _ChangePasswordState extends State<ChangePassword> {
         'id': admin.id,
         'token': token,
       });
-      _showChangePasswordDialog(context);
+      final jsonData = json.decode(response.body);
+      if (response.statusCode == 200) {
+        _sendVerificationEmail(admin.email);
+      } else
+        _showChangePasswordDialog(context, jsonData['message']);
     } catch (e) {
       print(e);
     }
   }
 
-  void _showChangePasswordDialog(BuildContext context) {
+  void _showChangePasswordDialog(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Change Password'),
-          content: const Text('Password Changed Successfully'),
+          content: Text(message),
           actions: <Widget>[
             TextButton(
               child: const Text('OK'),

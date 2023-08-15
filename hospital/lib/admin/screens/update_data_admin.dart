@@ -103,6 +103,7 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
                 borderRadius: BorderRadius.all(Radius.circular(6)),
               ),
               child: Button(
+                color: Colors.green,
                 width: 400,
                 title: 'Change Profile Picture',
                 onPressed: () {
@@ -141,6 +142,7 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
                 );
               },
               50,
+              Colors.green,
             ),
             const SizedBox(height: 24),
             _buildButton(
@@ -150,6 +152,7 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
                     _emailController.text, widget.admin!.token, context);
               },
               50,
+              Colors.red,
             ),
           ],
         ),
@@ -174,12 +177,14 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
     String title,
     VoidCallback onPressed,
     double height,
+    Color color,
   ) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+        borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       child: Button(
+        color: color,
         width: 400,
         title: title,
         onPressed: onPressed,
@@ -201,7 +206,7 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
     String id,
     BuildContext context,
   ) async {
-    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/edit');
+    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/edit');
     try {
       final response = await http.post(api, body: {
         'email': email,
@@ -251,7 +256,7 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
     String token,
     BuildContext context,
   ) async {
-    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/deleteAdmin');
+    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/deleteAdmin');
     try {
       final response = await http.post(api, body: {
         'email': email,

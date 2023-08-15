@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:hospital/components/button.dart';
 import 'package:http/http.dart' as http;
 
-
-
 class UpdateDataPatient extends StatefulWidget {
   final Patient patient;
   const UpdateDataPatient({super.key, required this.patient});
@@ -62,7 +60,6 @@ class _UpdateDatapatientState extends State<UpdateDataPatient> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Update patient Data'),
@@ -83,6 +80,7 @@ class _UpdateDatapatientState extends State<UpdateDataPatient> {
                   color: Color.fromRGBO(33, 150, 243, 1),
                   borderRadius: BorderRadius.all(Radius.circular(6))),
               child: Button(
+                  color: Colors.green,
                   width: 400,
                   title: 'Change Profle Picture',
                   onPressed: () {
@@ -122,6 +120,7 @@ class _UpdateDatapatientState extends State<UpdateDataPatient> {
                   color: Color.fromRGBO(33, 150, 243, 1),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Button(
+                  color: Colors.green,
                   width: 400,
                   title: 'Save Data',
                   onPressed: () {
@@ -145,10 +144,12 @@ class _UpdateDatapatientState extends State<UpdateDataPatient> {
                   color: Color.fromRGBO(255, 0, 0, 1),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Button(
+                  color: Colors.red,
                   width: 400,
                   title: 'delete patient',
                   onPressed: () {
-                    _deletepatient(_emailController.text,widget.patient!.token, context);
+                    _deletepatient(
+                        _emailController.text, widget.patient!.token, context);
                   },
                   disable: false,
                   height: 50),
@@ -179,9 +180,9 @@ Future<dynamic> _updatepatient(
       'gender': gender,
       'age': age,
       'phone': phone,
-      'photo': base64Image, 
+      'photo': base64Image,
       'token': token,
-      'id' : 'sasa',
+      'id': 'sasa',
     });
     _showpatientCreatedDialog(context);
   } catch (e) {
@@ -209,13 +210,14 @@ void _showpatientCreatedDialog(BuildContext context) {
   );
 }
 
-Future<dynamic> _deletepatient(String email,String token , BuildContext context) async {
+Future<dynamic> _deletepatient(
+    String email, String token, BuildContext context) async {
   final Uri api = Uri.parse('http://192.168.1.11:3000/patient/deletepatient');
   try {
     final response = await http.post(api, body: {
       'email': email,
       'token': token,
-      'id' : 'sasa',
+      'id': 'sasa',
     });
     _showpatientDeletedDialog(context);
   } catch (e) {

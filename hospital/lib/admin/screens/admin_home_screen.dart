@@ -28,14 +28,14 @@ class AdminScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: containerWidth * 0.01),
               child: Text(
-                "Hospital System",
+                "Admin panel",
                 style: TextStyle(
                   overflow: TextOverflow.ellipsis,
                   color: Colors.white,
                 ),
               ),
             ),
-            SizedBox(width: containerWidth * 0.27),
+            SizedBox(width: containerWidth * 0.35),
             Container(
               child: InkWell(
                 onTap: () {
@@ -61,11 +61,12 @@ class AdminScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 70,
-              backgroundImage: image,
+            Image.asset("assets/doctors.png"),
+            SizedBox(height: containerHeight * 0.1),
+            _buildWelcomeText("Welcome admin"),
+            SizedBox(
+              height: 15,
             ),
-            SizedBox(height: containerHeight * 0.04),
             _buildWelcomeText("You can make CRUD now"),
           ],
         ),

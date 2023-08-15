@@ -87,13 +87,14 @@ class _CreateAvailableTimeState extends State<CreateAvailableTime> {
                     color: Color.fromRGBO(33, 150, 243, 1),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 child: Button(
+                    color: Colors.green,
                     width: 400,
                     title: 'Create Available Time',
                     onPressed: () {
                       _makeAppointment(
                           _selectedDate, _selectedTime, widget.doctor);
                     },
-                    disable: false ,
+                    disable: false,
                     height: 50),
               ),
             ],
@@ -107,19 +108,17 @@ class _CreateAvailableTimeState extends State<CreateAvailableTime> {
 Future<dynamic> _makeAppointment(
     DateTime date, TimeOfDay time, Doctor doctor) async {
   final Uri api = Uri.parse('http://192.168.1.8:3000/doctor/createoppointment');
-  
-  final String appointment = date.toString().split(' ')[0] + ' ' + time.toString().split(' ')[0];
+
+  final String appointment =
+      date.toString().split(' ')[0] + ' ' + time.toString().split(' ')[0];
 
   final List<String> appointments = [appointment, 'free', ''];
 
   try {
-    
     final response = await http.post(api, body: {
       'email': doctor.email,
       'appointments': json.encode(appointments),
     });
-
-
   } catch (e) {
     print(e);
   }

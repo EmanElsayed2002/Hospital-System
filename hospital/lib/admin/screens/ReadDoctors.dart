@@ -10,7 +10,8 @@ import '../../models/doctorModel.dart';
 
 class ReadDoctors extends StatefulWidget {
   final Admin admin;
-  const ReadDoctors({super.key, required this.admin});
+  List<Doctor>? doctors;
+  ReadDoctors({super.key, required this.admin, required this.doctors});
 
   @override
   State<ReadDoctors> createState() => _ReadDoctorsState();
@@ -43,56 +44,24 @@ class _ReadDoctorsState extends State<ReadDoctors> {
       "category": "Dental",
     },
   ];
-  List<Doctor> doctors = [];
-
-  Future<void> fetchDoctors() async {
-    final response =
-        await http.get(Uri.parse('http://192.168.1.7/admin/readdoctorsdata'));
-    if (response.statusCode == 200) {
-      final List<dynamic> parsedJson = jsonDecode(response.body);
-      final List<Doctor> fetchedDoctors = [];
-
-      for (var element in parsedJson) {
-        fetchedDoctors.add(Doctor(
-          id: element['_id'] ?? 'sasa',
-          fullname: element['fullname'] ?? 'sasa',
-          email: element['email'] ?? 'sasa',
-          password: element['password'] ?? 'sasa',
-          Specialization: element['Specialization'] ?? 'sasa',
-          gender: element['gender'] ?? 'sasa',
-          phone: element['phone'] ?? 'sasa',
-          address: element['address'] ?? 'sasa',
-          aboutDoctor: element['aboutDoctor'] ?? 'sasa',
-          price: element['price'] ?? 'sasa',
-          photo: element['photo'] ?? 'sasa',
-          age: element['age'] ?? 'sasa',
-        ));
-      }
-
-      setState(() {
-        doctors = fetchedDoctors;
-      });
+  ImageProvider _getAdminImage(Doctor doctor) {
+    if (doctor.photo != 'null') {
+      final Uint8List bytes = base64Decode(doctor.photo);
+      return MemoryImage(bytes);
     } else {
-      // Handle error
-      print('Failed to load doctors');
+      return AssetImage("assets/default.jpg");
     }
   }
 
   @override
-  void initState() {
-    super.initState();
-    fetchDoctors();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    print(doctors!.length);
-    final image;
+    print(widget.doctors!.length);
+    final adminimage;
     if (widget.admin.photo != 'null') {
       final Uint8List bytes = base64Decode(widget.admin.photo);
-      image = MemoryImage(bytes);
+      adminimage = MemoryImage(bytes);
     } else {
-      image = AssetImage("assets/default.jpg");
+      adminimage = AssetImage("assets/default.jpg");
     }
     return Scaffold(
       appBar: AppBar(
@@ -116,7 +85,7 @@ class _ReadDoctorsState extends State<ReadDoctors> {
               onTap: () {},
               child: CircleAvatar(
                 radius: 25,
-                backgroundImage: image,
+                backgroundImage: adminimage,
               ),
             ),
           ],
@@ -188,63 +157,68 @@ class _ReadDoctorsState extends State<ReadDoctors> {
             ),
             const SizedBox(height: 15),
             Padding(
-                padding: const EdgeInsets.only(top: 0),
-                child: ListView.builder(
-                  itemCount: doctors!.length,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Card(
-                        elevation: 2,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ListTile(
-                            leading: const CircleAvatar(
-                              radius: 30,
-                              backgroundImage: AssetImage(
-                                "assets/doctor1.jpg",
-                              ),
-                            ),
-                            title: Text(
-                              doctors![index].fullname,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            subtitle: Text(
-                              doctors![index].Specialization,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            trailing: IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => UpdateDataDoctor(
-                                      doctor: doctors![index],
-                                      admin: widget.admin,
-                                    ),
-                                  ),
-                                );
-                              },
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            onTap: () {},
+              padding: const EdgeInsets.only(top: 0),
+              child: ListView.builder(
+                itemCount: widget.doctors!.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      elevation: 2,
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(12.0),
+                        leading: CircleAvatar(
+                          radius: 30,
+                          backgroundImage:
+                              _getAdminImage(widget.doctors![index]),
+                        ),
+                        title: Text(
+                          widget.doctors![index].fullname,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
+                        subtitle: Text(
+                          widget.doctors![index].Specialization,
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        trailing: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => UpdateDataDoctor(
+                                  doctor: widget.doctors![index],
+                                  admin: widget.admin,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.blue.withOpacity(0.1),
+                            ),
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
+                        onTap: () {},
                       ),
-                    );
-                  },
-                ))
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),

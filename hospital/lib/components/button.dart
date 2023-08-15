@@ -8,6 +8,7 @@ class Button extends StatelessWidget {
     required this.onPressed,
     required this.disable,
     required this.height,
+    required this.color,
   }) : super(key: key);
 
   final double width;
@@ -15,6 +16,7 @@ class Button extends StatelessWidget {
   final String title;
   final bool disable;
   final Function() onPressed;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +25,8 @@ class Button extends StatelessWidget {
       height: height,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.green,
-          foregroundColor: Colors.white,
+          backgroundColor: color,
+          // foregroundColor: Colors.white,
         ),
         onPressed: disable ? null : onPressed,
         child: Text(

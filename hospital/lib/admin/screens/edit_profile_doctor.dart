@@ -11,7 +11,8 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _specializationController = TextEditingController();
+  final TextEditingController _specializationController =
+      TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
   String? _selectedGender;
@@ -48,6 +49,7 @@ class _EditProfileState extends State<EditProfile> {
                   color: Color.fromRGBO(33, 150, 243, 1),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Button(
+                  color: Colors.green,
                   width: 400,
                   title: 'Change Profile Picture',
                   onPressed: () {},
@@ -93,6 +95,7 @@ class _EditProfileState extends State<EditProfile> {
                   color: Color.fromRGBO(33, 150, 243, 1),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Button(
+                  color: Colors.green,
                   width: 400,
                   title: 'Change Profile Picture',
                   onPressed: () {},

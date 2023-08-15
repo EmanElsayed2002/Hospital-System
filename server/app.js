@@ -169,25 +169,25 @@ const axios = require( "axios" );
 //   });
 // });
 
-// 1- Create a new admin
-const data = {
-  fullname: 'Eman Elsayed',
-  email: 'emoelsayed2192002@gmail.com',
-  password: '0123456789',
-  phone: '01006205467',
-  age: '21',
-  gender: 'female',
-};
+// // 1- Create a new admin
+// const data = {
+//   fullname: 'Eman Elsayed',
+//   email: 'emoelsayed2192002@gmail.com',
+//   password: '0123456789',
+//   phone: '01006205467',
+//   age: '21',
+//   gender: 'female',
+// };
 
-axios.post( 'http://192.168.1.7:3000/admin/signup', data )
-  .then( response =>
-  {
-    console.log( response.data );
-  } )
-  .catch( error =>
-  {
-    console.log( error.response );
-  } );
+// axios.post( 'http://192.168.1.7:3000/admin/signup', data )
+//   .then( response =>
+//   {
+//     console.log( response.data );
+//   } )
+//   .catch( error =>
+//   {
+//     console.log( error.response );
+//   } );
 
 // login as an admin
 // const data = {

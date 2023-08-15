@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:hospital/admin/screens/admin_main_layout.dart';
 import 'package:hospital/models/Admin.dart';
+import 'package:hospital/models/doctorModel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -62,6 +64,7 @@ class _CreateDoctorState extends State<CreateDoctor> {
     super.dispose();
   }
 
+  final bool check = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -262,7 +265,7 @@ class _CreateDoctorState extends State<CreateDoctor> {
     String price,
     BuildContext context,
   ) async {
-    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/createnewdoctor');
+    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/createnewdoctor');
     try {
       final response = await http.post(api, body: {
         'email': email,
@@ -280,9 +283,11 @@ class _CreateDoctorState extends State<CreateDoctor> {
       });
       var message = jsonDecode(response.body)['message'];
       print(message);
-      if (response.statusCode == 200)
+      if (response.statusCode == 200) {
+        List<Doctor> doctors = [];
+        await get_all_doctors(doctors);
         _showDoctorCreatedDialog(context, "Created", message);
-      else
+      } else
         _showDoctorCreatedDialog(context, "Error", message);
     } catch (e) {
       print(e);
@@ -309,7 +314,7 @@ class _CreateDoctorState extends State<CreateDoctor> {
                 _phoneController.clear();
                 _priceController.clear();
                 _specializationController.clear();
-                _genders.clear();
+                _selectedGender = null;
                 Navigator.of(context).pop();
               },
             ),

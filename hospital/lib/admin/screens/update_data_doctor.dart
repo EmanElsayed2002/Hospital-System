@@ -13,7 +13,7 @@ import '../../models/doctorModel.dart';
 class UpdateDataDoctor extends StatefulWidget {
   final Doctor? doctor;
   final Admin admin;
-  const UpdateDataDoctor({super.key, this.doctor , required this.admin});
+  const UpdateDataDoctor({super.key, this.doctor, required this.admin});
 
   @override
   State<UpdateDataDoctor> createState() => _UpdateDataDoctorState();
@@ -29,7 +29,7 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
   final TextEditingController _aboutController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  final TextEditingController _ageController = TextEditingController();
   String? _selectedGender;
   final List<String> _genders = ['Male', 'Female', 'Other'];
   File? image;
@@ -65,12 +65,21 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
     _addressController.text = widget.doctor!.address;
     _aboutController.text = widget.doctor!.aboutDoctor;
     _priceController.text = widget.doctor!.price;
-
+    _passwordController.text = widget.doctor!.password;
+    _ageController.text = widget.doctor!.age;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final doctorimage;
+
+    if (widget.doctor?.photo != 'null') {
+      final Uint8List bytes = base64Decode(widget.doctor!.photo);
+      doctorimage = MemoryImage(bytes);
+    } else {
+      doctorimage = AssetImage("assets/default.jpg");
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Update Doctor Data'),
@@ -80,64 +89,105 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.grey[300],
-              backgroundImage: image != null ? FileImage(image!) : null,
+            Container(
+              child: InkWell(
+                onTap: pickImage,
+                child: CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.grey[300],
+                  backgroundImage:
+                      image != null ? FileImage(image!) : doctorimage,
+                ),
+              ),
             ),
             const SizedBox(height: 16),
             Container(
-              decoration: const BoxDecoration(
-                  color: Color.fromRGBO(33, 150, 243, 1),
-                  borderRadius: BorderRadius.all(Radius.circular(6))),
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(33, 150, 243, 1),
+                borderRadius: BorderRadius.all(Radius.circular(6)),
+              ),
               child: Button(
-                  width: 400,
-                  title: 'Change Profle Picture',
-                  onPressed: () {
-                    pickImage();
-                  },
-                  disable: false,
-                  height: 50),
+                color: Colors.green,
+                width: 400,
+                title: 'Change Profle Picture',
+                onPressed: () {
+                  pickImage();
+                },
+                disable: false,
+                height: 50,
+              ),
             ),
             const SizedBox(height: 24),
             TextField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Name'),
+              decoration: const InputDecoration(
+                labelText: 'Name',
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
+              decoration: const InputDecoration(
+                labelText: 'Password',
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _phoneController,
-              decoration: const InputDecoration(labelText: 'phone'),
+              decoration: const InputDecoration(
+                labelText: 'Phone',
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _addressController,
-              decoration: const InputDecoration(labelText: 'address'),
+              decoration: const InputDecoration(
+                labelText: 'Address',
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _aboutController,
-              decoration: const InputDecoration(labelText: 'About the doctor'),
+              decoration: const InputDecoration(
+                labelText: 'About the doctor',
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _priceController,
-              decoration: const InputDecoration(labelText: 'Price'),
+              decoration: const InputDecoration(
+                labelText: 'Price',
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _specializationController,
-              decoration: const InputDecoration(labelText: 'Specialization'),
+              decoration: const InputDecoration(
+                labelText: 'Specialization',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _ageController,
+              decoration: const InputDecoration(
+                labelText: 'Age',
+                border: OutlineInputBorder(),
+              ),
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<String>(
@@ -155,55 +205,69 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
               }).toList(),
               decoration: const InputDecoration(
                 labelText: 'Gender',
+                border: OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 24),
             Container(
-              decoration: const BoxDecoration(
-                  color: Color.fromRGBO(33, 150, 243, 1),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(33, 150, 243, 1),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
               child: Button(
-                  width: 400,
-                  title: 'Save Data',
-                  onPressed: () {
-                    _updateDoctor(
-                        _nameController.text,
-                        _specializationController.text,
-                        _selectedGender.toString(),
-                        _emailController.text,
-                        _passwordController.text,
-                        _phoneController.text,
-                        base64Image.toString(),
-                        _aboutController.text,
-                        _addressController.text,
-                        widget.admin.token,
-                        context);
-                  },
-                  disable: false,
-                  height: 50),
+                color: Colors.green,
+                width: 400,
+                title: 'Save Data',
+                onPressed: () {
+                  _updateDoctor(
+                    _nameController.text,
+                    _specializationController.text,
+                    _selectedGender.toString(),
+                    _emailController.text,
+                    _passwordController.text,
+                    _phoneController.text,
+                    base64Image.toString(),
+                    _aboutController.text,
+                    _priceController.text,
+                    _addressController.text,
+                    widget.admin.token,
+                    widget.admin.id,
+                    _ageController.text,
+                    context,
+                  );
+                },
+                disable: false,
+                height: 50,
+              ),
             ),
             const SizedBox(height: 24),
             Container(
-              decoration: const BoxDecoration(
-                  color: Color.fromRGBO(255, 0, 0, 1),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(255, 0, 0, 1),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+              ),
               child: Button(
-                  width: 400,
-                  title: 'delete doctor',
-                  onPressed: () {
-                    _deleteDoctor(_emailController.text,widget.admin.token, context);
-                  },
-                  disable: false,
-                  height: 50),
+                color: Colors.red,
+                width: 400,
+                title: 'Delete Doctor',
+                onPressed: () {
+                  _deleteDoctor(
+                    _emailController.text,
+                    widget.admin.token,
+                    context,
+                  );
+                },
+                disable: false,
+                height: 50,
+              ),
             ),
           ],
         ),
       ),
     );
   }
-}
 
-Future<dynamic> _updateDoctor(
+  Future<dynamic> _updateDoctor(
     String name,
     String specialization,
     String gender,
@@ -212,80 +276,92 @@ Future<dynamic> _updateDoctor(
     String phone,
     String base64Image,
     String aboutDoctor,
+    String price,
     String address,
     String token,
-    BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.11:3000/admin//updatedoctor');
-  try {
-    final response = await http.post(api, body: {
-      'email': email,
-      'password': password,
-      'fullname': name,
-      'gender': gender,
-      'Specialization': specialization,
-      'phone': phone,
-      'photo': base64Image,
-      'aboutDoctor': aboutDoctor,
-      'address': address,
-      'token': token,
-      'id' : 'sasa',
-    });
-    _showDoctorCreatedDialog(context);
-  } catch (e) {
-    print(e);
+    String id,
+    String age,
+    BuildContext context,
+  ) async {
+    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/updatedoctor');
+    try {
+      final response = await http.post(api, body: {
+        'email': email,
+        'password': password,
+        'fullname': name,
+        'gender': gender,
+        'Specialization': specialization,
+        'phone': phone,
+        'photo': base64Image,
+        'aboutDoctor': aboutDoctor,
+        'address': address,
+        'token': token,
+        'id': id,
+        'Price': price,
+        'age': age,
+      });
+      print(response.body);
+      // _showDoctorCreatedDialog(context);
+    } catch (e) {
+      print(e);
+    }
   }
-}
 
-void _showDoctorCreatedDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Doctor Created'),
-        content: const Text('The doctor has been updated successfully.'),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
-
-Future<dynamic> _deleteDoctor(String email,String token ,BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.11:3000/admin/deletedoctor');
-  try {
-    final response = await http.post(api, body: {
-      'email': email,
-      'token': token,
-      'id' : 'sasa',
-    });
-    _showDoctorDeletedDialog(context);
-  } catch (e) {
-    print(e);
+  void _showDoctorCreatedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Doctor Created'),
+          content: const Text('The doctor has been updated successfully.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
-}
 
-void _showDoctorDeletedDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Doctor Deleted'),
-        content: const Text('The doctor has been deleted successfully.'),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
+  Future<dynamic> _deleteDoctor(
+    String email,
+    String token,
+    BuildContext context,
+  ) async {
+    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/deletedoctor');
+    try {
+      final response = await http.post(api, body: {
+        'email': email,
+        'token': token,
+        'id': 'sasa',
+      });
+      _showDoctorDeletedDialog(context);
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _showDoctorDeletedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Doctor Deleted'),
+          content: const Text('The doctor has been deleted successfully.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

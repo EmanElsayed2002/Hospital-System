@@ -21,7 +21,7 @@ class _AdminVerificationScreenState extends State<AdminVerificationScreen> {
 
   Future<dynamic> _loginUSer(
       String email, String password, BuildContext context) async {
-    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/login');
+    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/login');
     try {
       final response = await http.post(api, body: {
         'email': email,
@@ -40,7 +40,7 @@ class _AdminVerificationScreenState extends State<AdminVerificationScreen> {
   }
 
   Future<void> _verifyCode(String email, String password, String code) async {
-    final Uri api = Uri.parse('http://192.168.1.7:3000/verify-code');
+    final Uri api = Uri.parse('http://192.168.1.8:3000/verify-code');
 
     try {
       final response = await http.post(api, body: {
@@ -140,7 +140,7 @@ void _loginAsAdmin(BuildContext context, dynamic result) {
 }
 
 Future<Admin?> getAdminDataByEmail(String email) async {
-  final Uri api = Uri.parse('http://192.168.1.7:3000/admin/getData');
+  final Uri api = Uri.parse('http://192.168.1.8:3000/admin/getData');
   try {
     final response = await http.post(api, body: {
       'email': email,
