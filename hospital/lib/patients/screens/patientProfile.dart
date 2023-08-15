@@ -9,7 +9,7 @@ import '../../models/patient.dart';
 
 class ProfilePage extends StatefulWidget {
   final Patient patient;
-    const ProfilePage({Key? key , required this.patient}) : super(key: key);
+  const ProfilePage({Key? key, required this.patient}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -26,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
           flex: 4,
           child: Container(
             width: double.infinity,
-            color:   const Color(0XFF0080FE),
+            color: const Color(0XFF0080FE),
             child: Column(
               children: [
                 SizedBox(
@@ -73,13 +73,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   width: MediaQuery.of(context).size.width * 0.8,
                   height: MediaQuery.of(context).size.height * 0.4,
                   child: Padding(
-                    padding: EdgeInsets.all( 
+                    padding: EdgeInsets.all(
                       MediaQuery.of(context).size.width * 0.05,
                     ),
-
                     child: Column(
                       children: [
-                          const Text(
+                        const Text(
                           'Profile',
                           style: TextStyle(
                             fontSize: 17,
@@ -105,11 +104,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => UpdateDataPatient(patient: widget.patient ,),
+                                    builder: (context) => UpdateDataPatient(
+                                      patient: widget.patient,
+                                    ),
                                   ),
                                 );
                               },
-                              child:   const Text(
+                              child: const Text(
                                 "Edit Profile",
                                 style: TextStyle(
                                   color: Color(0XFF0080FE),
@@ -122,7 +123,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                              const Icon(
+                            const Icon(
                               Icons.history,
                               color: Color(0XFF0080FE),
                               size: 35,
@@ -135,11 +136,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ChangePassword(patient: widget.patient,),
+                                    builder: (context) => ChangePassword(
+                                      patient: widget.patient,
+                                    ),
                                   ),
                                 );
                               },
-                              child:   const Text(
+                              child: const Text(
                                 "Change Password",
                                 style: TextStyle(
                                   color: Color(0XFF0080FE),
@@ -152,12 +155,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                              const Icon(
+                            const Icon(
                               Icons.logout_outlined,
                               color: Color(0XFF0080FE),
                               size: 35,
                             ),
-                             SizedBox(
+                            SizedBox(
                               width: MediaQuery.of(context).size.width * 0.05,
                             ),
                             TextButton(
@@ -170,7 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 );
                               },
-                              child:   const Text(
+                              child: const Text(
                                 "Logout",
                                 style: TextStyle(
                                   color: Color(0XFF0080FE),

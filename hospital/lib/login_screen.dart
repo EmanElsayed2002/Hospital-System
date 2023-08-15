@@ -6,8 +6,6 @@ import 'package:hospital/components/social_button.dart';
 import 'package:hospital/patients/components/main_layout.dart';
 import 'package:http/http.dart' as http;
 import 'package:hospital/signup_screen.dart';
-
-import 'admin/screens/admin_main_layout.dart';
 import 'doctors/doctor_main_layout.dart';
 import 'models/Admin.dart';
 import 'models/patient.dart';
@@ -204,7 +202,7 @@ class _loginScreenState extends State<loginScreen> {
 
 Future<dynamic> _loginUSer(
     String email, String password, BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.8:3000/patient/login');
+  final Uri api = Uri.parse('http://192.168.1.5:3000/admin/login');
   try {
     final response = await http.post(api, body: {
       'email': email,
@@ -213,6 +211,7 @@ Future<dynamic> _loginUSer(
 
     final jsonData = json.decode(response.body);
     final result = jsonData['result'];
+    print(response.body);
     if (result['admin'] != null) {
       _loginAsAdmin(context, result);
     } else if (result['doctor'] != null) {
@@ -235,14 +234,15 @@ void _loginAsAdmin(BuildContext context, dynamic result) {
     gender: result['admin']['gender'] ?? 'not found',
     age: result['admin']['age'] ?? 'not found',
     token: result['token'] ?? 'not found',
-    photo: result['admin']['photo'] ?? 'not found',
+    photo: result['admin']['photo'] ?? 'assets/profile1.jpg',
   );
-  Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => AdminLayuot(
-                admin: admin,
-              )));
+
+  // Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //         builder: (context) => AdminLayuot(
+  //               admin: admin,
+  //             )));
 }
 
 void _loginAsDoctor(BuildContext context, dynamic result) {

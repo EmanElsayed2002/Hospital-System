@@ -5,12 +5,13 @@ import "package:flutter/material.dart";
 import "package:hospital/admin/screens/change_password.dart";
 import "package:hospital/admin/screens/update_data_admin.dart";
 import "package:hospital/models/Admin.dart";
+import "package:hospital/welcome_screen.dart";
 
 import "../../login_screen.dart";
 
 class ProfilePage extends StatefulWidget {
   final Admin admin;
-    const ProfilePage({Key? key , required this.admin}) : super(key: key);
+  const ProfilePage({Key? key, required this.admin}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -19,15 +20,21 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    final Uint8List bytes = base64Decode(widget.admin.photo);
-    MemoryImage image = MemoryImage(bytes);
+    final image;
+
+    if (widget.admin.photo != 'null') {
+      final Uint8List bytes = base64Decode(widget.admin.photo);
+      image = MemoryImage(bytes);
+    } else {
+      image = AssetImage("assets/default.jpg");
+    }
     return Column(
       children: [
         Expanded(
           flex: 4,
           child: Container(
             width: double.infinity,
-            color:   const Color(0XFF0080FE),
+            color: const Color(0XFF0080FE),
             child: Column(
               children: [
                 SizedBox(
@@ -36,13 +43,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 CircleAvatar(
                   radius: 65.0,
                   backgroundImage: image,
-                  backgroundColor: Colors.white,
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.02,
                 ),
                 Text(
-                  'Dr. ${widget.admin.fullname}',
+                  '${widget.admin.fullname}',
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -72,15 +78,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 margin: const EdgeInsets.fromLTRB(0, 45, 0, 0),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
-                  height: MediaQuery.of(context).size.height * 0.4,
+                  height: MediaQuery.of(context).size.height * 0.3,
                   child: Padding(
-                    padding: EdgeInsets.all( 
+                    padding: EdgeInsets.all(
                       MediaQuery.of(context).size.width * 0.05,
                     ),
-
                     child: Column(
                       children: [
-                          const Text(
+                        const Text(
                           'Profile',
                           style: TextStyle(
                             fontSize: 17,
@@ -106,11 +111,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => UpdateDataAdmin(admin: widget.admin,),
+                                    builder: (context) => UpdateDataAdmin(
+                                      admin: widget.admin,
+                                    ),
                                   ),
                                 );
                               },
-                              child:   const Text(
+                              child: const Text(
                                 "Edit Profile",
                                 style: TextStyle(
                                   color: Color(0XFF0080FE),
@@ -123,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                              const Icon(
+                            const Icon(
                               Icons.history,
                               color: Color(0XFF0080FE),
                               size: 35,
@@ -136,11 +143,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ChangePassword(admin : widget.admin),
+                                    builder: (context) =>
+                                        ChangePassword(admin: widget.admin),
                                   ),
                                 );
                               },
-                              child:   const Text(
+                              child: const Text(
                                 "Change Password",
                                 style: TextStyle(
                                   color: Color(0XFF0080FE),
@@ -153,12 +161,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                              const Icon(
+                            const Icon(
                               Icons.logout_outlined,
                               color: Color(0XFF0080FE),
                               size: 35,
                             ),
-                             SizedBox(
+                            SizedBox(
                               width: MediaQuery.of(context).size.width * 0.05,
                             ),
                             TextButton(
@@ -167,11 +175,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const loginScreen(),
+                                    builder: (context) => const WelcomeScreen(),
                                   ),
                                 );
                               },
-                              child:   const Text(
+                              child: const Text(
                                 "Logout",
                                 style: TextStyle(
                                   color: Color(0XFF0080FE),

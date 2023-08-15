@@ -7,12 +7,13 @@ import 'login_screen.dart';
 void main() {
   runApp(const MyApp());
 }
+
 // MediaQuery.of(context).size.height
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   static final navigatorKey = GlobalKey<NavigatorState>();
-    
+
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -24,7 +25,7 @@ class _MyAppState extends State<MyApp> {
       navigatorKey: MyApp.navigatorKey,
       title: 'Hospital System',
       debugShowCheckedModeBanner: false,
-      home: const loginScreen(),
+      home: WelcomeScreen(),
     );
   }
 }

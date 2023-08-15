@@ -11,7 +11,7 @@ class FavPage extends StatefulWidget {
 class _FavPageState extends State<FavPage> {
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return SafeArea(
       child: Padding(
         padding: EdgeInsets.only(left: 20, top: 20, right: 20),
         child: Column(

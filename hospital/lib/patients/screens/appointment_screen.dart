@@ -8,7 +8,7 @@ import 'package:hospital/patients/screens/booking_page.dart';
 
 class AppointmentScreen extends StatefulWidget {
   final Doctor doctor;
-  const AppointmentScreen({super.key,required this.doctor});
+  const AppointmentScreen({super.key, required this.doctor});
 
   @override
   State<AppointmentScreen> createState() => _AppointmentScreenState();
@@ -202,7 +202,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           ),
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width / 1.4,
-                            child: const Column(
+                            child: Column(
                               children: [
                                 ListTile(
                                   leading: CircleAvatar(
@@ -236,8 +236,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                 ),
                                 SizedBox(height: 5),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 10),
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
                                   child: Text(
                                     maxLines: 2,
                                     overflow: TextOverflow.ellipsis,

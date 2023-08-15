@@ -2,23 +2,21 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:hospital/admin/screens/admin_profile.dart';
 
 import '../../models/Admin.dart';
 
-class AdminScreen extends StatefulWidget {
+class AdminScreen extends StatelessWidget {
   final Admin admin;
-    const AdminScreen({super.key , required this.admin});
-  @override
-  State<AdminScreen> createState() => _AdminScreenState();
-}
 
-class _AdminScreenState extends State<AdminScreen> {
+  const AdminScreen({Key? key, required this.admin}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    final containerWidth = MediaQuery.of(context).size.width * 0.9;
-    final containerHeight = MediaQuery.of(context).size.height * 0.3;
-    final Uint8List bytes = base64Decode(widget.admin.photo);
-    MemoryImage image = MemoryImage(bytes);
+    final containerWidth = MediaQuery.of(context).size.width;
+    final containerHeight = MediaQuery.of(context).size.height;
+
+    final image = _getAdminImage();
 
     return Scaffold(
       appBar: AppBar(
@@ -27,9 +25,9 @@ class _AdminScreenState extends State<AdminScreen> {
         leadingWidth: 30,
         title: Row(
           children: [
-              Padding(
-              padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.01),
-              child: const Text(
+            Padding(
+              padding: EdgeInsets.only(left: containerWidth * 0.01),
+              child: Text(
                 "Hospital System",
                 style: TextStyle(
                   overflow: TextOverflow.ellipsis,
@@ -37,14 +35,23 @@ class _AdminScreenState extends State<AdminScreen> {
                 ),
               ),
             ),
-              SizedBox(
-              width: MediaQuery.of(context).size.width * 0.3,
-            ),
-            InkWell(
-              onTap: () {},
-              child: CircleAvatar(
-                radius: 25,
-                backgroundImage: image,
+            SizedBox(width: containerWidth * 0.27),
+            Container(
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfilePage(
+                        admin: admin,
+                      ),
+                    ),
+                  );
+                },
+                child: CircleAvatar(
+                  radius: 24,
+                  backgroundImage: image,
+                ),
               ),
             ),
           ],
@@ -55,47 +62,38 @@ class _AdminScreenState extends State<AdminScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              radius: 90,
+              radius: 70,
               backgroundImage: image,
             ),
-              SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            Container(
-              height: 50,
-              width: 200,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: const Center(
-                child: Text(
-                  'Welcome',
-                  style: TextStyle(fontSize: 24, color: Colors.white),
-                ),
-              ),
-            ),
-              SizedBox(
-              height: MediaQuery.of(context).size.height * 0.02,
-            ),
-            Padding(
-              padding:   EdgeInsets.all(MediaQuery.of(context).size.height * 0.02), 
-              child: Container(
-                height: 50,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child:   const Center(
-                  child: Text(
-                    'you can make CRUD now',
-                    style: TextStyle(fontSize: 24, color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
+            SizedBox(height: containerHeight * 0.04),
+            _buildWelcomeText("You can make CRUD now"),
           ],
+        ),
+      ),
+    );
+  }
+
+  ImageProvider _getAdminImage() {
+    if (admin.photo != 'null') {
+      final Uint8List bytes = base64Decode(admin.photo);
+      return MemoryImage(bytes);
+    } else {
+      return AssetImage("assets/default.jpg");
+    }
+  }
+
+  Container _buildWelcomeText(String text) {
+    return Container(
+      height: 50,
+      width: text.length * 17.0,
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 113, 132, 164),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 24, color: Colors.white),
         ),
       ),
     );

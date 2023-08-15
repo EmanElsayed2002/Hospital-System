@@ -36,7 +36,7 @@ class DoctorCard extends StatelessWidget {
                 ),
               ],
             ),
-            child: const Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 CircleAvatar(

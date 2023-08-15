@@ -14,7 +14,8 @@ import '../screens/patientProfile.dart';
 class MainLayout extends StatefulWidget {
   final Patient patient;
   final List<Doctor>? myDoctors;
-  const MainLayout({Key? key, required this.patient , required this.myDoctors}) : super(key: key);
+  const MainLayout({Key? key, required this.patient, required this.myDoctors})
+      : super(key: key);
 
   @override
   State<MainLayout> createState() => _MainLayoutState();
@@ -41,7 +42,8 @@ class _MainLayoutState extends State<MainLayout> {
         children: <Widget>[
           HomePage(patient: widget.patient, PopularDoctors: PopularDoctors),
           MessagesScreen(),
-          MyDoctorsScreen(patient: widget.patient, myDoctors: widget.myDoctors!),
+          MyDoctorsScreen(
+              patient: widget.patient, myDoctors: widget.myDoctors!),
           ProfilePage(patient: widget.patient), //profile
         ],
       ),
@@ -86,7 +88,6 @@ class _MainLayoutState extends State<MainLayout> {
               ),
               label: "Messages",
             ),
-            
             BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.solidCalendarCheck),
               label: 'Appointments',

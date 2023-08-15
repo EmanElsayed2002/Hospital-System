@@ -6,12 +6,12 @@ class Doctor {
   final String password;
   final String email;
   final String gender;
-  final String photo;
+  late String photo;
   final String id;
   final String address;
   final String aboutDoctor;
   final String price;
-  List<dynamic>?appointments;
+  List<dynamic>? appointments;
   final String age;
 
   Doctor({
@@ -28,4 +28,21 @@ class Doctor {
     required this.photo,
     required this.age,
   });
+
+  factory Doctor.fromJson(Map<String, dynamic> json) {
+    return Doctor(
+      fullname: json['fullname'],
+      Specialization: json['Specialization'],
+      phone: json['phone'],
+      password: json['password'],
+      email: json['email'],
+      gender: json['gender'],
+      id: json['id'],
+      address: json['address'],
+      aboutDoctor: json['aboutDoctor'],
+      price: json['price'],
+      photo: json['photo'],
+      age: json['age'],
+    );
+  }
 }

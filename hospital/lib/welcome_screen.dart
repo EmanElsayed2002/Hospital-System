@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hospital/admin/screens/login_As_admin.dart';
 import 'package:hospital/login_screen.dart';
 import 'package:hospital/signup_screen.dart';
 
@@ -26,7 +27,7 @@ class WelcomeScreen extends StatelessWidget {
               child: Text(
                 "Hospital System",
                 style: TextStyle(
-                  color: Color(0xFF0080FE),
+                  color: Colors.green,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1,
@@ -34,13 +35,13 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
             const Text(
               "Appoint Your Doctor",
               style: TextStyle(
-                color: Color(0XFF0080FE),
+                color: Colors.grey,
                 fontSize: 18,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 60),
@@ -48,8 +49,8 @@ class WelcomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Material(
-                  color: const Color(0XFF0080FE),
-                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(15),
                   child: InkWell(
                     onTap: () {
                       Navigator.push(
@@ -59,10 +60,10 @@ class WelcomeScreen extends StatelessWidget {
                           ));
                     },
                     child: Container(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 40),
                       child: const Text(
-                        "Log In",
+                        "Login",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 22,
@@ -73,8 +74,8 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
                 Material(
-                  color: const Color(0XFF0080FE),
-                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(15),
                   child: InkWell(
                     onTap: () {
                       Navigator.push(
@@ -84,8 +85,8 @@ class WelcomeScreen extends StatelessWidget {
                           ));
                     },
                     child: Container(
-                      padding:
-                          const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 40),
                       child: const Text(
                         "Sign Up",
                         style: TextStyle(
@@ -98,6 +99,34 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Material(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(15),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminLoginScreen(),
+                      ));
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                  child: const Text(
+                    "Login as Admin",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

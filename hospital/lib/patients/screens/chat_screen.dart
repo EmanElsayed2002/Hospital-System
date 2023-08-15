@@ -11,7 +11,7 @@ class ChatScreen extends StatelessWidget {
         toolbarHeight: 80,
         backgroundColor: Colors.blue,
         leadingWidth: 30,
-        title: const Row(
+        title: Row(
           children: [
             CircleAvatar(
               radius: 25,
@@ -58,7 +58,8 @@ class ChatScreen extends StatelessWidget {
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 80),
+        padding:
+            const EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 80),
         children: const [
           ChatSample(),
           ChatSample(),

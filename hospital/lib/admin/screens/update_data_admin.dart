@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:hospital/admin/screens/admin_profile.dart';
+import 'package:hospital/login_screen.dart';
 import 'package:hospital/models/Admin.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital/components/button.dart';
 import 'package:http/http.dart' as http;
-
-
 
 class UpdateDataAdmin extends StatefulWidget {
   final Admin? admin;
@@ -27,7 +27,7 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
   final TextEditingController _genderController = TextEditingController();
 
   File? image;
-  String? base64Image;
+  String? base64Image = 'null';
 
   Future pickImage() async {
     try {
@@ -60,107 +60,136 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
     super.initState();
   }
 
-  @override
   Widget build(BuildContext context) {
-    
+    final adminimage;
+
+    if (widget.admin?.photo != 'null') {
+      final Uint8List bytes = base64Decode(widget.admin!.photo);
+      adminimage = MemoryImage(bytes);
+    } else {
+      adminimage = AssetImage("assets/default.jpg");
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Update admin Data'),
+        title: const Text('Update Admin Data'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.grey[300],
-              backgroundImage: image != null ? FileImage(image!) : null,
+            Container(
+              child: InkWell(
+                onTap: pickImage,
+                child: CircleAvatar(
+                  radius: 60,
+                  backgroundColor: Colors.grey[300],
+                  backgroundImage:
+                      image != null ? FileImage(image!) : adminimage,
+                ),
+              ),
             ),
             const SizedBox(height: 16),
             Container(
-              decoration: const BoxDecoration(
-                  color: Color.fromRGBO(33, 150, 243, 1),
-                  borderRadius: BorderRadius.all(Radius.circular(6))),
+              decoration: BoxDecoration(
+                color: const Color.fromRGBO(33, 150, 243, 1),
+                borderRadius: BorderRadius.all(Radius.circular(6)),
+              ),
               child: Button(
-                  width: 400,
-                  title: 'Change Profle Picture',
-                  onPressed: () {
-                    pickImage();
-                  },
-                  disable: false,
-                  height: 50),
+                width: 400,
+                title: 'Change Profile Picture',
+                onPressed: () {
+                  pickImage();
+                },
+                disable: false,
+                height: 50,
+              ),
             ),
             const SizedBox(height: 24),
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Name'),
-            ),
+            _buildTextField(_nameController, 'Name'),
             const SizedBox(height: 16),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
+            _buildTextField(_emailController, 'Email'),
             const SizedBox(height: 16),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-            ),
+            _buildTextField(_passwordController, 'Password'),
             const SizedBox(height: 16),
-            TextField(
-              controller: _phoneController,
-              decoration: const InputDecoration(labelText: 'phone'),
-            ),
+            _buildTextField(_phoneController, 'Phone'),
             const SizedBox(height: 16),
-            TextField(
-              controller: _ageController,
-              decoration: const InputDecoration(labelText: 'age'),
+            _buildTextField(_ageController, 'Age'),
+            _buildTextField(_genderController, 'Gender'),
+            const SizedBox(height: 24),
+            _buildButton(
+              'Save Data',
+              () {
+                _updateAdmin(
+                  _nameController.text,
+                  _emailController.text,
+                  _passwordController.text,
+                  _phoneController.text,
+                  _ageController.text,
+                  _genderController.text,
+                  base64Image!,
+                  widget.admin!.token,
+                  widget.admin!.id,
+                  context,
+                );
+              },
+              50,
             ),
             const SizedBox(height: 24),
-            Container(
-              decoration: const BoxDecoration(
-                  color: Color.fromRGBO(33, 150, 243, 1),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: Button(
-                  width: 400,
-                  title: 'Save Data',
-                  onPressed: () {
-                    _updateAdmin(
-                        _nameController.text,
-                        _emailController.text,
-                        _passwordController.text,
-                        _phoneController.text,
-                        _ageController.text,
-                        _genderController.text,
-                        base64Image!,
-                        widget.admin!.token,
-                        context);
-                  },
-                  disable: false,
-                  height: 50),
-            ),
-            const SizedBox(height: 24),
-            Container(
-              decoration: const BoxDecoration(
-                  color: Color.fromRGBO(255, 0, 0, 1),
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              child: Button(
-                  width: 400,
-                  title: 'delete admin',
-                  onPressed: () {
-                    _deleteAdmin(_emailController.text,widget.admin!.token, context);
-                  },
-                  disable: false,
-                  height: 50),
+            _buildButton(
+              'Delete Admin',
+              () {
+                _deleteAdmin(
+                    _emailController.text, widget.admin!.token, context);
+              },
+              50,
             ),
           ],
         ),
       ),
     );
   }
-}
 
-Future<dynamic> _updateAdmin(
+  Widget _buildTextField(TextEditingController controller, String labelText) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: labelText,
+          border: OutlineInputBorder(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButton(
+    String title,
+    VoidCallback onPressed,
+    double height,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Button(
+        width: 400,
+        title: title,
+        onPressed: onPressed,
+        disable: false,
+        height: height,
+      ),
+    );
+  }
+
+  Future<dynamic> _updateAdmin(
     String name,
     String email,
     String password,
@@ -169,76 +198,94 @@ Future<dynamic> _updateAdmin(
     String gender,
     String base64Image,
     String token,
-    BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.11:3000/admin//updateadmin');
-  try {
-    final response = await http.post(api, body: {
-      'email': email,
-      'password': password,
-      'fullname': name,
-      'gender': gender,
-      'age': age,
-      'phone': phone,
-      'photo': base64Image, 
-      'token': token,
-      'id' : 'sasa',
-    });
-    _showAdminCreatedDialog(context);
-  } catch (e) {
-    print(e);
+    String id,
+    BuildContext context,
+  ) async {
+    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/edit');
+    try {
+      final response = await http.post(api, body: {
+        'email': email,
+        'password': password,
+        'fullname': name,
+        'gender': gender,
+        'age': age,
+        'phone': phone,
+        'photo': base64Image,
+        'token': token,
+        'id': id,
+      });
+      var message = jsonDecode(response.body)['message'];
+      if (response.statusCode == 200) {
+        _showAdminCreatedDialog(context, "Done", message);
+      } else {
+        _showAdminCreatedDialog(context, "ERROR", message);
+      }
+    } catch (e) {
+      print(e);
+    }
   }
-}
 
-void _showAdminCreatedDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Admin Created'),
-        content: const Text('The Admin has been updated successfully.'),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
-}
-
-Future<dynamic> _deleteAdmin(String email,String token , BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.11:3000/admin/deleteAdmin');
-  try {
-    final response = await http.post(api, body: {
-      'email': email,
-      'token': token,
-      'id' : 'sasa',
-    });
-    _showAdminDeletedDialog(context);
-  } catch (e) {
-    print(e);
+  void _showAdminCreatedDialog(
+      BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Admin Updated'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
-}
 
-void _showAdminDeletedDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Text('Admin Deleted'),
-        content: const Text('The Admin has been deleted successfully.'),
-        actions: <Widget>[
-          TextButton(
-            child: const Text('OK'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
-  );
+  Future<dynamic> _deleteAdmin(
+    String email,
+    String token,
+    BuildContext context,
+  ) async {
+    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/deleteAdmin');
+    try {
+      final response = await http.post(api, body: {
+        'email': email,
+        'token': token,
+        'id': 'sasa',
+      });
+      var message = jsonDecode(response.body)['message'];
+      if (response.statusCode == 200) {
+        _showAdminCreatedDialog(context, "Done", message);
+      } else {
+        _showAdminCreatedDialog(context, "ERROR", message);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _showAdminDeletedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Admin Deleted'),
+          content: const Text('The Admin has been deleted successfully.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                MaterialPageRoute(builder: (context) => loginScreen());
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

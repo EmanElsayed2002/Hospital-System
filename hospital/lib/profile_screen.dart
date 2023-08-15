@@ -17,7 +17,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Container(
             width: double.infinity,
             color: const Color(0XFF0080FE),
-            child: const Column(
+            child: Column(
               children: [
                 SizedBox(
                   height: 110,

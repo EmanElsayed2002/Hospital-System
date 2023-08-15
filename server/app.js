@@ -1,57 +1,147 @@
 // عايزين نضيف اجراءات الحماية للشات ف الاخر
-const express = require("express");
+const express = require( "express" );
 const app = express();
-const http = require("http");
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
+const verificationCodes = {}; // Create an object to store verification codes
+
+const http = require( "http" );
+const nodemailer = require( 'nodemailer' );
+const server = http.createServer( app );
+const { Server } = require( "socket.io" );
+const io = new Server( server );
 const port = process.env.PORT || 3000;
 
-const morgan = require("morgan");
-app.use(morgan("dev"));
+const morgan = require( "morgan" );
+app.use( morgan( "dev" ) );
 
-const cors = require("cors");
-app.use(cors());
+const cors = require( "cors" );
+app.use( cors() );
 
-require("./connection/mongoose");
+require( "./connection/mongoose" );
 
-const bodyParser = require("body-parser");
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+const bodyParser = require( "body-parser" );
+app.use( bodyParser.json( { limit: '10mb' } ) );
 
-const Uploadd = require("express-fileupload");
-app.use(Uploadd());
 
-const Patient = require("./routes/patient");
-const Doctor = require("./routes/doctor");
-const Admin = require("./routes/Admin");
+app.use( bodyParser.urlencoded( { limit: '10mb', extended: true } ) );
+const Uploadd = require( "express-fileupload" );
+app.use( Uploadd() );
 
-app.use("/patient", Patient);
-app.use("/doctor", Doctor);
-app.use("/admin", Admin);
+const Patient = require( "./routes/patient" );
+const Doctor = require( "./routes/doctor" );
+const Admin = require( "./routes/Admin" );
 
-// i want the server to listen to the port 3000
-server.listen(port, () => {
-  console.log(`listening on *:${port}`);
-});
+app.use( "/patient", Patient );
+app.use( "/doctor", Doctor );
+app.use( "/admin", Admin );
 
-const axios = require("axios");
+
+const transporter = nodemailer.createTransport( {
+  service: 'gmail',
+  auth: {
+    user: 'emy2192002@gmail.com',
+    pass: 'stmtkalnfwoidyim',
+  },
+} );
+function generateVerificationCode ()
+{
+
+  const length = 6;
+  const characters = '0123456789';
+
+  let code = '';
+  for ( let i = 0; i < length; i++ )
+  {
+    const randomIndex = Math.floor( Math.random() * characters.length );
+    code += characters[ randomIndex ];
+  }
+
+  return code;
+}
+app.post( '/send-verification-email', async ( req, res ) =>
+{
+  const { email } = req.body;
+
+  const verificationCode = generateVerificationCode();
+  verificationCodes[ email ] = verificationCode; // Store the code in-memory
+  console.log( email );
+  const mailOptions = {
+    from: 'emy2192002@gmail.com',
+    to: email,
+    subject: 'Email Verification Code',
+    text: `Your verification code is: ${ verificationCode }`,
+  };
+
+  try
+  {
+    await transporter.sendMail( mailOptions );
+    res.status( 200 ).json( { message: 'Verification email sent' } );
+  } catch ( error )
+  {
+    console.error( 'Error sending verification email:', error );
+    res.status( 500 ).json( { message: 'Error sending verification email' } );
+  }
+} );
+
+// Add this route after your other routes
+
+app.post( '/verify-code', async ( req, res ) =>
+{
+  const { email, code } = req.body;
+
+  try
+  {
+    if ( !verificationCodes[ email ] )
+    {
+      return res.status( 400 ).json( { message: 'Verification code not sent', success: false } );
+    }
+
+    if ( verificationCodes[ email ] === code )
+    {
+      // Remove the used verification code from in-memory storage
+      delete verificationCodes[ email ];
+
+      res.json( { message: 'Email verified successfully', success: true } );
+    } else
+    {
+      res.status( 400 ).json( { message: 'Invalid verification code', success: false } );
+    }
+  } catch ( error )
+  {
+    console.error( 'Error verifying code:', error );
+    res.status( 500 ).json( { message: 'Error verifying code', success: false } );
+  }
+} );
+
+
+
+
+
+
+
+server.listen( port, () =>
+{
+  console.log( `listening on *:${ port }` );
+} );
+
+const axios = require( "axios" );
 // const { Upload } = require("./controllers/Admin/Admin_UploadingPhoto");
 
 // const data4 = {
-//       email: 'sasasasa2321@gmail.com',
-//       password: '123456789'
-//   };
+//   email: 'sasasasa2321@gmail.com',
+//   password: '123456789'
+// };
 
-//   axios.post('http://localhost:3000/admin/login', data4)
-//       .then(response => {
-//       console.log(response.data);
-//       }
-//       )
-//       .catch(error => {
-//       console.log(error.response);
-//       }
-//       );
+// axios.post( 'http://localhost:3000/admin/login', data4 )
+//   .then( response =>
+//   {
+//     console.log( response.data );
+//   }
+//   )
+//   .catch( error =>
+//   {
+//     console.log( error.response );
+//   }
+//   );
 
 // const formData = new FormData();
 // photoFile = 'C:/Users/ahmed zain/Desktop/k.png'
@@ -79,23 +169,25 @@ const axios = require("axios");
 //   });
 // });
 
-// // 1- Create a new admin
-// const data = {
-//     fullname: 'Mostafa Mahmoud',
-//     email: 'mostafa19500mahmoud@gmail.com',
-//     password: '0123456789',
-//     phone: '01225435099',
-//     age: '28',
-//     gender: 'male',
-// };
+// 1- Create a new admin
+const data = {
+  fullname: 'Eman Elsayed',
+  email: 'emoelsayed2192002@gmail.com',
+  password: '0123456789',
+  phone: '01006205467',
+  age: '21',
+  gender: 'female',
+};
 
-// axios.post('http://localhost:3000/admin/signup', data)
-//     .then(response => {
-//     console.log(response.data);
-//     })
-//     .catch(error => {
-//     console.log(error.response);
-//     });
+axios.post( 'http://192.168.1.7:3000/admin/signup', data )
+  .then( response =>
+  {
+    console.log( response.data );
+  } )
+  .catch( error =>
+  {
+    console.log( error.response );
+  } );
 
 // login as an admin
 // const data = {

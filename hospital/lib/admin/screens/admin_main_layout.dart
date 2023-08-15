@@ -13,24 +13,24 @@ import '../../models/doctorModel.dart';
 
 class AdminLayuot extends StatefulWidget {
   final Admin admin;
-  const AdminLayuot({super.key , required this.admin});
+  const AdminLayuot({super.key, required this.admin});
 
   @override
   State<AdminLayuot> createState() => _AdminLayuotState();
 }
 
 class _AdminLayuotState extends State<AdminLayuot> {
-  int currentPage = 0, cnt = 0 ;
-  // create non const list to get data from api
+  int currentPage = 0, cnt = 0;
   List<Doctor> doctors = [];
   final PageController _page = PageController();
   @override
-  Widget build(BuildContext context) {  
-    if(cnt == 0)
-    {
-      get_all_doctors(doctors);
-      cnt++;
-    }
+  @override
+  void initState() {
+    super.initState();
+    // get_all_doctors();
+  }
+
+  Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
         controller: _page,
@@ -42,7 +42,7 @@ class _AdminLayuotState extends State<AdminLayuot> {
         children: <Widget>[
           AdminScreen(admin: widget.admin),
           CreateDoctor(admin: widget.admin),
-          ReadDoctors(doctors: doctors , admin: widget.admin),
+          ReadDoctors(admin: widget.admin),
           ProfilePage(admin: widget.admin),
         ],
       ),
@@ -99,33 +99,5 @@ class _AdminLayuotState extends State<AdminLayuot> {
         ),
       ),
     );
-  }
-}
-
-Future<void> get_all_doctors(List doctors) async {
-  final Uri api = Uri.parse('http://192.168.1.:3000/admin/readdoctorsdata');
-  try {
-    final response = await http.get(api);
-    final jsonData = json.decode(response.body);
-    final doctorList = jsonData['result'];
-    for (var element in doctorList) {
-      final doctor = Doctor(
-        id: element['_id'] ?? 'sasa',
-        fullname: element['fullname'] ?? 'sasa',
-        email: element['email'] ?? 'sasa',
-        password: element['password'] ?? 'sasa',
-        Specialization: element['Specialization'] ?? 'sasa',
-        gender: element['gender'] ?? 'sasa',
-        phone: element['phone'] ?? 'sasa',
-        address: element['address'] ?? 'sasa',
-        aboutDoctor: element['aboutDoctor'] ?? 'sasa',
-        price: element['price'] ?? 'sasa',
-        photo: element['photo'] ?? 'sasa',
-        age: element['age'] ?? 'sasa',
-      );
-      doctors.add(doctor);
-    }
-  } catch (e) {
-    print(e);
   }
 }
