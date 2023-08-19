@@ -35,7 +35,7 @@ class AdminScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: containerWidth * 0.35),
+            SizedBox(width: MediaQuery.of(context).size.width * 0.343),
             Container(
               child: InkWell(
                 onTap: () {
@@ -49,7 +49,7 @@ class AdminScreen extends StatelessWidget {
                   );
                 },
                 child: CircleAvatar(
-                  radius: 24,
+                  radius: 30,
                   backgroundImage: image,
                 ),
               ),
@@ -85,16 +85,14 @@ class AdminScreen extends StatelessWidget {
 
   Container _buildWelcomeText(String text) {
     return Container(
-      height: 50,
-      width: text.length * 17.0,
-      decoration: BoxDecoration(
-        color: Color.fromARGB(255, 113, 132, 164),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 24, color: Colors.white),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 25,
+          fontWeight: FontWeight.bold,
+          fontFamily: "Fixedsys",
+          // fontStyle: FontStyle.italic,
+          color: Colors.blueGrey,
         ),
       ),
     );

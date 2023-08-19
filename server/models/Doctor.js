@@ -1,6 +1,6 @@
 const { object, array } = require( 'joi' );
 const mongoose = require( 'mongoose' );
-
+const Appointment = require( './appointment' );
 const DoctorSchema = new mongoose.Schema( {
     fullname: {
         type: String,
@@ -37,6 +37,7 @@ const DoctorSchema = new mongoose.Schema( {
         match: /^01[0125][0-9]{8}$/
     },
     photo: {
+
         type: String,
         required: [ true, "Photo is Mandatory" ],
     },
@@ -57,16 +58,11 @@ const DoctorSchema = new mongoose.Schema( {
         trim: true
     },
     appointments: {
-        // we want to store List<List<String>> in this field
-        type: Array,
-        trim: true
+
+        type: [ String ],
+        default: []
 
     },
-    Price: {
-        type: String,
-        required: [ true, "Price is Mandatory" ],
-        trim: true
-    }
 }, { timestamps: true } );
 
 const Doctor = mongoose.model( 'Doctor', DoctorSchema );

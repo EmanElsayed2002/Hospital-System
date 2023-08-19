@@ -14,7 +14,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   Future<void> _sendVerificationEmail(String email) async {
     final Uri api =
-        Uri.parse('http://192.168.1.8:3000/send-verification-email');
+        Uri.parse('http://192.168.1.7:3000/admin/send-verification-email');
 
     try {
       final response = await http.post(api, body: {
@@ -40,7 +40,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
 
   Future<dynamic> _loginUSer(
       String email, String password, BuildContext context) async {
-    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/login');
+    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/login');
     try {
       final response = await http.post(api, body: {
         'email': email,
@@ -64,11 +64,14 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
     }
   }
 
+  bool _isPasswordVisible = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Admin Login'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -90,8 +93,18 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                 labelText: 'Enter Password',
                 border: OutlineInputBorder(),
                 prefixIcon: Icon(Icons.lock),
+                suffixIcon: IconButton(
+                  icon: Icon(_isPasswordVisible
+                      ? Icons.visibility
+                      : Icons.visibility_off),
+                  onPressed: () {
+                    setState(() {
+                      _isPasswordVisible = !_isPasswordVisible;
+                    });
+                  },
+                ),
               ),
-              obscureText: true,
+              obscureText: !_isPasswordVisible,
             ),
             SizedBox(height: 24.0),
             ElevatedButton(
@@ -139,11 +152,4 @@ void _loginAsAdmin(BuildContext context, dynamic result) {
     token: result['token'] ?? 'not found',
     photo: result['admin']['photo'] ?? 'assets/profile1.jpg',
   );
-
-  // Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //         builder: (context) => AdminLayuot(
-  //               admin: admin,
-  //             )));
 }

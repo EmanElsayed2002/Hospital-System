@@ -32,8 +32,8 @@ class AppointmentBooked extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
               child: Button(
-                color: Colors.green,
                 width: double.infinity,
+                color: Colors.blue,
                 title: 'Back to Home Page',
                 onPressed: () => Navigator.of(context).pushNamed('/'),
                 disable: false,

@@ -1,10 +1,10 @@
+import 'package:hospital/models/Appointment.dart';
 import 'package:hospital/models/patient.dart';
 
-class Appointment{
+class upCommingAppointment{
   final Patient patient ;
-  final String date; 
-  final String time ;
+  final Appointment appointment ;
   
 
-  Appointment({required this.patient , required this.date , required this.time});
+  upCommingAppointment({required this.patient , required this.appointment});
 }

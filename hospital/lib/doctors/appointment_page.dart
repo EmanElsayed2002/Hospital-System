@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hospital/models/Appointment.dart';
 import 'package:hospital/models/doctorModel.dart';
 
 class AppointmentPage extends StatefulWidget {
@@ -25,45 +26,28 @@ class _AppointmentPageState extends State<AppointmentPage> {
   }
 
   void _filterElements(String choice) {
-    List<dynamic>? appointments = widget.doctor.appointments;
-    List<dynamic> decodedAppointments = [];
+    List<Appointment>? appointments = widget.doctor.appointments;
 
     if (appointments != null) {
-      String jsonString = jsonEncode(appointments);
-      decodedAppointments = jsonDecode(jsonString);
-    }
+      List<String> filtered = [];
+      for (int i = 0; i < appointments.length; i++) {
+        String date = appointments[i].date;
+        String status = appointments[i].status;
 
-    List<String> filtered = [];
-    for (int i = 0; i < decodedAppointments.length; i++) {
-      String appointment = decodedAppointments[i];
-
-      print(appointment);
-
-      // Extract status and dateTimeString from the appointment string
-      List<String> appointmentParts = appointment.split(',');
-      String dateTimeString = appointmentParts[0].replaceAll('"', '');
-      String status = appointmentParts[1].replaceAll('"', '');
-
-      print(status);
-      print(dateTimeString);
-      // List<String> dateTimeComponents = dateTimeString.split(' ');
-      // String date = dateTimeComponents[0];
-      // String time = dateTimeComponents[1]
-      //     .replaceAll('TimeOfDay(', '')
-      //     .replaceAll(')', '');
-
-      if (status == choice) {
-        filtered.add('Appointment at $dateTimeString');
+        if (status == choice) {
+          filtered.add('Appointment at $date');
+        }
       }
-    }
 
-    setState(() {
-      _filteredElements = filtered;
-    });
+      setState(() {
+        _filteredElements = filtered;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    print(widget.doctor.appointments[0].status);
     return Scaffold(
       appBar: AppBar(
         title: Text('Appointments'),

@@ -7,11 +7,10 @@ const UpdateDoctor = async ( req, res ) =>
     try
     {
 
-        const error = await checkFile( req.body );
-        if ( error[ 0 ] !== "valid" )
-        {
-            return sendResponse( res, error[ 1 ], error[ 0 ] );
-        }
+        // const error = await checkFile(req.body);
+        // if(error[0] !== "valid"){
+        //     return sendResponse(res, error[1], error[0]);
+        // }
 
 
         // get the doctor

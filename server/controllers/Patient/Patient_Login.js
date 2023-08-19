@@ -5,6 +5,7 @@ const key = "mostafa_eman_eman_menna_hasnaa";
 const sendResponse = require("../../utils/sendResonse");
 const checkFile = require("../../validator/Patient/Login");
 const Doctor = require("../../models/Doctor");
+const Appointment = require("../../models/appointment");
 const Login = async (req, res) => {
   try {
     // validate the data
@@ -17,11 +18,12 @@ const Login = async (req, res) => {
     // generate token
     var patient = await Patient.findOne({ email: req.body.email });
     const doctors = [];
-    for(i = 0; i < patient.appointments.length; i++){
-      let f = JSON.parse(patient.appointments[i]);
-      let doctor = await Doctor.findById(f[1]);
+    for(let i = 0; i < patient.appointments.length; i++){
+      const appointment = await Appointment.findById(patient.appointments[i]);
+      const doctor = await Doctor.findById(appointment.doctorId);
       doctors.push(doctor);
     }
+
     // console.log(doctors);
     const token = jwt.sign({ _id: patient._id }, key);
     const result = { token: token, patient: patient, doctors: doctors };

@@ -1,4 +1,6 @@
 // the doctor model class
+import 'Appointment.dart';
+
 class Doctor {
   final String fullname;
   final String Specialization;
@@ -11,7 +13,7 @@ class Doctor {
   final String address;
   final String aboutDoctor;
   final String price;
-  List<dynamic>? appointments;
+  late List<Appointment> appointments;
   final String age;
 
   Doctor({
@@ -27,5 +29,6 @@ class Doctor {
     required this.price,
     required this.photo,
     required this.age,
+    // required this.appointments/,
   });
 }

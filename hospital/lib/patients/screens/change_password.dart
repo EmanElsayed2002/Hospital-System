@@ -13,11 +13,9 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
-  final TextEditingController _currentPasswordController =
-      TextEditingController();
+  final TextEditingController _currentPasswordController = TextEditingController();
   final TextEditingController _newPasswordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
@@ -53,8 +51,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             TextField(
               controller: _confirmPasswordController,
               obscureText: true,
-              decoration:
-                  const InputDecoration(labelText: 'Confirm New Password'),
+              decoration: const InputDecoration(labelText: 'Confirm New Password'),
             ),
             const SizedBox(height: 24),
             Container(
@@ -62,8 +59,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                   color: Color.fromRGBO(33, 150, 243, 1),
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Button(
-                  color: Colors.green,
                   width: 400,
+                  color: Colors.white,
                   title: 'Save Changes',
                   onPressed: () {
                     _changePassword(
@@ -72,7 +69,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                         _confirmPasswordController.text,
                         widget.patient,
                         widget.patient.token,
-                        context);
+                        context
+                    );
                   },
                   disable: true,
                   height: 50),
@@ -84,27 +82,24 @@ class _ChangePasswordState extends State<ChangePassword> {
   }
 }
 
-Future<void> _changePassword(
-    String currentPassword,
-    String newPassword,
-    String confirmPassword,
-    Patient patient,
-    String token,
-    BuildContext context) async {
+Future<void> _changePassword( String currentPassword, String newPassword, String confirmPassword, Patient patient, String token ,BuildContext context ) async {
   final Uri api = Uri.parse('http://192.168.1.8:3000/patient/changePassword');
-  try {
-    final response = await http.post(api, body: {
-      'currentPassword': currentPassword,
-      'newPassword': newPassword,
-      'confirmPassword': confirmPassword,
-      'id': patient.id,
-      'token': token,
-    });
+  try{
+      final response = await http.post(api , body: {
+        'currentPassword': currentPassword,
+        'newPassword': newPassword,
+        'confirmPassword': confirmPassword,
+        'id': patient.id,
+        'token': token,
+      });
     _showChangepaswordDialog(context);
-  } catch (e) {
-    print(e);
   }
+  catch(e)
+  {
+    print(e);
+  } 
 }
+
 
 void _showChangepaswordDialog(BuildContext context) {
   showDialog(

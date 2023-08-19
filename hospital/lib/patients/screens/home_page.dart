@@ -10,7 +10,9 @@ import 'package:hospital/patients/screens/appointment_screen.dart';
 class HomePage extends StatefulWidget {
   final Patient patient;
   final List<Doctor> PopularDoctors;
-  const HomePage({Key? key, required this.patient,required this.PopularDoctors}) : super(key: key);
+  const HomePage(
+      {Key? key, required this.patient, required this.PopularDoctors})
+      : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -46,9 +48,15 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final Uint8List bytes = base64Decode(widget.patient.photo);
-    MemoryImage image = MemoryImage(bytes);
-    
+    final image;
+
+    if (widget.patient.photo != 'null') {
+      final Uint8List bytes = base64Decode(widget.patient.photo);
+      image = MemoryImage(bytes);
+    } else {
+      image = AssetImage("assets/default.jpg");
+    }
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.symmetric(
@@ -148,21 +156,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Appointment Today',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0XFF0080FE),
-                    ),
-                  ),
-                ),
+                
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.grey.shade300,
+                    color: const Color.fromARGB(255, 255, 254, 254),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: widget.patient.appointments.isEmpty
@@ -186,8 +184,9 @@ class _HomePageState extends State<HomePage> {
                               child: Text(
                                 'Appointments Today:',
                                 style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0XFF0080FE),
                                 ),
                               ),
                             ),
@@ -195,49 +194,67 @@ class _HomePageState extends State<HomePage> {
                               shrinkWrap: true,
                               itemCount: widget.patient.appointments.length,
                               itemBuilder: (context, index) {
-                                List<dynamic> appointments =
-                                    widget.patient.appointments;
-                                List<dynamic> decodedAppointments = [];
-                                String jsonString = jsonEncode(appointments);
-                                decodedAppointments = jsonDecode(jsonString);
-                                String appointment = decodedAppointments[index];
-                                List<String> appointmentParts =
-                                    appointment.split(',');
-                                String dateTimeString =
-                                    appointmentParts[0].replaceAll('"', '');
+                                String date =
+                                    widget.patient.appointments[index].date;
+                                String time =
+                                    widget.patient.appointments[index].time;
 
-                                String date = dateTimeString;
-                                String time = dateTimeString;
-                                String id = dateTimeString;
-
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
+                                return Container(
+                                  width: double.infinity,
+                                  margin: const EdgeInsets.symmetric(
+                                    vertical: 10,
+                                    horizontal: 20,
+                                  ),
+                                  padding: const EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 4,
+                                        spreadRadius: 2,
+                                      ),
+                                    ],
+                                  ),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'Date: $date',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Icon(
+                                            Icons.calendar_today,
+                                            color: Colors.blue,
+                                          ),
+                                          Text(
+                                            '$date',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        'Time: ${time}', // Format TimeOfDay
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                        ),
+                                      SizedBox(height: 8),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Icon(
+                                            Icons.access_time,
+                                            color: Colors.blue,
+                                          ),
+                                          Text(
+                                            '$time',
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      Text(
-                                        'ID: $id',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.grey,
-                                        ),
-                                      ),
-                                      SizedBox(height: 10),
                                     ],
                                   ),
                                 );
@@ -262,7 +279,6 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(
                         width: 80,
                       ),
-                      
                     ],
                   ),
                 ),
@@ -280,7 +296,8 @@ class _HomePageState extends State<HomePage> {
                           Uint8List bytes = base64Decode(doctor.photo);
                           image = MemoryImage(bytes);
                         } catch (e) {
-                          image = MemoryImage(Uint8List(0)); // Default image in case of error
+                          image = MemoryImage(
+                              Uint8List(0)); // Default image in case of error
                         }
 
                         return InkWell(
@@ -288,7 +305,10 @@ class _HomePageState extends State<HomePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AppointmentScreen(doctor: widget.PopularDoctors[index]),
+                                builder: (context) => AppointmentScreen(
+                                  doctor: doctor,
+                                  patient: widget.patient,
+                                ),
                               ),
                             );
                           },
@@ -311,13 +331,15 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     const SizedBox(
                                       width: 5,
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(right: 8.0),
+                                      padding:
+                                          const EdgeInsets.only(right: 8.0),
                                       child: InkWell(
                                         onTap: () {},
                                         child: const Icon(

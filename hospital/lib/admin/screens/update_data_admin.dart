@@ -206,7 +206,7 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
     String id,
     BuildContext context,
   ) async {
-    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/edit');
+    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/edit');
     try {
       final response = await http.post(api, body: {
         'email': email,
@@ -256,7 +256,7 @@ class _UpdateDataAdminState extends State<UpdateDataAdmin> {
     String token,
     BuildContext context,
   ) async {
-    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/deleteAdmin');
+    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/deleteAdmin');
     try {
       final response = await http.post(api, body: {
         'email': email,

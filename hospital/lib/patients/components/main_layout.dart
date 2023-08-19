@@ -7,6 +7,7 @@ import 'package:hospital/patients/screens/home_page.dart';
 import 'package:hospital/patients/components/message_screen.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../../models/Appointment.dart';
 import '../../models/patient.dart';
 import '../screens/myappointments.dart';
 import '../screens/patientProfile.dart';
@@ -110,6 +111,8 @@ Future<void> get_all_patient(List<Doctor> PopularDoctors) async {
     final jsonData = jsonDecode(response.body);
     final doctorsList = jsonData['result'];
     for (var element in doctorsList) {
+      final doctortId = element['_id'].toString();
+      final appointments = await _getappointmentsfordoctor(doctortId);
       final doctor = Doctor(
         id: element['_id'] ?? 'sasa',
         fullname: element['fullname'] ?? 'sasa',
@@ -123,12 +126,55 @@ Future<void> get_all_patient(List<Doctor> PopularDoctors) async {
         price: element['price'] ?? '150',
         photo: element['photo'] ?? 'sasa',
         age: element['age'] ?? 'sasa',
+        // appointments: _convertToAppointments(appointments) ?? [],
       );
       PopularDoctors.add(doctor);
     }
-    // print(PopularDoctors.length);
+    print(PopularDoctors.length);
     // print(PopularDoctors);
   } catch (e) {
     print(e);
   }
+}
+
+Future<List<dynamic>> _getappointmentsfordoctor(String id) async {
+  final Uri api =
+      Uri.parse('http://192.168.1.8:3000/doctor/getallappointments');
+  try {
+    final response = await http.post(api, body: {
+      'id': id,
+    });
+    final jsonData = json.decode(response.body);
+
+    return jsonData['result'];
+  } catch (e) {
+    print(e);
+    return [];
+  }
+}
+
+List<Appointment> _convertToAppointments(List<dynamic> appointmentsData) {
+  List<Appointment> appointments = [];
+
+  for (dynamic appointmentData in appointmentsData) {
+    String date = appointmentData['date'] ?? '';
+    String time = appointmentData['time'] ?? '';
+    String status = appointmentData['status'] ?? '';
+    String patientId = appointmentData['patientId'] ?? '';
+    String doctorId = appointmentData['doctorId'] ?? '';
+    String Id = appointmentData['_id'] ?? '';
+
+    Appointment appointment = Appointment(
+      date: date,
+      time: time,
+      status: status,
+      patientId: patientId,
+      doctorId: doctorId,
+      Id: Id,
+    );
+
+    appointments.add(appointment);
+  }
+
+  return appointments;
 }

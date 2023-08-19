@@ -1,165 +1,92 @@
 import 'package:flutter/material.dart';
-import 'package:hospital/components/button.dart';
-import 'package:hospital/patients/screens/success_screen.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:hospital/models/doctorModel.dart';
+import 'package:hospital/models/patient.dart';
+import 'package:http/http.dart' as http;
+import '../../models/Appointment.dart';
 
-class BookingPage extends StatefulWidget {
-  const BookingPage({Key? key}) : super(key: key);
+class AppointmentsPage extends StatefulWidget {
+  final Doctor doctor;
+  final Patient patient;
+  AppointmentsPage({required this.doctor, required this.patient});
 
   @override
-  State<BookingPage> createState() => _BookingPageState();
+  _AppointmentsPageState createState() => _AppointmentsPageState();
 }
 
-class _BookingPageState extends State<BookingPage> {
-  CalendarFormat _format = CalendarFormat.month;
-  DateTime _focusDay = DateTime.now();
-  DateTime _currentDay = DateTime.now();
-  int? _currentIndex;
-  final bool _isWeekend = false;
-  bool _dateSelected = false;
-  bool _timeSelected = false;
+class _AppointmentsPageState extends State<AppointmentsPage> {
+  List<Appointment> freeAppointments = [];
 
   @override
   void initState() {
     super.initState();
+    filterFreeAppointments();
+  }
+
+  void filterFreeAppointments() {
+    setState(() {
+      freeAppointments = widget.doctor.appointments
+          .where((appointment) => appointment.status == 'free')
+          .toList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // final doctor = ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Appointment'),
+        title: Text('Free Appointments'),
       ),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverToBoxAdapter(
-            child: Column(
-              children: <Widget>[
-                _tableCalendar(),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-                  child: Center(
-                    child: Text(
-                      'Select Avaliable Time',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          _isWeekend
-              ? SliverToBoxAdapter(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 30),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Weekend is not available, please select another date',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                )
-              : SliverGrid(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      return InkWell(
-                        splashColor: Colors.transparent,
-                        onTap: () {
-                          setState(() {
-                            _currentIndex = index;
-                            _timeSelected = true;
-                          });
-                        },
-                        child: Container(
-                          margin: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: _currentIndex == index
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                            borderRadius: BorderRadius.circular(15),
-                            color: _currentIndex == index ? Colors.green : null,
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            '${index + 9}:00 ${index + 9 > 11 ? "PM" : "AM"}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color:
-                                  _currentIndex == index ? Colors.white : null,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    childCount: 8,
-                  ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4, childAspectRatio: 1.5),
-                ),
-          SliverToBoxAdapter(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 60),
-              child: Button(
-                color: Colors.green,
-                width: double.infinity,
-                height: 60,
-                title: 'Make Appointment',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AppointmentBooked(),
-                    ),
-                  );
-                },
-                disable: _timeSelected && _dateSelected ? false : true,
-              ),
-            ),
+      body: ListView.builder(
+        itemCount: freeAppointments.length,
+        itemBuilder: (context, index) {
+          Appointment appointment = freeAppointments[index];
+          return ListTile(
+            title: Text('Date: ${appointment.date}, Time: ${appointment.time}'),
+            subtitle: Text('Status: ${appointment.status}'),
+            onTap: () {
+              _bookAppointment(appointment, widget.patient, widget.doctor, context);
+            },
+            // Add any other UI elements you want to display for each appointment
+          );
+        },
+      ),
+    );
+  }
+}
+
+Future<void> _bookAppointment(
+    Appointment appointment, Patient patient, Doctor doctor, BuildContext context) async {
+  final Uri api = Uri.parse('http://192.168.1.8:3000/patient/bookappointment');
+  try{
+    final response = await http.post(api, body: {
+      'appointmentid': appointment.Id,
+      'doctorid': doctor.id,
+      'patientid': patient.id,
+    });
+    _showChangepaswordDialog(context);
+  }
+  catch(e)
+  {
+    print(e);
+  }
+}
+
+void _showChangepaswordDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('book Appointment'),
+        content: const Text('booked Appointment Successfully'),
+        actions: <Widget>[
+          TextButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
         ],
-      ),
-    );
-  }
-
-  //table calendar
-  Widget _tableCalendar() {
-    return TableCalendar(
-      focusedDay: _focusDay,
-      firstDay: DateTime.now(),
-      lastDay: DateTime(2023, 12, 31),
-      calendarFormat: _format,
-      currentDay: _currentDay,
-      rowHeight: 48,
-      calendarStyle: const CalendarStyle(
-        todayDecoration:
-            BoxDecoration(color: Colors.green, shape: BoxShape.circle),
-      ),
-      availableCalendarFormats: const {
-        CalendarFormat.month: 'Month',
-      },
-      onFormatChanged: (format) {
-        setState(() {
-          _format = format;
-        });
-      },
-      onDaySelected: ((selectedDay, focusedDay) {
-        setState(() {
-          _currentDay = selectedDay;
-          _focusDay = focusedDay;
-          _dateSelected = true;
-        });
-      }),
-    );
-  }
+      );
+    },
+  );
 }

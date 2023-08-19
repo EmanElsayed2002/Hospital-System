@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Patient = require("../../models/Patient");
 const Doctor = require("../../models/Doctor");
+const Appointment = require("../../models/appointment");
 const key = "mostafa_eman_eman_menna_hasnaa";
 const sendResponse = require("../../utils/sendResonse");
 
@@ -10,18 +11,18 @@ const ReadPatients = async (req, res) => {
   try {
     
     const doctor = await Doctor.findOne({ email: req.body.email });
-    const patient = await Patient.find();
-
-    let data = [];
-    for(i = 0; i < patient.length; i++){
-      data_list = JSON.parse(patient[i].appointments);
-      patient[i].appointments = data_list;
-      console.log(data_list[1]);
-
-      if(data_list[1] == doctor._id){
-        data.push([patient[i],data_list[0]]);
+    if (!doctor) {
+      return sendResponse(res, 404, "Doctor not found");
+    }
+    const data = [];
+    for (let i = 0; i < doctor.appointments.length; i++) {
+      const appointment = await Appointment.findById(doctor.appointments[i]);
+      if(appointment.status == "booked"){
+        const patient = await Patient.findById(appointment.patientId);
+        data.push(patient);
       }
     }
+    console.log(data);
     return sendResponse(res, 200, "Patients", data);    
   } catch (err) {
     console.log(err);

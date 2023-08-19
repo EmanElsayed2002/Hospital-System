@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hospital/patients/components/main_layout.dart';
 import 'package:hospital/welcome_screen.dart';
-
 import 'login_screen.dart';
 
 void main() {

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:hospital/models/patient.dart';
@@ -11,6 +12,15 @@ class MyDoctorsScreen extends StatelessWidget {
   final List<Doctor> myDoctors;
 
   MyDoctorsScreen({required this.patient, required this.myDoctors});
+  _doctorPhoto(Doctor doctor)
+  {
+    if (doctor.photo != 'null') {
+      final Uint8List bytes = base64Decode(doctor.photo);
+      return MemoryImage(bytes);
+    } else {
+      return AssetImage("assets/default.jpg");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +56,8 @@ class MyDoctorsScreen extends StatelessWidget {
                   Doctor doctor = myDoctors[index];
                   return ListTile(
                     leading: CircleAvatar(
-                      backgroundImage: MemoryImage(
-                        base64Decode(doctor.photo),
-                      ),
+                      backgroundImage: _doctorPhoto(doctor),
+
                     ),
                     title: Text(
                       'Dr. ${doctor.fullname}',

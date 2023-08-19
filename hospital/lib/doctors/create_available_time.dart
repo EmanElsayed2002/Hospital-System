@@ -8,6 +8,8 @@ import 'package:hospital/components/social_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:hospital/signup_screen.dart';
 
+import '../models/Appointment.dart';
+
 class CreateAvailableTime extends StatefulWidget {
   final Doctor doctor;
   const CreateAvailableTime({super.key, required this.doctor});
@@ -87,8 +89,8 @@ class _CreateAvailableTimeState extends State<CreateAvailableTime> {
                     color: Color.fromRGBO(33, 150, 243, 1),
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 child: Button(
-                    color: Colors.green,
                     width: 400,
+                    color: const Color.fromRGBO(33, 150, 243, 1),
                     title: 'Create Available Time',
                     onPressed: () {
                       _makeAppointment(
@@ -105,20 +107,35 @@ class _CreateAvailableTimeState extends State<CreateAvailableTime> {
   }
 }
 
-Future<dynamic> _makeAppointment(
+Future<void> _makeAppointment(
     DateTime date, TimeOfDay time, Doctor doctor) async {
-  final Uri api = Uri.parse('http://192.168.1.8:3000/doctor/createoppointment');
+  final Uri api = Uri.parse('http://192.168.1.5:3000/doctor/createoppointment');
 
-  final String appointment =
-      date.toString().split(' ')[0] + ' ' + time.toString().split(' ')[0];
-
-  final List<String> appointments = [appointment, 'free', ''];
+  final newAppointment = Appointment(
+    date: date.toString().split(' ')[0],
+    time: time.toString().split(' ')[0],
+    status: 'free',
+    doctorId: doctor.id,
+    patientId: '',
+    Id: '',
+  );
 
   try {
+    final newAppointmentJson = newAppointment.toJson();
+
     final response = await http.post(api, body: {
       'email': doctor.email,
-      'appointments': json.encode(appointments),
+      'appointment': jsonEncode(newAppointmentJson),
     });
+
+    if (response.statusCode == 200) {
+      // Handle success, maybe show a success message
+      doctor.appointments.add(newAppointment);
+      print('Appointment created successfully');
+    } else {
+      // Handle error, maybe show an error message
+      print('Failed to create appointment');
+    }
   } catch (e) {
     print(e);
   }

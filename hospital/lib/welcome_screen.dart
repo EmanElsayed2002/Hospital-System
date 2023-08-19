@@ -9,26 +9,25 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Expanded(
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.01,
-          height: MediaQuery.of(context).size.height * 0.01,
-          padding: const EdgeInsets.all(10),
+      color: Colors.white,
+      child: SingleChildScrollView(
+        child: SafeArea(
           child: Column(
             children: [
-              const SizedBox(
-                height: 65,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
               Padding(
-                padding: const EdgeInsets.all(20),
-                child: Image.asset("assets/doctors.png"),
+                padding:
+                    EdgeInsets.all(MediaQuery.of(context).size.height * 0.06),
+                child: Image.asset(
+                  "assets/doctors.png",
+                ),
               ),
-              const SizedBox(height: 100),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.01),
               const Center(
                 child: Text(
                   "Hospital System",
                   style: TextStyle(
-                    color: Colors.green,
+                    color: Color.fromARGB(255, 99, 190, 102),
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 1,
@@ -36,21 +35,21 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 5),
+              // const SizedBox(height: 5),
               const Text(
                 "Appoint Your Doctor",
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Color.fromARGB(255, 126, 159, 175),
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 60),
+              const SizedBox(height: 50),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Material(
-                    color: Colors.green,
+                    color: Colors.greenAccent[700],
                     borderRadius: BorderRadius.circular(15),
                     child: InkWell(
                       onTap: () {
@@ -75,7 +74,7 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ),
                   Material(
-                    color: Colors.green,
+                    color: Colors.greenAccent[700],
                     borderRadius: BorderRadius.circular(15),
                     child: InkWell(
                       onTap: () {
@@ -117,7 +116,7 @@ class WelcomeScreen extends StatelessWidget {
                   },
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 15, horizontal: 40),
+                        vertical: 15, horizontal: 25),
                     child: const Text(
                       "Login as Admin",
                       style: TextStyle(

@@ -4,11 +4,16 @@ import 'package:hospital/models/Admin.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'admin_home_screen.dart';
+import 'PasswordChangeVerification.dart';
+import 'login_As_admin.dart';
 
 class AdminVerificationScreen extends StatefulWidget {
   final String email;
   final String password;
-  const AdminVerificationScreen({required this.email, required this.password});
+  const AdminVerificationScreen({
+    required this.email,
+    required this.password,
+  });
 
   @override
   _AdminVerificationScreenState createState() =>
@@ -16,31 +21,13 @@ class AdminVerificationScreen extends StatefulWidget {
 }
 
 class _AdminVerificationScreenState extends State<AdminVerificationScreen> {
-  final TextEditingController _verificationCodeController =
-      TextEditingController();
-
-  Future<dynamic> _loginUSer(
-      String email, String password, BuildContext context) async {
-    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/login');
-    try {
-      final response = await http.post(api, body: {
-        'email': email,
-        'password': password,
-      });
-
-      final jsonData = json.decode(response.body);
-      final result = jsonData['result'];
-      print(response.body);
-      if (result['admin'] != null) {
-        _loginAsAdmin(context, result);
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
+  final List<FocusNode> _pinFocusNodes =
+      List.generate(6, (index) => FocusNode());
+  final List<TextEditingController> _pinControllers =
+      List.generate(6, (index) => TextEditingController());
 
   Future<void> _verifyCode(String email, String password, String code) async {
-    final Uri api = Uri.parse('http://192.168.1.8:3000/verify-code');
+    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/verify-code');
 
     try {
       final response = await http.post(api, body: {
@@ -48,14 +35,61 @@ class _AdminVerificationScreenState extends State<AdminVerificationScreen> {
         'password': password,
         'code': code,
       });
-      print(response.body);
+
       final jsonData = json.decode(response.body);
-      print(email);
       if (jsonData['success']) {
-        _loginUSer(email, password, context as BuildContext);
+        _loginAsAdmin(email, password);
       } else {
-        print('Admin data not found');
+        _showErrorDialog(context, "Error Occured!!", "Invalid Code");
       }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void _showErrorDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              // clear the pin code
+              for (var controller in _pinControllers) {
+                controller.clear();
+              }
+              Navigator.pop(context);
+            },
+            child: Text('Okay'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _sendVerificationEmail(String email) async {
+    final Uri api =
+        Uri.parse('http://192.168.1.7:3000/admin/send-verification-email');
+
+    try {
+      final response = await http.post(api, body: {
+        'email': email,
+      });
+      if (response.statusCode == 200) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AdminVerificationScreen(
+              email: email,
+              password: widget.password,
+            ),
+          ),
+        );
+      }
+      final jsonData = json.decode(response.body);
+      print(jsonData['message']);
     } catch (e) {
       print(e);
     }
@@ -72,38 +106,109 @@ class _AdminVerificationScreenState extends State<AdminVerificationScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 40),
               child: Text(
-                'Enter Verification Code sent to',
+                'Enter verification code sent to',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 34, vertical: 5),
-              child: Text(
-                '${widget.email}',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    backgroundColor: Colors.blueAccent),
-              ),
-            ),
-            SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: _verificationCodeController,
-                decoration: InputDecoration(
-                  labelText: 'Enter Code',
-                  border: OutlineInputBorder(),
+              child: Container(
+                alignment: Alignment.center,
+                width: widget.email.length * 13,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: Colors.greenAccent,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  '${widget.email}',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
               ),
             ),
             SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(6, (index) {
+                return Container(
+                  width: 40,
+                  height: 40,
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.greenAccent,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: TextField(
+                    controller: _pinControllers[index],
+                    focusNode: _pinFocusNodes[index],
+                    textAlign: TextAlign.center,
+                    maxLength: 1,
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      if (value.isNotEmpty) {
+                        if (index < 5) {
+                          _pinFocusNodes[index + 1].requestFocus();
+                        } else {
+                          _pinFocusNodes[index].unfocus();
+                        }
+                      }
+                    },
+                    style: TextStyle(fontSize: 20),
+                    decoration: InputDecoration(
+                      counterText: '',
+                    ),
+                  ),
+                );
+              }),
+            ),
+            // SizedBox(height: 40)
+            // make button for resend code and align it to the right
+            Padding(
+              padding: const EdgeInsets.only(left: 25.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Didn\'t receive code?',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueGrey,
+                    ),
+                  ),
+                  TextButton(
+                      onPressed: () async {
+                        await _sendVerificationEmail(widget.email);
+                      },
+                      child: Text(
+                        'Resend',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
+                      )),
+                ],
+              ),
+            ),
             ElevatedButton(
               onPressed: () async {
+                String verificationCode = '';
+                for (var controller in _pinControllers) {
+                  verificationCode += controller.text;
+                }
+                print(verificationCode);
                 await _verifyCode(
                   widget.email,
                   widget.password,
-                  _verificationCodeController.text,
+                  verificationCode,
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -116,56 +221,52 @@ class _AdminVerificationScreenState extends State<AdminVerificationScreen> {
       ),
     );
   }
-}
 
-void _loginAsAdmin(BuildContext context, dynamic result) {
-  final admin = Admin(
-    fullname: result['admin']['fullname'] ?? 'not found',
-    email: result['admin']['email'] ?? 'not found',
-    password: result['admin']['password'] ?? 'not found',
-    phone: result['admin']['phone'] ?? 'not found',
-    id: result['admin']['_id'] ?? 'not found',
-    gender: result['admin']['gender'] ?? 'not found',
-    age: result['admin']['age'] ?? 'not found',
-    token: result['token'] ?? 'not found',
-    photo: result['admin']['photo'] ?? 'null',
-  );
-  print(admin);
-  Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => AdminLayuot(
-                admin: admin,
-              )));
-}
+  void _loginAsAdmin(String email, String password) async {
+    try {
+      final admin = await getAdminDataByEmail(email);
 
-Future<Admin?> getAdminDataByEmail(String email) async {
-  final Uri api = Uri.parse('http://192.168.1.8:3000/admin/getData');
-  try {
-    final response = await http.post(api, body: {
-      'email': email,
-    });
-    print(response.body);
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      final result = jsonData['result'];
-
-      return Admin(
-        fullname: result['fullname'] ?? 'not found',
-        email: result['email'] ?? 'not found',
-        password: result['password'] ?? 'not found',
-        phone: result['phone'] ?? 'not found',
-        id: result['_id'] ?? 'not found',
-        gender: result['gender'] ?? 'not found',
-        age: result['age'] ?? 'not found',
-        token: result['token'] ?? 'not found',
-        photo: result['photo'] ?? 'null',
-      );
-    } else {
-      print(response.body);
+      if (admin != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AdminLayuot(
+                    admin: admin,
+                  )),
+        );
+      }
+    } catch (e) {
+      print(e);
     }
-  } catch (e) {
-    print(e);
-    return null;
+  }
+
+  Future<Admin?> getAdminDataByEmail(String email) async {
+    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/getData');
+    try {
+      final response = await http.post(api, body: {
+        'email': email,
+      });
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        final result = jsonData['result'];
+
+        return Admin(
+          fullname: result['fullname'] ?? 'not found',
+          email: result['email'] ?? 'not found',
+          password: result['password'] ?? 'not found',
+          phone: result['phone'] ?? 'not found',
+          id: result['_id'] ?? 'not found',
+          gender: result['gender'] ?? 'not found',
+          age: result['age'] ?? 'not found',
+          token: result['token'] ?? 'not found',
+          photo: result['photo'] ?? 'null',
+        );
+      } else {
+        print(response.body);
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 }

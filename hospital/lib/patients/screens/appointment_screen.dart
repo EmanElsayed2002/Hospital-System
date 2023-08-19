@@ -4,11 +4,13 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital/models/doctorModel.dart';
+import 'package:hospital/models/patient.dart';
 import 'package:hospital/patients/screens/booking_page.dart';
 
 class AppointmentScreen extends StatefulWidget {
   final Doctor doctor;
-  const AppointmentScreen({super.key, required this.doctor});
+  final Patient patient;
+  const AppointmentScreen({required this.doctor, required this.patient});
 
   @override
   State<AppointmentScreen> createState() => _AppointmentScreenState();
@@ -17,8 +19,14 @@ class AppointmentScreen extends StatefulWidget {
 class _AppointmentScreenState extends State<AppointmentScreen> {
   @override
   Widget build(BuildContext context) {
-    final Uint8List bytes = base64Decode(widget.doctor.photo);
-    MemoryImage image = MemoryImage(bytes);
+    final image;
+
+    if (widget.doctor.photo != 'null') {
+      final Uint8List bytes = base64Decode(widget.doctor.photo);
+      image = MemoryImage(bytes);
+    } else {
+      image = AssetImage("assets/default.jpg");
+    }
     return Scaffold(
       backgroundColor: const Color(0XFF0080FE),
       body: SingleChildScrollView(
@@ -144,116 +152,6 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                     style: TextStyle(fontSize: 16, color: Colors.black54),
                   ),
                   const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      const Text(
-                        "Reviews",
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(width: 10),
-                      const Icon(Icons.star, color: Colors.amber),
-                      const Text(
-                        "4.9",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(width: 5),
-                      const Text(
-                        "(50)",
-                        style: TextStyle(color: Colors.black54),
-                      ),
-                      const Spacer(),
-                      TextButton(
-                        onPressed: () {},
-                        child: const Text(
-                          "See all",
-                          style: TextStyle(
-                            color: Color(0xFF7165D6),
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 160,
-                    // width: 200,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: const EdgeInsets.all(10),
-                          padding: const EdgeInsets.symmetric(vertical: 5),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black12,
-                                blurRadius: 4,
-                                spreadRadius: 2,
-                              ),
-                            ],
-                          ),
-                          child: SizedBox(
-                            width: MediaQuery.of(context).size.width / 1.4,
-                            child: Column(
-                              children: [
-                                ListTile(
-                                  leading: CircleAvatar(
-                                    radius: 25,
-                                    backgroundImage:
-                                        AssetImage("assets/doctor2.jpg"),
-                                  ),
-                                  title: Text(
-                                    "Eman Elsayed",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  subtitle: Text("1 day ago"),
-                                  trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
-                                      ),
-                                      Text(
-                                        "4.9",
-                                        style: TextStyle(
-                                          color: Colors.black54,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 5),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  child: Text(
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    "Best Doctor i recommend to you",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 10),
                   const Text(
                     "Location",
                     style: TextStyle(
@@ -328,7 +226,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const BookingPage(),
+                    builder: (context) => AppointmentsPage(
+                        doctor: widget.doctor, patient: widget.patient),
                   ),
                 );
               },

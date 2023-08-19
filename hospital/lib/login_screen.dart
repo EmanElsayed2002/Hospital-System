@@ -6,8 +6,11 @@ import 'package:hospital/components/social_button.dart';
 import 'package:hospital/patients/components/main_layout.dart';
 import 'package:http/http.dart' as http;
 import 'package:hospital/signup_screen.dart';
+
+import 'admin/screens/admin_main_layout.dart';
 import 'doctors/doctor_main_layout.dart';
 import 'models/Admin.dart';
+import 'models/Appointment.dart';
 import 'models/patient.dart';
 import 'models/doctorModel.dart';
 
@@ -22,7 +25,6 @@ class _loginScreenState extends State<loginScreen> {
   bool passToggle = true;
   final email = TextEditingController();
   final password = TextEditingController();
-  // make global variable for the response
   var response;
   @override
   Widget build(BuildContext context) {
@@ -202,7 +204,7 @@ class _loginScreenState extends State<loginScreen> {
 
 Future<dynamic> _loginUSer(
     String email, String password, BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.5:3000/admin/login');
+  final Uri api = Uri.parse('http://192.168.1.5:3000/doctor/login');
   try {
     final response = await http.post(api, body: {
       'email': email,
@@ -211,7 +213,6 @@ Future<dynamic> _loginUSer(
 
     final jsonData = json.decode(response.body);
     final result = jsonData['result'];
-    print(response.body);
     if (result['admin'] != null) {
       _loginAsAdmin(context, result);
     } else if (result['doctor'] != null) {
@@ -234,18 +235,20 @@ void _loginAsAdmin(BuildContext context, dynamic result) {
     gender: result['admin']['gender'] ?? 'not found',
     age: result['admin']['age'] ?? 'not found',
     token: result['token'] ?? 'not found',
-    photo: result['admin']['photo'] ?? 'assets/profile1.jpg',
+    photo: result['admin']['photo'] ?? 'not found',
   );
-
-  // Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //         builder: (context) => AdminLayuot(
-  //               admin: admin,
-  //             )));
+  Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => AdminLayuot(
+                admin: admin,
+              )));
 }
 
-void _loginAsDoctor(BuildContext context, dynamic result) {
+void _loginAsDoctor(BuildContext context, dynamic result) async {
+  final doctorId = result['doctor']['_id'].toString();
+  final appointments = await _getappointmentsfordoctor(doctorId);
+
   final doctor = Doctor(
     fullname: result['doctor']['fullname'] ?? 'not found',
     Specialization: result['doctor']['Specialization'] ?? 'not found',
@@ -254,38 +257,44 @@ void _loginAsDoctor(BuildContext context, dynamic result) {
     email: result['doctor']['email'] ?? 'not found',
     gender: result['doctor']['gender'] ?? 'not found',
     photo: result['doctor']['photo'] ?? 'not found',
-    id: result['doctor']['id'] ?? 'not found',
+    id: doctorId,
     address: result['doctor']['address'] ?? 'not found',
     aboutDoctor: result['doctor']['aboutDoctor'] ?? 'not found',
     price: result['doctor']['price'] ?? 'not found',
     age: result['doctor']['age'] ?? 'not found',
+    // appointments: _convertToAppointments(appointments),
   );
-  List<dynamic> decodedAppointments = result['doctor']['appointments'];
 
-  doctor.appointments = decodedAppointments;
   Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => DoctorLayout(
-                doctor: doctor,
-              )));
+    context,
+    MaterialPageRoute(
+      builder: (context) => DoctorLayout(
+        doctor: doctor,
+      ),
+    ),
+  );
 }
 
-void _loginAsPatient(BuildContext context, dynamic result) {
+void _loginAsPatient(BuildContext context, dynamic result) async {
+  final patientId = result['patient']['_id'].toString();
+  final appointments = await _getappointmentsforpatient(patientId);
+
   final patient = Patient(
     email: result['patient']['email'] ?? 'not found',
     password: result['patient']['password'] ?? 'not found',
     fullname: result['patient']['fullname'] ?? 'not found',
     age: result['patient']['age'] ?? 'not found',
-    photo: result['patient']['photo'] ?? 'not found',
+    photo: result['patient']['photo'] ?? 'null',
     gender: result['patient']['gender'] ?? 'not found',
     phone: result['patient']['phone'] ?? 'not found',
-    id: result['patient']['id'] ?? 'not found',
-    appointments: result['patient']['appointments'] ?? 'not found',
+    id: result['patient']['_id'] ?? 'not found',
+    appointments: _convertToAppointments(appointments) ?? [],
+    token: result['patient']['token'] ?? 'not found',
   );
-  patient.token = result['patient']['token'] ?? 'not found';
   List<Doctor> myDoctors = [];
   for (var doc in result['doctors']) {
+    final doctortId = doc['_id'].toString();
+    final appointments = await _getappointmentsfordoctor(doctortId);
     final doctor = Doctor(
       fullname: doc['fullname'] ?? 'not found',
       Specialization: doc['Specialization'] ?? 'not found',
@@ -294,12 +303,14 @@ void _loginAsPatient(BuildContext context, dynamic result) {
       email: doc['email'] ?? 'not found',
       gender: doc['gender'] ?? 'not found',
       photo: doc['photo'] ?? 'not found',
-      id: doc['id'] ?? 'not found',
+      id: doc['_id'] ?? 'not found',
       address: doc['address'] ?? 'not found',
       aboutDoctor: doc['aboutDoctor'] ?? 'not found',
       price: doc['price'] ?? 'not found',
       age: doc['age'] ?? 'not found',
+      // appointments: _convertToAppointments(appointments) ?? [],
     );
+
     myDoctors.add(doctor);
   }
   Navigator.push(
@@ -309,4 +320,61 @@ void _loginAsPatient(BuildContext context, dynamic result) {
                 patient: patient,
                 myDoctors: myDoctors,
               )));
+}
+
+Future<List<dynamic>> _getappointmentsfordoctor(String id) async {
+  final Uri api =
+      Uri.parse('http://192.168.1.5:3000/doctor/getallappointments');
+  try {
+    final response = await http.post(api, body: {
+      'id': id,
+    });
+    final jsonData = json.decode(response.body);
+
+    return jsonData['result'];
+  } catch (e) {
+    print(e);
+    return [];
+  }
+}
+
+Future<List<dynamic>> _getappointmentsforpatient(String id) async {
+  final Uri api = Uri.parse('http://192.168.1.5:3000/patient/getappointments');
+  try {
+    final response = await http.post(api, body: {
+      'id': id,
+    });
+    final jsonData = json.decode(response.body);
+
+    return jsonData['result'];
+  } catch (e) {
+    print(e);
+    return [];
+  }
+}
+
+List<Appointment> _convertToAppointments(List<dynamic> appointmentsData) {
+  List<Appointment> appointments = [];
+
+  for (dynamic appointmentData in appointmentsData) {
+    String date = appointmentData['date'] ?? '';
+    String time = appointmentData['time'] ?? '';
+    String status = appointmentData['status'] ?? '';
+    String Id = appointmentData['_id'] ?? '';
+    String patientId = appointmentData['patientId'] ?? '';
+    String doctorId = appointmentData['doctorId'] ?? '';
+
+    Appointment appointment = Appointment(
+      date: date,
+      time: time,
+      status: status,
+      patientId: patientId,
+      doctorId: doctorId,
+      Id: Id,
+    );
+
+    appointments.add(appointment);
+  }
+
+  return appointments;
 }

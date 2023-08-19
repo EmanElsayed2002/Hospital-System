@@ -20,17 +20,50 @@ class AdminLayuot extends StatefulWidget {
 }
 
 class _AdminLayuotState extends State<AdminLayuot> {
-  int currentPage = 0, cnt = 0;
-  // create non const list to get data from api
+  int currentPage = 0;
   List<Doctor> doctors = [];
   final PageController _page = PageController();
+  Future<void> get_all_doctors(List<Doctor> doctors, Admin admin) async {
+    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/readdoctorsdata');
+    try {
+      final response = await http.get(api);
+      final jsonData = json.decode(response.body);
+      final doctorList = jsonData['result'];
+      List<Doctor> fetchedDoctors = [];
+      for (var element in doctorList) {
+        final doctor = Doctor(
+          id: element['_id'] ?? 'not found',
+          fullname: element['fullname'] ?? 'not found',
+          email: element['email'] ?? 'not found',
+          password: element['password'] ?? 'not found',
+          Specialization: element['Specialization'] ?? 'not found',
+          gender: element['gender'] ?? 'not found',
+          phone: element['phone'] ?? 'not found',
+          address: element['address'] ?? 'not found',
+          aboutDoctor: element['aboutDoctor'] ?? 'not found',
+          price: element['Price'] ?? 'not found',
+          photo: element['photo'] ?? '',
+          age: element['age'] ?? 'not found',
+          // appointments: element['appointments'] ?? [],
+        );
+        fetchedDoctors.add(doctor);
+      }
+
+      doctors.addAll(fetchedDoctors);
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    get_all_doctors(doctors);
+    get_all_doctors(doctors, widget.admin);
   }
 
+  @override
   Widget build(BuildContext context) {
+    print(doctors);
     return Scaffold(
       body: PageView(
         controller: _page,
@@ -41,7 +74,7 @@ class _AdminLayuotState extends State<AdminLayuot> {
         }),
         children: <Widget>[
           AdminScreen(admin: widget.admin),
-          CreateDoctor(admin: widget.admin),
+          CreateDoctor(admin: widget.admin, doctors: doctors),
           ReadDoctors(doctors: doctors, admin: widget.admin),
           ProfilePage(admin: widget.admin),
         ],
@@ -99,36 +132,5 @@ class _AdminLayuotState extends State<AdminLayuot> {
         ),
       ),
     );
-  }
-}
-
-Future<void> get_all_doctors(List doctors) async {
-  // doctors = [];
-  final Uri api = Uri.parse('http://192.168.1.8:3000/admin/readdoctorsdata');
-  try {
-    final response = await http.get(api);
-    print(response.body);
-    final jsonData = json.decode(response.body);
-    final doctorList = jsonData['result'];
-    for (var element in doctorList) {
-      final doctor = Doctor(
-        id: element['_id'] ?? 'sasa',
-        fullname: element['fullname'] ?? 'sasa',
-        email: element['email'] ?? 'sasa',
-        password: element['password'] ?? 'sasa',
-        Specialization: element['Specialization'] ?? 'sasa',
-        gender: element['gender'] ?? 'sasa',
-        phone: element['phone'] ?? 'sasa',
-        address: element['address'] ?? 'sasa',
-        aboutDoctor: element['aboutDoctor'] ?? 'sasa',
-        price: element['Price'] ?? 'sasa',
-        photo: element['photo'] ?? 'sasa',
-        age: element['age'] ?? 'sasa',
-        // appointments: element['appointments'] ?? [],
-      );
-      doctors.add(doctor);
-    }
-  } catch (e) {
-    print(e);
   }
 }

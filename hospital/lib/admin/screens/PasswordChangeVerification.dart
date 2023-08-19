@@ -22,7 +22,7 @@ class _PasswordVerificationState extends State<PasswordVerification> {
       TextEditingController();
 
   Future<void> _verifyCode(String email, String password, String code) async {
-    final Uri api = Uri.parse('http://192.168.1.8:3000/verify-code');
+    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/verify-code');
 
     try {
       final response = await http.post(api, body: {

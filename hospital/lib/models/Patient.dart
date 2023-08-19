@@ -1,5 +1,7 @@
 // Purpose: Patient model
 
+import 'Appointment.dart';
+
 class Patient {
   final String email;
   final String password;
@@ -9,8 +11,8 @@ class Patient {
   final String photo;
   final String gender;
   final String id;
-  final dynamic appointments;
-  late String token;
+  final List<Appointment> appointments;
+  final String token;
 
   Patient({
     required this.email,
@@ -22,5 +24,6 @@ class Patient {
     required this.phone,
     required this.id,
     required this.appointments,
+    required this.token,
   });
 }

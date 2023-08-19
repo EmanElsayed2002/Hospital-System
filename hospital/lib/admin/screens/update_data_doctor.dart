@@ -2,6 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:hospital/admin/screens/ReadDoctors.dart';
+import 'package:hospital/admin/screens/admin_home_screen.dart';
+import 'package:hospital/admin/screens/admin_main_layout.dart';
 import 'package:hospital/models/Admin.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +16,9 @@ import '../../models/doctorModel.dart';
 class UpdateDataDoctor extends StatefulWidget {
   final Doctor? doctor;
   final Admin admin;
-  const UpdateDataDoctor({super.key, this.doctor, required this.admin});
+  final List<Doctor> doctors;
+  const UpdateDataDoctor(
+      {super.key, this.doctor, required this.admin, required this.doctors});
 
   @override
   State<UpdateDataDoctor> createState() => _UpdateDataDoctorState();
@@ -34,7 +39,15 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
   final List<String> _genders = ['Male', 'Female', 'Other'];
   File? image;
   String? base64Image;
-
+  String? _selectedSpecialization;
+  final List<String> _specialization = [
+    'General',
+    'Cardiology',
+    'Respirations',
+    'Dermatology',
+    'Gynecology',
+    'Dental'
+  ];
   Future pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -55,6 +68,30 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
     print(base64Image);
   }
 
+  Widget _buildDropdownField({
+    required String? value,
+    required void Function(String?)? onChanged,
+    required List<DropdownMenuItem<String>> items,
+    required String labelText,
+  }) {
+    return DropdownButtonFormField<String>(
+      value: value,
+      onChanged: onChanged,
+      items: items,
+      decoration: InputDecoration(
+        labelText: labelText,
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.blueAccent),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     _nameController.text = widget.doctor!.fullname;
@@ -72,6 +109,7 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
 
   @override
   Widget build(BuildContext context) {
+    // print(widget.doctor!.id);
     final doctorimage;
 
     if (widget.doctor?.photo != 'null') {
@@ -174,12 +212,20 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
               ),
             ),
             const SizedBox(height: 16),
-            TextField(
-              controller: _specializationController,
-              decoration: const InputDecoration(
-                labelText: 'Specialization',
-                border: OutlineInputBorder(),
-              ),
+            _buildDropdownField(
+              value: _selectedSpecialization,
+              onChanged: (newValue) {
+                setState(() {
+                  _selectedSpecialization = newValue;
+                });
+              },
+              items: _specialization.map((specialization) {
+                return DropdownMenuItem<String>(
+                  value: specialization,
+                  child: Text(specialization),
+                );
+              }).toList(),
+              labelText: 'Specialization',
             ),
             const SizedBox(height: 16),
             TextField(
@@ -226,7 +272,9 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
                     _emailController.text,
                     _passwordController.text,
                     _phoneController.text,
-                    base64Image.toString(),
+                    base64Image == null
+                        ? widget.doctor!.photo
+                        : base64Image.toString(),
                     _aboutController.text,
                     _priceController.text,
                     _addressController.text,
@@ -252,9 +300,8 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
                 title: 'Delete Doctor',
                 onPressed: () {
                   _deleteDoctor(
-                    _emailController.text,
+                    widget.doctor!.email,
                     widget.admin.token,
-                    context,
                   );
                 },
                 disable: false,
@@ -283,7 +330,7 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
     String age,
     BuildContext context,
   ) async {
-    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/updatedoctor');
+    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/updatedoctor');
     try {
       final response = await http.post(api, body: {
         'email': email,
@@ -300,6 +347,35 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
         'Price': price,
         'age': age,
       });
+      // update data doctor in the list
+      if (response.statusCode == 200) {
+        widget.doctors
+            .removeWhere((element) => element.id == widget.doctor!.id);
+        widget.doctors.add(Doctor(
+            fullname: name,
+            Specialization: specialization,
+            phone: phone,
+            password: password,
+            email: email,
+            gender: gender,
+            id: id,
+            address: address,
+            aboutDoctor: aboutDoctor,
+            price: price,
+            photo: base64Image,
+            age: age));
+        _showDoctorDeletedDialog(
+            "Doctor Updated", "Doctor has been updated successfully.", context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ReadDoctors(
+              admin: widget.admin,
+              doctors: widget.doctors,
+            ),
+          ),
+        );
+      }
       print(response.body);
       // _showDoctorCreatedDialog(context);
     } catch (e) {
@@ -330,28 +406,46 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
   Future<dynamic> _deleteDoctor(
     String email,
     String token,
-    BuildContext context,
   ) async {
-    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/deletedoctor');
+    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/deletedoctor');
     try {
       final response = await http.post(api, body: {
         'email': email,
         'token': token,
-        'id': 'sasa',
       });
-      _showDoctorDeletedDialog(context);
+
+      print(email);
+      print(response.body);
+      if (response.statusCode == 200) {
+        widget.doctors
+            .removeWhere((element) => element.email == widget.doctor!.email);
+        _showDoctorDeletedDialog("Doctor Deleted",
+            "The doctor has been deleted successfully.", context);
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ReadDoctors(
+              admin: widget.admin,
+              doctors: widget.doctors,
+            ),
+          ),
+        );
+      } else
+        _showDoctorDeletedDialog("Error", "Something went wrong.", context);
     } catch (e) {
       print(e);
     }
   }
 
-  void _showDoctorDeletedDialog(BuildContext context) {
+  void _showDoctorDeletedDialog(
+      String title, String message, BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Doctor Deleted'),
-          content: const Text('The doctor has been deleted successfully.'),
+          title: Text(title),
+          content: Text(message),
           actions: <Widget>[
             TextButton(
               child: const Text('OK'),

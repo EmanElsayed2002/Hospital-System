@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:hospital/admin/screens/admin_home_screen.dart';
 import 'package:hospital/admin/screens/admin_main_layout.dart';
 import 'package:hospital/models/Admin.dart';
 import 'package:hospital/models/doctorModel.dart';
@@ -10,7 +11,9 @@ import 'package:http/http.dart' as http;
 
 class CreateDoctor extends StatefulWidget {
   final Admin admin;
-  const CreateDoctor({Key? key, required this.admin}) : super(key: key);
+  final List<Doctor> doctors;
+  const CreateDoctor({Key? key, required this.admin, required this.doctors})
+      : super(key: key);
 
   @override
   State<CreateDoctor> createState() => _CreateDoctorState();
@@ -26,8 +29,18 @@ class _CreateDoctorState extends State<CreateDoctor> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _aboutDoctorController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
   String? _selectedGender;
   final List<String> _genders = ['Male', 'Female', 'Other'];
+  String? _selectedSpecialization;
+  final List<String> _specialization = [
+    'General',
+    'Cardiology',
+    'Respirations',
+    'Dermatology',
+    'Gynecology',
+    'Dental'
+  ];
   File? image;
   String? base64Image;
 
@@ -61,6 +74,7 @@ class _CreateDoctorState extends State<CreateDoctor> {
     _addressController.dispose();
     _aboutDoctorController.dispose();
     _priceController.dispose();
+    _ageController.dispose();
     super.dispose();
   }
 
@@ -126,6 +140,11 @@ class _CreateDoctorState extends State<CreateDoctor> {
             ),
             const SizedBox(height: 16),
             _buildTextField(
+              controller: _ageController,
+              labelText: 'Age',
+            ),
+            const SizedBox(height: 16),
+            _buildTextField(
               controller: _addressController,
               labelText: 'Address',
             ),
@@ -135,8 +154,19 @@ class _CreateDoctorState extends State<CreateDoctor> {
               labelText: 'About Doctor',
             ),
             const SizedBox(height: 16),
-            _buildTextField(
-              controller: _specializationController,
+            _buildDropdownField(
+              value: _selectedSpecialization,
+              onChanged: (newValue) {
+                setState(() {
+                  _selectedSpecialization = newValue;
+                });
+              },
+              items: _specialization.map((specialization) {
+                return DropdownMenuItem<String>(
+                  value: specialization,
+                  child: Text(specialization),
+                );
+              }).toList(),
               labelText: 'Specialization',
             ),
             const SizedBox(height: 16),
@@ -164,20 +194,38 @@ class _CreateDoctorState extends State<CreateDoctor> {
             _buildButton(
               title: 'Create Account',
               onPressed: () {
-                _createDoctor(
-                  _nameController.text,
-                  _specializationController.text,
-                  _selectedGender.toString(),
-                  _emailController.text,
-                  _passwordController.text,
-                  widget.admin.token,
-                  _phoneController.text,
-                  base64Image.toString(),
-                  _aboutDoctorController.text,
-                  _addressController.text,
-                  _priceController.text,
-                  context,
-                );
+                if (base64Image == null) {
+                  _showDoctorCreatedDialog(
+                      context, "Error", "Please pick a profile picture");
+                } else if (_nameController.text.isEmpty ||
+                    _emailController.text.isEmpty ||
+                    _passwordController.text.isEmpty ||
+                    _phoneController.text.isEmpty ||
+                    _ageController.text.isEmpty ||
+                    _addressController.text.isEmpty ||
+                    _aboutDoctorController.text.isEmpty ||
+                    _priceController.text.isEmpty ||
+                    _selectedGender == null ||
+                    _selectedSpecialization == null)
+                  _showDoctorCreatedDialog(
+                      context, "Error", "Please fill all fields");
+                else {
+                  _createDoctor(
+                    _nameController.text,
+                    _selectedSpecialization.toString(),
+                    _selectedGender.toString(),
+                    _emailController.text,
+                    _passwordController.text,
+                    widget.admin.token,
+                    _phoneController.text,
+                    base64Image.toString(),
+                    _aboutDoctorController.text,
+                    _addressController.text,
+                    _priceController.text,
+                    _ageController.text,
+                    context,
+                  );
+                }
               },
               height: 50,
             ),
@@ -263,9 +311,10 @@ class _CreateDoctorState extends State<CreateDoctor> {
     String aboutDoctor,
     String address,
     String price,
+    String age,
     BuildContext context,
   ) async {
-    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/createnewdoctor');
+    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/createnewdoctor');
     try {
       final response = await http.post(api, body: {
         'email': email,
@@ -280,12 +329,28 @@ class _CreateDoctorState extends State<CreateDoctor> {
         'aboutDoctor': aboutDoctor,
         'address': address,
         'Price': price,
+        'age': age,
       });
       var message = jsonDecode(response.body)['message'];
       print(message);
       if (response.statusCode == 200) {
-        List<Doctor> doctors = [];
-        await get_all_doctors(doctors);
+        Doctor doctor = new Doctor(
+          fullname: name,
+          Specialization: specialization,
+          phone: phone,
+          password: password,
+          email: email,
+          gender: gender,
+          id: '',
+          address: address,
+          aboutDoctor: aboutDoctor,
+          price: price,
+          photo: base64Image,
+          age: age,
+          // appointments: [],
+        );
+
+        widget.doctors.add(doctor);
         _showDoctorCreatedDialog(context, "Created", message);
       } else
         _showDoctorCreatedDialog(context, "Error", message);
@@ -306,16 +371,21 @@ class _CreateDoctorState extends State<CreateDoctor> {
             TextButton(
               child: const Text('OK'),
               onPressed: () {
-                _aboutDoctorController.clear();
-                _addressController.clear();
-                _emailController.clear();
-                _nameController.clear();
-                _passwordController.clear();
-                _phoneController.clear();
-                _priceController.clear();
-                _specializationController.clear();
-                _selectedGender = null;
-                Navigator.of(context).pop();
+                if (title == "Created") {
+                  _aboutDoctorController.clear();
+                  _addressController.clear();
+                  _emailController.clear();
+                  _nameController.clear();
+                  _passwordController.clear();
+                  _phoneController.clear();
+                  _priceController.clear();
+                  _specializationController.clear();
+                  _selectedGender = null;
+                  _selectedSpecialization = null;
+                  Navigator.of(context).pop();
+                } else {
+                  Navigator.of(context).pop();
+                }
               },
             ),
           ],

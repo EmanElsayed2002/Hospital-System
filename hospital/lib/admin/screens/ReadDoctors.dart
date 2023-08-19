@@ -18,6 +18,8 @@ class ReadDoctors extends StatefulWidget {
 }
 
 class _ReadDoctorsState extends State<ReadDoctors> {
+  int _selectedIndex = 0;
+
   List<Map<String, dynamic>> medCat = [
     {
       "icon": FontAwesomeIcons.userDoctor,
@@ -44,18 +46,50 @@ class _ReadDoctorsState extends State<ReadDoctors> {
       "category": "Dental",
     },
   ];
+  List<Doctor> _filteredElements = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _filteredElements =
+        List.from(widget.doctors!); // Initialize with all doctors initially
+    _filterElements(medCat[_selectedIndex]["category"]);
+  }
+
+  void _filterElements(String choice) {
+    List<Doctor> doctors = widget.doctors!;
+    List<Doctor> filtered = [];
+    for (int i = 0; i < doctors.length; i++) {
+      Doctor doctor = doctors[i];
+      print(doctor.Specialization);
+      print(choice);
+      if (doctor.Specialization == choice) {
+        filtered.add(doctor);
+      }
+    }
+
+    setState(() {
+      _filteredElements = filtered;
+    });
+  }
+
   ImageProvider _getAdminImage(Doctor doctor) {
-    if (doctor.photo != 'null') {
-      final Uint8List bytes = base64Decode(doctor.photo);
-      return MemoryImage(bytes);
-    } else {
+    try {
+      if (doctor.photo != 'null') {
+        final Uint8List bytes = base64Decode(doctor.photo);
+        return MemoryImage(bytes);
+      } else {
+        return AssetImage("assets/default.jpg");
+      }
+    } catch (e) {
+      print("Image decoding error: $e");
       return AssetImage("assets/default.jpg");
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.doctors!.length);
+    print(widget.doctors);
     final adminimage;
     if (widget.admin.photo != 'null') {
       final Uint8List bytes = base64Decode(widget.admin.photo);
@@ -106,42 +140,54 @@ class _ReadDoctorsState extends State<ReadDoctors> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                height: 50,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: List<Widget>.generate(medCat.length, (index) {
-                    return Card(
-                      margin: const EdgeInsets.only(right: 20),
-                      color: Colors.green,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            FaIcon(
-                              medCat[index]['icon'],
-                              color: Colors.white,
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              medCat[index]['category'],
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
-                        ),
+            Container(
+              height: 50, // Set a fixed height for better UI
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: medCat.length,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = index;
+                        _filterElements(medCat[index]["category"]);
+                      });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: _selectedIndex == index
+                            ? Theme.of(context).primaryColor
+                            : Colors.green,
+                        borderRadius: BorderRadius.circular(15.0),
                       ),
-                    );
-                  }),
-                ),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10.0),
+                      margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          FaIcon(
+                            medCat[index]['icon'],
+                            color: Colors.white,
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            medCat[index]["category"],
+                            style: TextStyle(
+                              color: _selectedIndex == index
+                                  ? Colors.white
+                                  : Colors.black,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
             const Padding(
@@ -156,68 +202,70 @@ class _ReadDoctorsState extends State<ReadDoctors> {
               ),
             ),
             const SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.only(top: 0),
-              child: ListView.builder(
-                itemCount: widget.doctors!.length,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      elevation: 2,
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(12.0),
-                        leading: CircleAvatar(
-                          radius: 30,
-                          backgroundImage:
-                              _getAdminImage(widget.doctors![index]),
-                        ),
-                        title: Text(
-                          widget.doctors![index].fullname,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Text(
-                          widget.doctors![index].Specialization,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        trailing: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => UpdateDataDoctor(
-                                  doctor: widget.doctors![index],
-                                  admin: widget.admin,
+            Container(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: _filteredElements.isEmpty
+                  ? Center(
+                      child: Text(
+                        'No doctors found',
+                        style: TextStyle(fontSize: 16.0),
+                      ),
+                    )
+                  : ListView.builder(
+                      itemCount: _filteredElements.length,
+                      itemBuilder: (context, index) {
+                        Doctor doctor = _filteredElements[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 4.0),
+                          child: Card(
+                            elevation: 4.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              side: BorderSide(
+                                  color: Colors.grey.shade300, width: 1.0),
+                            ),
+                            child: ListTile(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => UpdateDataDoctor(
+                                      doctor: doctor,
+                                      admin: widget.admin,
+                                      doctors: widget.doctors!,
+                                    ),
+                                  ),
+                                );
+                              },
+                              leading: CircleAvatar(
+                                radius: 30.0,
+                                backgroundImage: _getAdminImage(doctor),
+                              ),
+                              title: Text(
+                                doctor.fullname,
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            );
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.blue.withOpacity(0.1),
-                            ),
-                            child: Icon(
-                              Icons.edit,
-                              color: Colors.blue,
+                              subtitle: Text(
+                                doctor.Specialization,
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              trailing: Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.blue,
+                                size: 16.0,
+                              ),
                             ),
                           ),
-                        ),
-                        onTap: () {},
-                      ),
+                        );
+                      },
                     ),
-                  );
-                },
-              ),
             ),
           ],
         ),
