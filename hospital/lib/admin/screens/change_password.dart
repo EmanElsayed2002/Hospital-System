@@ -123,7 +123,7 @@ class _ChangePasswordState extends State<ChangePassword> {
             _newPasswordController.text,
             _confirmPasswordController.text,
             widget.admin,
-            widget.admin.token,
+            widget.admin.token.toString(),
             context,
           );
         },
@@ -153,11 +153,11 @@ class _ChangePasswordState extends State<ChangePassword> {
     final api = Uri.parse('http://192.168.1.7:3000/admin/changepassword');
     try {
       final response = await http.post(api, body: {
-        'currentPassword': currentPassword,
-        'newPassword': newPassword,
-        'confirmPassword': confirmPassword,
-        'id': admin.id,
-        'token': token,
+        'oldpassword': currentPassword,
+        'newpassword': newPassword,
+        'confirmpassword': confirmPassword,
+        'id': admin.id.toString(),
+        'token': token.toString(),
       });
       final jsonData = json.decode(response.body);
       if (response.statusCode == 200) {

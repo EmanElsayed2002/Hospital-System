@@ -104,6 +104,7 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
     _priceController.text = widget.doctor!.price;
     _passwordController.text = widget.doctor!.password;
     _ageController.text = widget.doctor!.age;
+    _selectedSpecialization = widget.doctor!.Specialization;
     super.initState();
   }
 
@@ -111,7 +112,6 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
   Widget build(BuildContext context) {
     // print(widget.doctor!.id);
     final doctorimage;
-
     if (widget.doctor?.photo != 'null') {
       final Uint8List bytes = base64Decode(widget.doctor!.photo);
       doctorimage = MemoryImage(bytes);
@@ -213,7 +213,7 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
             ),
             const SizedBox(height: 16),
             _buildDropdownField(
-              value: _selectedSpecialization,
+              value: _specializationController.text,
               onChanged: (newValue) {
                 setState(() {
                   _selectedSpecialization = newValue;
@@ -267,7 +267,7 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
                 onPressed: () {
                   _updateDoctor(
                     _nameController.text,
-                    _specializationController.text,
+                    _selectedSpecialization.toString(),
                     _selectedGender.toString(),
                     _emailController.text,
                     _passwordController.text,
@@ -350,7 +350,7 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
       // update data doctor in the list
       if (response.statusCode == 200) {
         widget.doctors
-            .removeWhere((element) => element.id == widget.doctor!.id);
+            .removeWhere((element) => element.email == widget.doctor!.email);
         widget.doctors.add(Doctor(
             fullname: name,
             Specialization: specialization,
@@ -363,18 +363,20 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
             aboutDoctor: aboutDoctor,
             price: price,
             photo: base64Image,
-            age: age));
+            age: age,
+            appointments: [],
+            token: ''));
         _showDoctorDeletedDialog(
             "Doctor Updated", "Doctor has been updated successfully.", context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ReadDoctors(
-              admin: widget.admin,
-              doctors: widget.doctors,
-            ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => ReadDoctors(
+        //       admin: widget.admin,
+        //       doctors: widget.doctors,
+        //     ),
+        //   ),
+        // );
       }
       print(response.body);
       // _showDoctorCreatedDialog(context);
@@ -417,17 +419,14 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
       print(email);
       print(response.body);
       if (response.statusCode == 200) {
-        widget.doctors
-            .removeWhere((element) => element.email == widget.doctor!.email);
+        widget.doctors.clear();
         _showDoctorDeletedDialog("Doctor Deleted",
             "The doctor has been deleted successfully.", context);
-
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ReadDoctors(
+            builder: (context) => AdminLayuot(
               admin: widget.admin,
-              doctors: widget.doctors,
             ),
           ),
         );

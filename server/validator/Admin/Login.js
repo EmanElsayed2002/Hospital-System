@@ -16,14 +16,14 @@ test = async function (data) {
   // check if the email is exist
   let founded = await Admin.findOne({ email: data.email });
   if (!founded) {
-    return ["Email is not exist", 401];
+    return ["Email is not exist", 400];
   }
 
   // check if the password is correct
   console.log(data.password);
   const passwordMatch = await bcrypt.compare(data.password, founded.password);
   if (!passwordMatch) {
-    return ["Password is wrong", 401];
+    return ["Password is wrong", 400];
   }
     return ["valid", 200];
   

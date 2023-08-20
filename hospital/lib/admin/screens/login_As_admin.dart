@@ -12,7 +12,8 @@ class AdminLoginScreen extends StatefulWidget {
 class _AdminLoginScreenState extends State<AdminLoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  Future<void> _sendVerificationEmail(String email) async {
+
+  Future<void> _sendVerificationEmail(String email, Admin admin) async {
     final Uri api =
         Uri.parse('http://192.168.1.7:3000/admin/send-verification-email');
 
@@ -27,6 +28,7 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
             builder: (context) => AdminVerificationScreen(
               email: _emailController.text,
               password: _passwordController.text,
+              admin: admin,
             ),
           ),
         );
@@ -47,17 +49,12 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
         'password': password,
       });
       if (response.statusCode == 200) {
-        _sendVerificationEmail(email);
+        final jsonData = json.decode(response.body);
+        final result = jsonData['result'];
+        _sendVerificationEmail(email, _loginAsAdmin(context, result));
       } else {
         var message = json.decode(response.body)['message'];
         _showErrorDialog(context, message);
-      }
-
-      final jsonData = json.decode(response.body);
-      final result = jsonData['result'];
-      print(response.body);
-      if (result['admin'] != null) {
-        _loginAsAdmin(context, result);
       }
     } catch (e) {
       print(e);
@@ -140,7 +137,7 @@ void _showErrorDialog(BuildContext context, String message) {
   );
 }
 
-void _loginAsAdmin(BuildContext context, dynamic result) {
+Admin _loginAsAdmin(BuildContext context, dynamic result) {
   final admin = Admin(
     fullname: result['admin']['fullname'] ?? 'not found',
     email: result['admin']['email'] ?? 'not found',
@@ -152,4 +149,5 @@ void _loginAsAdmin(BuildContext context, dynamic result) {
     token: result['token'] ?? 'not found',
     photo: result['admin']['photo'] ?? 'assets/profile1.jpg',
   );
+  return admin;
 }

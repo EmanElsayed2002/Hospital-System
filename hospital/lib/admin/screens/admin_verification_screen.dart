@@ -10,9 +10,11 @@ import 'login_As_admin.dart';
 class AdminVerificationScreen extends StatefulWidget {
   final String email;
   final String password;
+  final Admin admin;
   const AdminVerificationScreen({
     required this.email,
     required this.password,
+    required this.admin,
   });
 
   @override
@@ -84,6 +86,7 @@ class _AdminVerificationScreenState extends State<AdminVerificationScreen> {
             builder: (context) => AdminVerificationScreen(
               email: email,
               password: widget.password,
+              admin: widget.admin,
             ),
           ),
         );
@@ -224,7 +227,7 @@ class _AdminVerificationScreenState extends State<AdminVerificationScreen> {
 
   void _loginAsAdmin(String email, String password) async {
     try {
-      final admin = await getAdminDataByEmail(email);
+      final admin = widget.admin;
 
       if (admin != null) {
         Navigator.push(

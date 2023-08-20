@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:hospital/models/Appointment.dart';
 import 'package:hospital/models/doctorModel.dart';
@@ -15,7 +13,7 @@ class AppointmentPage extends StatefulWidget {
 
 class _AppointmentPageState extends State<AppointmentPage> {
   int _selectedIndex = 0;
-  List<String> _choices = ["free", "booked", "canceled"];
+  List<String> _choices = ["Free", "Booked", "Canceled"];
 
   List<String> _filteredElements = [];
 
@@ -33,7 +31,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
       for (int i = 0; i < appointments.length; i++) {
         String date = appointments[i].date;
         String status = appointments[i].status;
-
+        // reverse data
+        date = date.split('-').reversed.join('-');
         if (status == choice) {
           filtered.add('Appointment at $date');
         }
@@ -47,7 +46,6 @@ class _AppointmentPageState extends State<AppointmentPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.doctor.appointments[0].status);
     return Scaffold(
       appBar: AppBar(
         title: Text('Appointments'),
@@ -76,7 +74,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                     padding:
                         EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                     child: Text(
-                      _choices[index].toUpperCase(),
+                      _choices[index],
                       style: TextStyle(
                         color: _selectedIndex == index
                             ? Colors.white
@@ -102,15 +100,24 @@ class _AppointmentPageState extends State<AppointmentPage> {
                     itemCount: _filteredElements.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Card(
-                        elevation: 2.0,
+                        elevation: 4.0,
                         margin: EdgeInsets.symmetric(
                             horizontal: 16.0, vertical: 8.0),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
                         child: Column(
                           children: [
                             Container(
                               height: 100,
-                              child: Image.asset(
-                                "assets/doctors.png",
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(15.0),
+                                ),
+                                image: DecorationImage(
+                                  image: AssetImage("assets/doctors.png"),
+                                  // fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                             ListTile(

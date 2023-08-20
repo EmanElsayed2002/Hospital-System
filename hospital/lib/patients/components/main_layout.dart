@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:hospital/models/doctorModel.dart';
 import 'package:hospital/patients/screens/home_page.dart';
-import 'package:hospital/patients/components/message_screen.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../../models/Appointment.dart';
@@ -42,7 +41,7 @@ class _MainLayoutState extends State<MainLayout> {
         }),
         children: <Widget>[
           HomePage(patient: widget.patient, PopularDoctors: PopularDoctors),
-          MessagesScreen(),
+          // MessagesScreen(),
           MyDoctorsScreen(
               patient: widget.patient, myDoctors: widget.myDoctors!),
           ProfilePage(patient: widget.patient), //profile
@@ -84,12 +83,6 @@ class _MainLayoutState extends State<MainLayout> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                CupertinoIcons.chat_bubble_text_fill,
-              ),
-              label: "Messages",
-            ),
-            BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.solidCalendarCheck),
               label: 'Appointments',
             ),
@@ -114,19 +107,20 @@ Future<void> get_all_patient(List<Doctor> PopularDoctors) async {
       final doctortId = element['_id'].toString();
       final appointments = await _getappointmentsfordoctor(doctortId);
       final doctor = Doctor(
-        id: element['_id'] ?? 'sasa',
-        fullname: element['fullname'] ?? 'sasa',
-        email: element['email'] ?? 'sasa',
-        password: element['password'] ?? 'sasa',
-        Specialization: element['Specialization'] ?? 'sasa',
-        gender: element['gender'] ?? 'sasa',
-        phone: element['phone'] ?? 'sasa',
-        address: element['address'] ?? 'sasa',
-        aboutDoctor: element['aboutDoctor'] ?? 'sasa',
-        price: element['price'] ?? '150',
-        photo: element['photo'] ?? 'sasa',
-        age: element['age'] ?? 'sasa',
-        // appointments: _convertToAppointments(appointments) ?? [],
+        id: element['_id'] ?? 'not found',
+        fullname: element['fullname'] ?? 'not found',
+        email: element['email'] ?? 'not found',
+        password: element['password'] ?? 'not found',
+        Specialization: element['Specialization'] ?? 'not found',
+        gender: element['gender'] ?? 'not found',
+        phone: element['phone'] ?? 'not found',
+        address: element['address'] ?? 'not found',
+        aboutDoctor: element['aboutDoctor'] ?? 'not found',
+        price: element['price'] ?? 'not found',
+        photo: element['photo'] ?? 'not found',
+        age: element['age'] ?? 'not found',
+        appointments: _convertToAppointments(appointments) ?? [],
+        token: '',
       );
       PopularDoctors.add(doctor);
     }

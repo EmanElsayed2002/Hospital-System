@@ -24,11 +24,11 @@ router.post( "/login", AdminLogin.Login ); // Done for backend
 // router.post("/upload", AdminUploadingPhoto.Upload);
 router.post( "/edit", CheckAuth, adminCheck, AdminEditProfile.Edit ); // Done for backend
 router.post( "/changepassword", CheckAuth, adminCheck, AdminChangePassword.ChangePass ); // Done for backend
-router.post( "/createnewdoctor", AdminCreateNewDoctor.CreateNewDoctor ); // Done for backend
-router.post( "/deletedoctor", AdminDeleteDoctors.DeleteDoctor ); // Done for backend
-router.get( "/readdoctorsdata", AdminReadDoctorsDate.ReadDoctorsData ); // Done for backend
-router.post( "/updatedoctor", AdminUpdateDoctor.UpdateDoctor ); // Done for backend
+router.post( "/createnewdoctor", CheckAuth, adminCheck, AdminCreateNewDoctor.CreateNewDoctor ); // Done for backend
+router.post( "/deletedoctor", CheckAuth, adminCheck, AdminDeleteDoctors.DeleteDoctor ); // Done for backend
+router.get( "/readdoctorsdata", CheckAuth, adminCheck, AdminReadDoctorsDate.ReadDoctorsData ); // Done for backend
+router.post( "/updatedoctor", CheckAuth, adminCheck, AdminUpdateDoctor.UpdateDoctor ); // Done for backend
 router.post( "/send-verification-email", AdminVerificationCode.verificationEmail );
-router.post( "/verify-code", AdminVerificationCode.verifyCode );
+router.post( "/verify-code",  AdminVerificationCode.verifyCode );
 router.post( "/getData", AdminGetAdminDataByEmail.getAdminDataByEmail );
 module.exports = router;

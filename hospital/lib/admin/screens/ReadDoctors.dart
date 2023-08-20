@@ -61,8 +61,6 @@ class _ReadDoctorsState extends State<ReadDoctors> {
     List<Doctor> filtered = [];
     for (int i = 0; i < doctors.length; i++) {
       Doctor doctor = doctors[i];
-      print(doctor.Specialization);
-      print(choice);
       if (doctor.Specialization == choice) {
         filtered.add(doctor);
       }
@@ -131,12 +129,14 @@ class _ReadDoctorsState extends State<ReadDoctors> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             const Padding(
-              padding: EdgeInsets.all(14.0),
+              padding: EdgeInsets.all(15.0),
               child: Text(
                 'Category',
+                
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
+                  color: Color(0XFF0080FE),
                 ),
               ),
             ),
@@ -191,7 +191,7 @@ class _ReadDoctorsState extends State<ReadDoctors> {
               ),
             ),
             const Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(15.0),
               child: Text(
                 'Doctors',
                 style: TextStyle(

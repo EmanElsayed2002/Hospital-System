@@ -9,6 +9,6 @@ module.exports = (req, res, next) => {
     req.body.auth = decoded._id;
     next();
   } catch (err) {
-    return sendResponse(res, 401, "Authentication failed");
+    return sendResponse(res, 406, "Authentication failed");
   }
 };

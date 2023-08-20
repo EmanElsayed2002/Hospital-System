@@ -223,6 +223,7 @@ class _CreateDoctorState extends State<CreateDoctor> {
                     _addressController.text,
                     _priceController.text,
                     _ageController.text,
+                    widget.admin,
                     context,
                   );
                 }
@@ -312,6 +313,7 @@ class _CreateDoctorState extends State<CreateDoctor> {
     String address,
     String price,
     String age,
+    Admin admin,
     BuildContext context,
   ) async {
     final Uri api = Uri.parse('http://192.168.1.7:3000/admin/createnewdoctor');
@@ -323,13 +325,13 @@ class _CreateDoctorState extends State<CreateDoctor> {
         'gender': gender,
         'Specialization': specialization,
         'phone': phone,
-        'token': token,
         'photo': base64Image,
         'auth': '',
         'aboutDoctor': aboutDoctor,
         'address': address,
         'Price': price,
         'age': age,
+        'token': admin.token,
       });
       var message = jsonDecode(response.body)['message'];
       print(message);
@@ -347,7 +349,8 @@ class _CreateDoctorState extends State<CreateDoctor> {
           price: price,
           photo: base64Image,
           age: age,
-          // appointments: [],
+          appointments: [],
+          token: '',
         );
 
         widget.doctors.add(doctor);
@@ -382,6 +385,8 @@ class _CreateDoctorState extends State<CreateDoctor> {
                   _specializationController.clear();
                   _selectedGender = null;
                   _selectedSpecialization = null;
+                  _ageController.clear();
+
                   Navigator.of(context).pop();
                 } else {
                   Navigator.of(context).pop();

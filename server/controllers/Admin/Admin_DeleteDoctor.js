@@ -1,13 +1,12 @@
-const Doctor = require( "../../models/Admin" );
+const Doctor = require( "../../models/Doctor" );
 const sendResponse = require( "../../utils/sendResonse" );
 
 const DeleteDoctor = async ( req, res ) =>
 {
   try
   {
-    const id = req.body.email;
-    console.log( id );
-    const doctor = await Doctor.findOneAndDelete( { email: id } );
+    const email = req.body.email;
+    const doctor = await Doctor.findOneAndDelete( { email: email } );
     if ( !doctor )
     {
       return sendResponse( res, 404, "Doctor not found" );

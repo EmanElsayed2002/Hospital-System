@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hospital/doctors/create_available_time.dart';
 import 'package:hospital/doctors/doctorscreen.dart';
-import 'package:hospital/doctors/massage_doctor.dart';
 import 'package:hospital/models/patient.dart';
 import 'package:hospital/models/doctorModel.dart';
 import 'package:hospital/doctors/appointment_page.dart';
@@ -42,7 +41,6 @@ class _DoctorLayoutState extends State<DoctorLayout> {
         }),
         children: <Widget>[
           DoctorScreen(doctor: widget.doctor, appointments: appointments),
-          MessageDoctor(doctor: widget.doctor),
           CreateAvailableTime(doctor: widget.doctor),
           AppointmentPage(doctor: widget.doctor),
           ProfilePage(doctor: widget.doctor),
@@ -84,12 +82,6 @@ class _DoctorLayoutState extends State<DoctorLayout> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                CupertinoIcons.chat_bubble_text_fill,
-              ),
-              label: "Messages",
-            ),
-            BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.add),
               label: 'create',
             ),
@@ -112,7 +104,7 @@ class _DoctorLayoutState extends State<DoctorLayout> {
 Future<void> get_all_patient(
     List<upCommingAppointment> appointmentss, Doctor doctor) async {
   final Uri api =
-      Uri.parse('http://192.168.1.5:3000/doctor/getpatientandappointments');
+      Uri.parse('http://192.168.1.7:3000/doctor/getpatientandappointments');
   try {
     final response = await http.post(api, body: {
       'id': doctor.id,
@@ -164,7 +156,7 @@ Future<void> get_all_patient(
 }
 
 Future<List<dynamic>> _getappointments(String id) async {
-  final Uri api = Uri.parse('http://192.168.1.5:3000/patient/getappointments');
+  final Uri api = Uri.parse('http://192.168.1.7:3000/patient/getappointments');
   try {
     final response = await http.post(api, body: {
       'id': id,

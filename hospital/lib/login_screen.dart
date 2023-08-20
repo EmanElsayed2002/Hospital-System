@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hospital/components/social_button.dart';
+import 'package:hospital/forgetScreen.dart';
 import 'package:hospital/patients/components/main_layout.dart';
 import 'package:http/http.dart' as http;
 import 'package:hospital/signup_screen.dart';
@@ -57,9 +58,9 @@ class _loginScreenState extends State<loginScreen> {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.03,
-                    right: MediaQuery.of(context).size.width * 0.03,
-                    bottom: MediaQuery.of(context).size.height * 0.02),
+                  left: MediaQuery.of(context).size.width * 0.03,
+                  right: MediaQuery.of(context).size.width * 0.03,
+                ),
                 child: TextField(
                   controller: password,
                   obscureText: passToggle ? true : false,
@@ -80,20 +81,30 @@ class _loginScreenState extends State<loginScreen> {
                   ),
                 ),
               ),
+              // SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Padding(
                 padding: EdgeInsets.only(
-                    right: MediaQuery.of(context).size.width * 0.02),
+                  left: MediaQuery.of(context).size.width * 0.03,
+                  right: MediaQuery.of(context).size.width * 0.01,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ForgetScreen(),
+                          ),
+                        );
+                      },
                       child: const Text(
                         "Forgot Password?",
                         style: TextStyle(
-                          fontSize: 13,
+                          fontSize: 16,
                           fontWeight: FontWeight.w500,
-                          color: Colors.lightBlue,
+                          color: Colors.blue,
                         ),
                       ),
                     ),
@@ -107,6 +118,7 @@ class _loginScreenState extends State<loginScreen> {
                   onTap: () {
                     // receive the response from the _loginUser function
                     _loginUSer(email.text, password.text, context);
+                    _loginUSer2(email.text, password.text, context);
                     // make a map for the user data
                   },
                   child: Container(
@@ -135,32 +147,6 @@ class _loginScreenState extends State<loginScreen> {
                     ),
                   ),
                 ),
-              ),
-              const Text(
-                "OR",
-                style: TextStyle(
-                  fontSize: 23,
-                  fontWeight: FontWeight.bold,
-                  color: Color.fromARGB(255, 5, 37, 14),
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              const Text(
-                "Log In With",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0XFF0080FE),
-                ),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SocialButton(social: 'google'),
-                  SizedBox(width: MediaQuery.of(context).size.width * 0.02),
-                  const SocialButton(social: 'facebook'),
-                ],
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.02),
               Row(
@@ -204,20 +190,36 @@ class _loginScreenState extends State<loginScreen> {
 
 Future<dynamic> _loginUSer(
     String email, String password, BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.5:3000/doctor/login');
+  final Uri api = Uri.parse('http://192.168.1.7:3000/doctor/login');
   try {
     final response = await http.post(api, body: {
       'email': email,
       'password': password,
     });
+    print(response.body);
 
     final jsonData = json.decode(response.body);
     final result = jsonData['result'];
-    if (result['admin'] != null) {
-      _loginAsAdmin(context, result);
-    } else if (result['doctor'] != null) {
+    if (result['doctor'] != null) {
       _loginAsDoctor(context, result);
-    } else if (result['patient'] != null) {
+    }
+  } catch (e) {
+    print(e);
+  }
+}
+
+Future<dynamic> _loginUSer2(
+    String email, String password, BuildContext context) async {
+  final Uri api = Uri.parse('http://192.168.1.7:3000/patient/login');
+  try {
+    final response = await http.post(api, body: {
+      'email': email,
+      'password': password,
+    });
+    print(response.body);
+    final jsonData = json.decode(response.body);
+    final result = jsonData['result'];
+    if (result['patient'] != null) {
       _loginAsPatient(context, result);
     }
   } catch (e) {
@@ -262,7 +264,8 @@ void _loginAsDoctor(BuildContext context, dynamic result) async {
     aboutDoctor: result['doctor']['aboutDoctor'] ?? 'not found',
     price: result['doctor']['price'] ?? 'not found',
     age: result['doctor']['age'] ?? 'not found',
-    // appointments: _convertToAppointments(appointments),
+    appointments: _convertToAppointments(appointments),
+    token: result['token'] ?? 'not found',
   );
 
   Navigator.push(
@@ -308,7 +311,8 @@ void _loginAsPatient(BuildContext context, dynamic result) async {
       aboutDoctor: doc['aboutDoctor'] ?? 'not found',
       price: doc['price'] ?? 'not found',
       age: doc['age'] ?? 'not found',
-      // appointments: _convertToAppointments(appointments) ?? [],
+      appointments: _convertToAppointments(appointments) ?? [],
+      token: doc['token'] ?? 'not found',
     );
 
     myDoctors.add(doctor);
@@ -324,7 +328,7 @@ void _loginAsPatient(BuildContext context, dynamic result) async {
 
 Future<List<dynamic>> _getappointmentsfordoctor(String id) async {
   final Uri api =
-      Uri.parse('http://192.168.1.5:3000/doctor/getallappointments');
+      Uri.parse('http://192.168.1.7:3000/doctor/getallappointments');
   try {
     final response = await http.post(api, body: {
       'id': id,
@@ -339,7 +343,7 @@ Future<List<dynamic>> _getappointmentsfordoctor(String id) async {
 }
 
 Future<List<dynamic>> _getappointmentsforpatient(String id) async {
-  final Uri api = Uri.parse('http://192.168.1.5:3000/patient/getappointments');
+  final Uri api = Uri.parse('http://192.168.1.7:3000/patient/getappointments');
   try {
     final response = await http.post(api, body: {
       'id': id,

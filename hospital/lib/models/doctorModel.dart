@@ -13,8 +13,9 @@ class Doctor {
   final String address;
   final String aboutDoctor;
   final String price;
-  late List<Appointment> appointments;
+  final List<Appointment> appointments;
   final String age;
+  final String token;
 
   Doctor({
     required this.fullname,
@@ -29,6 +30,7 @@ class Doctor {
     required this.price,
     required this.photo,
     required this.age,
-    // required this.appointments/,
+    required this.appointments,
+    required this.token,
   });
 }

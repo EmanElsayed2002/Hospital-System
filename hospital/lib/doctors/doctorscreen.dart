@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:hospital/doctors/massage_doctor.dart';
 import 'package:hospital/models/doctorModel.dart';
 import 'package:hospital/patients/screens/appointment_screen.dart';
 
@@ -65,14 +64,32 @@ class _DoctorScreenState extends State<DoctorScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Text(
-                        'Upcoming Appointments',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                      Container(
+                        padding: EdgeInsets.all(
+                            16.0), // Add padding for better spacing
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey[100], // Set a background color
+                          borderRadius: BorderRadius.circular(
+                              10.0), // Add rounded corners
+                        ),
+                        child: Text(
+                          'Upcoming Appointments',
+                          style: TextStyle(
+                            fontSize: 24, // Increase font size for emphasis
+                            fontWeight: FontWeight.bold,
+                            color: Colors.teal, // Change text color
+                            shadows: [
+                              Shadow(
+                                color: Colors.grey,
+                                offset:
+                                    Offset(2, 2), // Add a subtle shadow effect
+                                blurRadius: 3,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                       const SizedBox(height: 16),
-                      // Add a list of upcoming appointments here
-                      // You can use ListView.builder or other appropriate widgets
                       Padding(
                         padding: const EdgeInsets.only(top: 0),
                         child: ListView.builder(

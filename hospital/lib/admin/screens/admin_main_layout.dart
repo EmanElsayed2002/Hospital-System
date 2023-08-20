@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../../models/Admin.dart';
+import '../../models/Appointment.dart';
 import '../../models/doctorModel.dart';
 
 class AdminLayuot extends StatefulWidget {
@@ -24,13 +25,15 @@ class _AdminLayuotState extends State<AdminLayuot> {
   List<Doctor> doctors = [];
   final PageController _page = PageController();
   Future<void> get_all_doctors(List<Doctor> doctors, Admin admin) async {
-    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/readdoctorsdata');
+    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/readdoctorsdata');
     try {
       final response = await http.get(api);
       final jsonData = json.decode(response.body);
       final doctorList = jsonData['result'];
       List<Doctor> fetchedDoctors = [];
       for (var element in doctorList) {
+        final doctortId = element['_id'].toString();
+        final appointments = await _getappointmentsfordoctor(doctortId);
         final doctor = Doctor(
           id: element['_id'] ?? 'not found',
           fullname: element['fullname'] ?? 'not found',
@@ -44,7 +47,8 @@ class _AdminLayuotState extends State<AdminLayuot> {
           price: element['Price'] ?? 'not found',
           photo: element['photo'] ?? '',
           age: element['age'] ?? 'not found',
-          // appointments: element['appointments'] ?? [],
+          appointments: _convertToAppointments(appointments) ?? [],
+          token: '',
         );
         fetchedDoctors.add(doctor);
       }
@@ -133,4 +137,46 @@ class _AdminLayuotState extends State<AdminLayuot> {
       ),
     );
   }
+}
+
+Future<List<dynamic>> _getappointmentsfordoctor(String id) async {
+  final Uri api =
+      Uri.parse('http://192.168.1.8:3000/doctor/getallappointments');
+  try {
+    final response = await http.post(api, body: {
+      'id': id,
+    });
+    final jsonData = json.decode(response.body);
+
+    return jsonData['result'];
+  } catch (e) {
+    print(e);
+    return [];
+  }
+}
+
+List<Appointment> _convertToAppointments(List<dynamic> appointmentsData) {
+  List<Appointment> appointments = [];
+
+  for (dynamic appointmentData in appointmentsData) {
+    String date = appointmentData['date'] ?? '';
+    String time = appointmentData['time'] ?? '';
+    String status = appointmentData['status'] ?? '';
+    String Id = appointmentData['_id'] ?? '';
+    String patientId = appointmentData['patientId'] ?? '';
+    String doctorId = appointmentData['doctorId'] ?? '';
+
+    Appointment appointment = Appointment(
+      date: date,
+      time: time,
+      status: status,
+      patientId: patientId,
+      doctorId: doctorId,
+      Id: Id,
+    );
+
+    appointments.add(appointment);
+  }
+
+  return appointments;
 }
