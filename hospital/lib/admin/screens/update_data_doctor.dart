@@ -330,7 +330,7 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
     String age,
     BuildContext context,
   ) async {
-    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/updatedoctor');
+    final Uri api = Uri.parse('http://192.168.95.25:3000/admin/updatedoctor');
     try {
       final response = await http.post(api, body: {
         'email': email,
@@ -409,7 +409,7 @@ class _UpdateDataDoctorState extends State<UpdateDataDoctor> {
     String email,
     String token,
   ) async {
-    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/deletedoctor');
+    final Uri api = Uri.parse('http://192.168.95.25:3000/admin/deletedoctor');
     try {
       final response = await http.post(api, body: {
         'email': email,

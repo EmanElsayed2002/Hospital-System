@@ -43,7 +43,7 @@ class _PasswordChangeVerificationState
     String confirmPassword,
     BuildContext context,
   ) async {
-    final api = Uri.parse('http://192.168.1.7:3000/change_password');
+    final api = Uri.parse('http://192.168.43.45:3000/change_password');
     try {
       final response = await http.post(api, body: {
         'email': widget.email,

@@ -98,7 +98,7 @@ class _MainLayoutState extends State<MainLayout> {
 }
 
 Future<void> get_all_patient(List<Doctor> PopularDoctors) async {
-  final Uri api = Uri.parse('http://192.168.1.8:3000/patient/populardoctor');
+  final Uri api = Uri.parse('http://192.168.43.45:3000/patient/populardoctor');
   try {
     final response = await http.get(api);
     final jsonData = jsonDecode(response.body);
@@ -133,7 +133,7 @@ Future<void> get_all_patient(List<Doctor> PopularDoctors) async {
 
 Future<List<dynamic>> _getappointmentsfordoctor(String id) async {
   final Uri api =
-      Uri.parse('http://192.168.1.8:3000/doctor/getallappointments');
+      Uri.parse('http://192.168.43.45:3000/doctor/getallappointments');
   try {
     final response = await http.post(api, body: {
       'id': id,

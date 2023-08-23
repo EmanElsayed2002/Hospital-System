@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hospital/components/social_button.dart';
-import 'package:hospital/forget_screen.dart';
 import 'package:hospital/patients/components/main_layout.dart';
 import 'package:http/http.dart' as http;
 import 'package:hospital/signup_screen.dart';
@@ -18,7 +17,7 @@ class ForgetVerification extends StatelessWidget {
 
   Future<void> _sendVerificationEmail(String email) async {
     final Uri api =
-        Uri.parse('http://192.168.1.7:3000/admin/send-verification-email');
+        Uri.parse('http://192.168.95.25:3000/admin/send-verification-email');
 
     try {
       final response = await http.post(api, body: {
@@ -66,7 +65,7 @@ class ForgetVerification extends StatelessWidget {
 
   Future<void> _verifyCode(String email, String password, String code) async {
     final Uri api =
-        Uri.parse('http://192.168.1.7:3000/admin/verify-code_forget');
+        Uri.parse('http://192.168.95.25:3000/admin/verify-code_forget');
 
     try {
       final response = await http.post(api, body: {

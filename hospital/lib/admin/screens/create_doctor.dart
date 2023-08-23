@@ -316,7 +316,8 @@ class _CreateDoctorState extends State<CreateDoctor> {
     Admin admin,
     BuildContext context,
   ) async {
-    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/createnewdoctor');
+    final Uri api =
+        Uri.parse('http://192.168.95.25:3000/admin/createnewdoctor');
     try {
       final response = await http.post(api, body: {
         'email': email,

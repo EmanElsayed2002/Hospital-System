@@ -109,7 +109,8 @@ class _CreateAvailableTimeState extends State<CreateAvailableTime> {
 
 Future<void> _makeAppointment(
     DateTime date, TimeOfDay time, Doctor doctor) async {
-  final Uri api = Uri.parse('http://192.168.1.7:3000/doctor/createoppointment');
+  final Uri api =
+      Uri.parse('http:// 192.168.43.45:3000/doctor/createoppointment');
 
   final newAppointment = Appointment(
     date: date.toString().split(' ')[0],

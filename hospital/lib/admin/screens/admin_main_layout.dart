@@ -25,7 +25,8 @@ class _AdminLayuotState extends State<AdminLayuot> {
   List<Doctor> doctors = [];
   final PageController _page = PageController();
   Future<void> get_all_doctors(List<Doctor> doctors, Admin admin) async {
-    final Uri api = Uri.parse('http://192.168.1.8:3000/admin/readdoctorsdata');
+    final Uri api =
+        Uri.parse('http://192.168.95.25:3000/admin/readdoctorsdata');
     try {
       final response = await http.get(api);
       final jsonData = json.decode(response.body);
@@ -141,7 +142,7 @@ class _AdminLayuotState extends State<AdminLayuot> {
 
 Future<List<dynamic>> _getappointmentsfordoctor(String id) async {
   final Uri api =
-      Uri.parse('http://192.168.1.8:3000/doctor/getallappointments');
+      Uri.parse('http://192.168.95.25:3000/doctor/getallappointments');
   try {
     final response = await http.post(api, body: {
       'id': id,

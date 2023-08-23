@@ -20,7 +20,7 @@ class _ForegtVerificationState extends State<ForegtVerification> {
       List.generate(6, (index) => TextEditingController());
 
   Future<void> _verifyCode(String email, String code) async {
-    final Uri api = Uri.parse('http://192.168.1.7:3000/admin/verify-code');
+    final Uri api = Uri.parse('http://192.168.43.45:3000/admin/verify-code');
 
     try {
       final response = await http.post(api, body: {
@@ -64,7 +64,7 @@ class _ForegtVerificationState extends State<ForegtVerification> {
 
   Future<void> _sendVerificationEmail(String email) async {
     final Uri api =
-        Uri.parse('http://192.168.1.7:3000/admin/send-verification-email');
+        Uri.parse('http://192.168.43.45:3000/admin/send-verification-email');
 
     try {
       final response = await http.post(api, body: {

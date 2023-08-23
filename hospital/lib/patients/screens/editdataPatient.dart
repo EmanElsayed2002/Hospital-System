@@ -2,13 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:hospital/admin/screens/admin_main_layout.dart';
 import 'package:hospital/models/patient.dart';
+import 'package:hospital/welcome_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital/components/button.dart';
 import 'package:http/http.dart' as http;
-
-
 
 class UpdateDataPatient extends StatefulWidget {
   final Patient patient;
@@ -27,7 +27,7 @@ class _UpdateDatapatientState extends State<UpdateDataPatient> {
   final TextEditingController _genderController = TextEditingController();
 
   File? image;
-  String? base64Image;
+  String? base64Image = 'null';
 
   Future pickImage() async {
     try {
@@ -62,7 +62,6 @@ class _UpdateDatapatientState extends State<UpdateDataPatient> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Update patient Data'),
@@ -84,7 +83,7 @@ class _UpdateDatapatientState extends State<UpdateDataPatient> {
                   borderRadius: BorderRadius.all(Radius.circular(6))),
               child: Button(
                   width: 400,
-                  color: Colors.white,
+                  color: Colors.black,
                   title: 'Change Profle Picture',
                   onPressed: () {
                     pickImage();
@@ -124,7 +123,7 @@ class _UpdateDatapatientState extends State<UpdateDataPatient> {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Button(
                   width: 400,
-                  color: Colors.white,
+                  color: Colors.green,
                   title: 'Save Data',
                   onPressed: () {
                     _updatepatient(
@@ -133,7 +132,6 @@ class _UpdateDatapatientState extends State<UpdateDataPatient> {
                         _passwordController.text,
                         _phoneController.text,
                         _ageController.text,
-                        _genderController.text,
                         base64Image!,
                         widget.patient!.token,
                         context);
@@ -148,10 +146,11 @@ class _UpdateDatapatientState extends State<UpdateDataPatient> {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               child: Button(
                   width: 400,
-                  color: Colors.white,
+                  color: Colors.red,
                   title: 'delete patient',
                   onPressed: () {
-                    _deletepatient(_emailController.text,widget.patient!.token, context);
+                    _deletepatient(
+                        _emailController.text, widget.patient!.token, context);
                   },
                   disable: false,
                   height: 50),
@@ -169,24 +168,22 @@ Future<dynamic> _updatepatient(
     String password,
     String phone,
     String age,
-    String gender,
     String base64Image,
     String token,
     BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.8:3000/patient//updatepatient');
+  final Uri api = Uri.parse('http://192.168.43.45:3000/patient/updatepatient');
   try {
     final response = await http.post(api, body: {
       'email': email,
       'password': password,
       'fullname': name,
-      'gender': gender,
       'age': age,
       'phone': phone,
-      'photo': base64Image, 
+      'photo': base64Image,
       'token': token,
-      'id' : 'sasa',
+      'id': 'sasa',
     });
-    _showpatientCreatedDialog(context);
+    if (response.statusCode == 200) _showpatientCreatedDialog(context);
   } catch (e) {
     print(e);
   }
@@ -212,15 +209,24 @@ void _showpatientCreatedDialog(BuildContext context) {
   );
 }
 
-Future<dynamic> _deletepatient(String email,String token , BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.4:3000/patient/deletepatient');
+Future<dynamic> _deletepatient(
+    String email, String token, BuildContext context) async {
+  final Uri api = Uri.parse('http://192.168.43.45:3000/patient/deletepatient');
   try {
     final response = await http.post(api, body: {
       'email': email,
       'token': token,
-      'id' : 'sasa',
+      'id': 'sasa',
     });
-    _showpatientDeletedDialog(context);
+    if (response.statusCode == 200) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => WelcomeScreen(),
+        ),
+      );
+    }
+    // _showpatientDeletedDialog(context);
   } catch (e) {
     print(e);
   }

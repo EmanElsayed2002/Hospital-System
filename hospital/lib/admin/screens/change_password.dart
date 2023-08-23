@@ -31,7 +31,7 @@ class _ChangePasswordState extends State<ChangePassword> {
 
   Future<void> _sendVerificationEmail(String email) async {
     final Uri api =
-        Uri.parse('http://192.168.1.7:3000/admin/send-verification-email');
+        Uri.parse('http://192.168.95.25:3000/admin/send-verification-email');
 
     try {
       final response = await http.post(api, body: {
@@ -150,7 +150,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     String token,
     BuildContext context,
   ) async {
-    final api = Uri.parse('http://192.168.1.7:3000/admin/changepassword');
+    final api = Uri.parse('http://192.168.95.25:3000/admin/changepassword');
     try {
       final response = await http.post(api, body: {
         'oldpassword': currentPassword,

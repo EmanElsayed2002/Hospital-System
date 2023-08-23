@@ -104,7 +104,7 @@ class _DoctorLayoutState extends State<DoctorLayout> {
 Future<void> get_all_patient(
     List<upCommingAppointment> appointmentss, Doctor doctor) async {
   final Uri api =
-      Uri.parse('http://192.168.1.7:3000/doctor/getpatientandappointments');
+      Uri.parse('http:// 192.168.43.45:3000/doctor/getpatientandappointments');
   try {
     final response = await http.post(api, body: {
       'id': doctor.id,

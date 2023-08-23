@@ -190,7 +190,7 @@ class _loginScreenState extends State<loginScreen> {
 
 Future<dynamic> _loginUSer(
     String email, String password, BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.7:3000/doctor/login');
+  final Uri api = Uri.parse('http://192.168.43.45:3000/doctor/login');
   try {
     final response = await http.post(api, body: {
       'email': email,
@@ -210,7 +210,7 @@ Future<dynamic> _loginUSer(
 
 Future<dynamic> _loginUSer2(
     String email, String password, BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.7:3000/patient/login');
+  final Uri api = Uri.parse('http://192.168.43.45:3000/patient/login');
   try {
     final response = await http.post(api, body: {
       'email': email,
@@ -328,7 +328,7 @@ void _loginAsPatient(BuildContext context, dynamic result) async {
 
 Future<List<dynamic>> _getappointmentsfordoctor(String id) async {
   final Uri api =
-      Uri.parse('http://192.168.1.7:3000/doctor/getallappointments');
+      Uri.parse('http://192.168.43.45:3000/doctor/getallappointments');
   try {
     final response = await http.post(api, body: {
       'id': id,
@@ -343,7 +343,8 @@ Future<List<dynamic>> _getappointmentsfordoctor(String id) async {
 }
 
 Future<List<dynamic>> _getappointmentsforpatient(String id) async {
-  final Uri api = Uri.parse('http://192.168.1.7:3000/patient/getappointments');
+  final Uri api =
+      Uri.parse('http://192.168.43.45:3000/patient/getappointments');
   try {
     final response = await http.post(api, body: {
       'id': id,

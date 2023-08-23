@@ -44,7 +44,8 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
             title: Text('Date: ${appointment.date}, Time: ${appointment.time}'),
             subtitle: Text('Status: ${appointment.status}'),
             onTap: () {
-              _bookAppointment(appointment, widget.patient, widget.doctor, context);
+              _bookAppointment(
+                  appointment, widget.patient, widget.doctor, context);
             },
             // Add any other UI elements you want to display for each appointment
           );
@@ -54,19 +55,18 @@ class _AppointmentsPageState extends State<AppointmentsPage> {
   }
 }
 
-Future<void> _bookAppointment(
-    Appointment appointment, Patient patient, Doctor doctor, BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.8:3000/patient/bookappointment');
-  try{
+Future<void> _bookAppointment(Appointment appointment, Patient patient,
+    Doctor doctor, BuildContext context) async {
+  final Uri api =
+      Uri.parse('http://192.168.43.45:3000/patient/bookappointment');
+  try {
     final response = await http.post(api, body: {
       'appointmentid': appointment.Id,
       'doctorid': doctor.id,
       'patientid': patient.id,
     });
     _showChangepaswordDialog(context);
-  }
-  catch(e)
-  {
+  } catch (e) {
     print(e);
   }
 }

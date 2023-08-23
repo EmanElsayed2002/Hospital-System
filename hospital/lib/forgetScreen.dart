@@ -17,7 +17,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
   final TextEditingController _emailController = TextEditingController();
   Future<void> _sendVerificationEmail(String email) async {
     final Uri api =
-        Uri.parse('http://192.168.1.7:3000/admin/send-verification-email');
+        Uri.parse('http://192.168.43.45:3000/admin/send-verification-email');
 
     try {
       final response = await http.post(api, body: {
@@ -92,7 +92,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
 }
 
 Future<dynamic> verify(String email, BuildContext context) async {
-  final Uri api = Uri.parse('http://192.168.1.7:3000/forgotPassword');
+  final Uri api = Uri.parse('http://192.168.43.45:3000/forgotPassword');
   try {
     final response = await http.post(api, body: {
       'email': email,

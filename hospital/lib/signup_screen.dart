@@ -18,6 +18,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final password = TextEditingController();
   final phone = TextEditingController();
 
+// we want to make a post request to the server
+  Future<dynamic> _postRequest(
+      String fullname, String email, String password, String phone) async {
+    var url = Uri.parse('http://192.168.43.45:3000/patient/signup');
+    try {
+      final response = await http.post(url, body: {
+        'fullname': fullname,
+        'email': email,
+        'password': password,
+        'phone': phone
+      });
+      if (response.statusCode == 201) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const loginScreen(),
+            ));
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -35,7 +58,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               const SizedBox(height: 15),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                 child: TextField(
                   controller: fullname,
                   decoration: const InputDecoration(
@@ -46,7 +70,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                 child: TextField(
                   controller: email,
                   decoration: const InputDecoration(
@@ -57,7 +82,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                 child: TextField(
                   controller: phone,
                   decoration: const InputDecoration(
@@ -159,22 +185,5 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
-  }
-}
-
-// we want to make a post request to the server
-Future<dynamic> _postRequest(
-    String fullname, String email, String password, String phone) async {
-  var url = Uri.parse('http://192.168.1.8:3000/patient/signup');
-  try {
-    final response = await http.post(url, body: {
-      'fullname': fullname,
-      'email': email,
-      'password': password,
-      'phone': phone
-    });
-    print(response.body);
-  } catch (e) {
-    print(e);
   }
 }
